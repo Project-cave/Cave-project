@@ -1,11 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static GameManager instance;
+    [Header("# Game Control")]
+    public bool isLive;
+    //public float gameTime;
+
+    //[Header("# player Info")]
+    //public int playerId;
+
+    [Header("# Game Object")]
+    public GameObject spawnUnit;
+    public PlayerMovement player;
+    public PoolManager pool;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+    }
+
+    // Start is called before the first frame update
     void Start()
     {
-        AudioManager.instance.PlayBgm(AudioManager.Bgm.Battle, true);
+        AudioManager.instance.PlayBgm(AudioManager.Bgm.Battle ,true);
     }
 
     // Update is called once per frame
@@ -14,8 +42,4 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void PlaySfxButton()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-    }
 }
