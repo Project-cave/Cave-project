@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Priority_Queue;
+
 public class PathFinder : MonoBehaviour
 {
     [SerializeField] Vector2 gridStartPoint;
@@ -11,48 +12,42 @@ public class PathFinder : MonoBehaviour
     [SerializeField] int priorityQueueMaxSize = 200;
     public LayerMask layerTocheckCollide;
     [SerializeField] bool optimizingPath = true;
-
-    BoxCollider2D boxcollider;
+    [SerializeField] Vector2 defaultUnitSize = new Vector2(1f, 1f);
 
     public static PathFinder instance;
 
     int numCols;
     int numRows;
-
     Nodes[,] nodes;
-
-    Nodes goalNode;
-    Nodes startNode;
-
-
-    FastPriorityQueue<Nodes> openList;
-    LinkedList<Nodes> closeList;
-
-    LinkedList<Nodes> nodeOnPathList;
-
-    LinkedList<Vector2> finalPath;
-
-    bool isPathFound;
 
     private void Awake()
     {
-        boxcollider = GetComponent<BoxCollider2D>();
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     void Start()
     {
+        // 그리드 크기
         numCols = (int)((gridEndPoint.x - gridStartPoint.x) / cellSize + 0.5);
         numRows = (int)((gridEndPoint.y - gridStartPoint.y) / cellSize + 0.5);
+
         nodes = generateNodes();
 
-        openList = new FastPriorityQueue<Nodes>(priorityQueueMaxSize);
-        closeList = new LinkedList<Nodes>();
-
-        nodeOnPathList = new LinkedList<Nodes>();
-        finalPath = new LinkedList<Vector2>();
-
-        goalNode = findNodeOnPosition(transform.position);
+        if (nodes == null)
+        {
+            Debug.LogError("PathFinder: nodes 생성 실패!");
+        }
     }
+
+    
 
     Nodes[,] generateNodes()
     {
@@ -66,140 +61,214 @@ public class PathFinder : MonoBehaviour
                     gridStartPoint.x + cellSize / 2 + x * cellSize,
                     gridStartPoint.y + cellSize / 2 + y * cellSize);
 
-                bool isWall =
-                    null != Physics2D.OverlapBox(nodeCenter, collisionCheckSensorSize, 0, layerTocheckCollide);
-
-
+                bool isWall = null != Physics2D.OverlapBox(nodeCenter, collisionCheckSensorSize, 0, layerTocheckCollide);
                 nodes[x, y] = new Nodes(x, y, nodeCenter, isWall);
-
             }
         }
+
         return nodes;
+    }
+
+    public LinkedList<Vector2> getShortestPath(Vector2 start, Vector2 goal, Vector2 unitSize)
+    {
+        return CalculatePath(start, goal, unitSize);
+    }
+
+    public LinkedList<Vector2> getShortestPath(Vector2 start, Vector2 goal, BoxCollider2D unitCollider)
+    {
+        Vector2 unitSize = unitCollider != null ? unitCollider.size : defaultUnitSize;
+        return CalculatePath(start, goal, unitSize);
     }
 
     public LinkedList<Vector2> getShortestPath(Vector2 start, Vector2 goal)
     {
-        isPathFound = false;
-        finalPath.Clear();
+        return CalculatePath(start, goal, defaultUnitSize);
+    }
 
-        startNode = findNodeOnPosition(start);
-        goalNode = findNodeOnPosition(goal);
+    private LinkedList<Vector2> CalculatePath(Vector2 start, Vector2 goal, Vector2 unitSize)
+    {
 
+        if (nodes == null)
+        {
+            Debug.LogError("[PathFinder] nodes가 null입니다!");
+            return new LinkedList<Vector2>();
+        }
 
-        if (!Physics2D.BoxCast(
-                gameObject.transform.position, boxcollider.size, 0,
-                goalNode.nodeCenter - start, Vector2.Distance(start, goal), layerTocheckCollide))
+        FastPriorityQueue<Nodes> openList = new FastPriorityQueue<Nodes>(priorityQueueMaxSize);
+        LinkedList<Nodes> closeList = new LinkedList<Nodes>();
+        LinkedList<Nodes> nodeOnPathList = new LinkedList<Nodes>();
+        LinkedList<Vector2> finalPath = new LinkedList<Vector2>();
+        bool isPathFound = false;
+
+        Nodes startNode = findNodeOnPosition(start);
+        Nodes goalNode = findNodeOnPosition(goal);
+
+        if (startNode == null)
+        {
+            Debug.LogError($"[PathFinder] 시작 노드를 찾을 수 없음: {start} (그리드 범위: {gridStartPoint} ~ {gridEndPoint})");
+            return new LinkedList<Vector2>();
+        }
+
+        if (goalNode == null)
+        {
+            Debug.LogError($"[PathFinder] 목표 노드를 찾을 수 없음: {goal} (그리드 범위: {gridStartPoint} ~ {gridEndPoint})");
+            return new LinkedList<Vector2>();
+        }
+
+        if (goalNode.isWall)
+        {
+            Debug.LogError($"[PathFinder] 목표 노드가 벽입니다! {goal}");
+            return new LinkedList<Vector2>();
+        }
+
+        // 직선 경로 체크
+        bool directPath = !Physics2D.BoxCast(
+                start, unitSize, 0,
+                goalNode.nodeCenter - start,
+                Vector2.Distance(start, goal),
+                layerTocheckCollide);
+
+        if (directPath)
         {
             nodeOnPathList.AddFirst(startNode);
-            nodeOnPathList.AddFirst(goalNode);
+            nodeOnPathList.AddLast(goalNode);
             isPathFound = true;
         }
         else
         {
-            findPath(startNode, goalNode); // start A* + JPS algorithm
+            isPathFound = findPath(startNode, goalNode, openList, closeList, nodeOnPathList);
 
-            excludeUselessWaypoints();
-            if (optimizingPath) optimizeWaypoints();
+            if (isPathFound)
+            {
+                excludeUselessWaypoints(nodeOnPathList);
+
+                if (optimizingPath)
+                {
+                    optimizeWaypoints(nodeOnPathList, unitSize);
+                }
+            }
         }
 
+        // 경로 생성
         if (isPathFound)
         {
-            nodeOnPathList.RemoveFirst();
+            if (nodeOnPathList.Count > 0)
+                nodeOnPathList.RemoveFirst();
 
             while (nodeOnPathList.Count > 1)
             {
                 finalPath.AddLast(nodeOnPathList.First.Value.nodeCenter);
                 nodeOnPathList.RemoveFirst();
             }
+
             finalPath.AddLast(goal);
-            nodeOnPathList.RemoveFirst();
+
+            if (nodeOnPathList.Count > 0)
+                nodeOnPathList.RemoveFirst();
+
+            Debug.Log($"[PathFinder] 최종 경로 생성 완료: {finalPath.Count}개 웨이포인트");
         }
+        else
+        {
+            Debug.LogError($"[PathFinder] 경로 찾기 실패!");
+        }
+
+        // 노드 상태 정리
+        CleanupNodes(openList, closeList);
 
         return finalPath;
     }
 
-    void initOpenList()
+    private void CleanupNodes(FastPriorityQueue<Nodes> openList, LinkedList<Nodes> closeList)
     {
         while (openList.Count > 0)
         {
             Nodes n = openList.Dequeue();
             n.parent = null;
             n.onOpenList = false;
+            n.onCloseList = false;
         }
 
-    }
-
-    void initCloseList()
-    {
-        while (closeList.Count > 0)
+        foreach (Nodes n in closeList)
         {
-            LinkedListNode<Nodes> n = closeList.First;
-            n.Value.parent = null;
-            n.Value.onCloseList = false;
-
-            closeList.RemoveFirst();
+            n.parent = null;
+            n.onOpenList = false;
+            n.onCloseList = false;
         }
     }
 
-
-
-    void findPath(Nodes start, Nodes goal) // find path with a* algorithm
+    bool findPath(Nodes start, Nodes goal, FastPriorityQueue<Nodes> openList, LinkedList<Nodes> closeList, LinkedList<Nodes> nodeOnPathList)
     {
-
-        initCloseList();
-        initOpenList();
-        nodeOnPathList.Clear();
-
-        if (start == null || goal == null || start == goal) return;
+        if (start == null || goal == null || start == goal)
+        {
+            Debug.LogWarning($"[PathFinder] findPath 조건 실패: start={start}, goal={goal}");
+            return false;
+        }
 
         openList.Enqueue(start, start.fCost);
         start.onOpenList = true;
 
+        int iterations = 0;
+        int maxIterations = numCols * numRows; // 무한루프 방지
+
         while (openList.Count > 0)
         {
+            iterations++;
+            if (iterations > maxIterations)
+            {
+                Debug.LogError($"[PathFinder] 최대 반복 횟수 초과! ({maxIterations})");
+                return false;
+            }
 
             Nodes nodeToFind = openList.Dequeue();
             closeList.AddFirst(nodeToFind);
             nodeToFind.onCloseList = true;
-            nodeToFind.onOpenList = false;// move node from open list to close list
-
+            nodeToFind.onOpenList = false;
 
             if (nodeToFind == goal)
             {
-                isPathFound = true;
-                break;
+                Debug.Log($"[PathFinder] 목표 도달! 반복: {iterations}");
+                makeWaypoints(goal, nodeOnPathList);
+                return true;
             }
 
-            jump(nodeToFind);
+            jump(nodeToFind, goal, openList, closeList);
         }
 
-        makeWaypoints();
+        Debug.LogWarning($"[PathFinder] openList가 비었지만 목표에 도달하지 못함. 반복: {iterations}");
+        return false;
     }
 
-    void makeWaypoints()
+    void makeWaypoints(Nodes goalNode, LinkedList<Nodes> nodeOnPathList)
     {
-        if (!isPathFound) return;
-
         Nodes iterNode = goalNode;
+        int count = 0;
 
         do
         {
             nodeOnPathList.AddFirst(iterNode);
             iterNode = iterNode.parent;
-        } while (iterNode != null);
+            count++;
 
+            if (count > numCols * numRows)
+            {
+                Debug.LogError("[PathFinder] makeWaypoints 무한루프 감지!");
+                break;
+            }
+        } while (iterNode != null);
     }
 
-    void excludeUselessWaypoints()
+    void excludeUselessWaypoints(LinkedList<Nodes> nodeOnPathList)
     {
         if (nodeOnPathList.Count <= 2) return;
         LinkedListNode<Nodes> iter = nodeOnPathList.First;
 
-        while (iter.Next.Next != null)
+        while (iter.Next != null && iter.Next.Next != null)
         {
             Nodes current = iter.Value;
             Nodes next = iter.Next.Value;
             Nodes nextnext = iter.Next.Next.Value;
+
             if ((current.XIndex < next.XIndex && next.XIndex < nextnext.XIndex
                 || current.XIndex == next.XIndex && next.XIndex == nextnext.XIndex
                 || current.XIndex > next.XIndex && next.XIndex > nextnext.XIndex) &&
@@ -208,29 +277,24 @@ public class PathFinder : MonoBehaviour
                 || current.YIndex > next.YIndex && next.YIndex > nextnext.YIndex))
             {
                 nodeOnPathList.Remove(next);
-
             }
             else iter = iter.Next;
         }
     }
 
-
-    Nodes current;
-    Nodes next;
-    Nodes nextnext;
-    void optimizeWaypoints()
+    void optimizeWaypoints(LinkedList<Nodes> nodeOnPathList, Vector2 unitSize)
     {
-
         if (nodeOnPathList.Count <= 2) return;
 
         LinkedListNode<Nodes> iter = nodeOnPathList.First;
-        while (iter.Next.Next != null)
+        while (iter.Next != null && iter.Next.Next != null)
         {
-            current = iter.Value;
-            next = iter.Next.Value;
-            nextnext = iter.Next.Next.Value;
-            if (
-                !Physics2D.BoxCast(current.nodeCenter, boxcollider.size, 0,
+            Nodes current = iter.Value;
+            Nodes next = iter.Next.Value;
+            Nodes nextnext = iter.Next.Next.Value;
+
+            if (!Physics2D.BoxCast(
+                current.nodeCenter, unitSize, 0,
                 nextnext.nodeCenter - current.nodeCenter,
                 Vector2.Distance(current.nodeCenter, nextnext.nodeCenter),
                 layerTocheckCollide))
@@ -239,51 +303,40 @@ public class PathFinder : MonoBehaviour
             }
             else iter = iter.Next;
         }
-
     }
 
-
-
-
-
-    void jump(Nodes node) // find jump point from node variable and add jump point to open list.
+    void jump(Nodes node, Nodes goalNode, FastPriorityQueue<Nodes> openList, LinkedList<Nodes> closeList)
     {
-        Nodes parent;
-
-        if (node.parent == null) parent = node;
-        else parent = node.parent;
+        Nodes parent = node.parent == null ? node : node.parent;
 
         if (parent.XIndex <= node.XIndex || parent.YIndex != node.YIndex)
-            updateJumpPoints(jumpHorizontal(node, 1), node);
+            updateJumpPoints(jumpHorizontal(node, 1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex >= node.XIndex || parent.YIndex != node.YIndex)
-            updateJumpPoints(jumpHorizontal(node, -1), node);
+            updateJumpPoints(jumpHorizontal(node, -1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex != node.XIndex || parent.YIndex <= node.YIndex)
-            updateJumpPoints(jumpVertical(node, 1), node);
+            updateJumpPoints(jumpVertical(node, 1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex != node.XIndex || parent.YIndex >= node.YIndex)
-            updateJumpPoints(jumpVertical(node, -1), node);
-
+            updateJumpPoints(jumpVertical(node, -1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex <= node.XIndex || parent.YIndex <= node.YIndex)
-            updateJumpPoints(jumpDiagonal(node, 1, 1), node);
+            updateJumpPoints(jumpDiagonal(node, 1, 1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex >= node.XIndex || parent.YIndex <= node.YIndex)
-            updateJumpPoints(jumpDiagonal(node, -1, 1), node);
+            updateJumpPoints(jumpDiagonal(node, -1, 1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex >= node.XIndex || parent.YIndex >= node.YIndex)
-            updateJumpPoints(jumpDiagonal(node, -1, -1), node);
+            updateJumpPoints(jumpDiagonal(node, -1, -1, goalNode), node, goalNode, openList, closeList);
 
         if (parent.XIndex <= node.XIndex || parent.YIndex >= node.YIndex)
-            updateJumpPoints(jumpDiagonal(node, 1, -1), node);
+            updateJumpPoints(jumpDiagonal(node, 1, -1, goalNode), node, goalNode, openList, closeList);
     }
 
-    void updateJumpPoints(Nodes jumpEnd, Nodes jumpStart)
+    void updateJumpPoints(Nodes jumpEnd, Nodes jumpStart, Nodes goalNode, FastPriorityQueue<Nodes> openList, LinkedList<Nodes> closeList)
     {
-
         if (jumpEnd == null) return;
-
         if (jumpEnd.onCloseList) return;
 
         if (jumpEnd.onOpenList)
@@ -292,70 +345,54 @@ public class PathFinder : MonoBehaviour
             {
                 jumpEnd.parent = jumpStart;
                 jumpEnd.gCost = jumpStart.gCost + Vector2.Distance(jumpEnd.nodeCenter, jumpStart.nodeCenter);
-
             }
             return;
-
         }
         else
         {
             jumpEnd.parent = jumpStart;
             jumpEnd.gCost = jumpStart.gCost + Vector2.Distance(jumpEnd.nodeCenter, jumpStart.nodeCenter);
-            jumpEnd.hCost = Vector2.Distance(goalNode.nodeCenter, jumpEnd.nodeCenter); // update distance
+            jumpEnd.hCost = Vector2.Distance(goalNode.nodeCenter, jumpEnd.nodeCenter);
             jumpEnd.onOpenList = true;
             openList.Enqueue(jumpEnd, jumpEnd.fCost);
         }
-
     }
 
-    Nodes jumpHorizontal(Nodes start, int xDir)
+    Nodes jumpHorizontal(Nodes start, int xDir, Nodes goalNode)
     {
         int currentXDir = start.XIndex;
         int currentYDir = start.YIndex;
-        Nodes currentNode;
 
         while (true)
         {
             currentXDir += xDir;
 
             if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
-            currentNode = nodes[currentXDir, currentYDir];
+            Nodes currentNode = nodes[currentXDir, currentYDir];
 
-            if (currentNode == goalNode)
-            {
-
-                return goalNode;
-            }
+            if (currentNode == goalNode) return goalNode;
 
             if (isWalkalbeAt(currentXDir + xDir, currentYDir + 1) && !isWalkalbeAt(currentXDir, currentYDir + 1)
                 || isWalkalbeAt(currentXDir + xDir, currentYDir - 1) && !isWalkalbeAt(currentXDir, currentYDir - 1))
             {
-
                 return currentNode;
-
             }
         }
     }
 
-    Nodes jumpVertical(Nodes start, int yDir)
+    Nodes jumpVertical(Nodes start, int yDir, Nodes goalNode)
     {
-
         int currentXDir = start.XIndex;
         int currentYDir = start.YIndex;
-        Nodes currentNode;
 
         while (true)
         {
-
             currentYDir += yDir;
 
             if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
-            currentNode = nodes[currentXDir, currentYDir];
+            Nodes currentNode = nodes[currentXDir, currentYDir];
 
-            if (currentNode == goalNode)
-            {
-                return goalNode;
-            }
+            if (currentNode == goalNode) return goalNode;
 
             if (isWalkalbeAt(currentXDir + 1, currentYDir + yDir) && !isWalkalbeAt(currentXDir + 1, currentYDir)
                 || isWalkalbeAt(currentXDir - 1, currentYDir + yDir) && !isWalkalbeAt(currentXDir - 1, currentYDir))
@@ -363,51 +400,41 @@ public class PathFinder : MonoBehaviour
                 return currentNode;
             }
         }
-
     }
 
-    Nodes jumpDiagonal(Nodes start, int xDir, int yDir) // if parent node and 
+    Nodes jumpDiagonal(Nodes start, int xDir, int yDir, Nodes goalNode)
     {
         int currentXDir = start.XIndex;
         int currentYDir = start.YIndex;
-        Nodes currentNode;
 
         while (true)
         {
             currentXDir += xDir;
             currentYDir += yDir;
 
-
             if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
-            currentNode = nodes[currentXDir, currentYDir];
+            Nodes currentNode = nodes[currentXDir, currentYDir];
 
-            if (currentNode == goalNode)
-            {
+            if (currentNode == goalNode) return goalNode;
 
-                return goalNode;
-            }
             if (isWalkalbeAt(currentXDir - xDir, currentYDir + yDir) && !isWalkalbeAt(currentXDir - xDir, currentYDir)
-            || isWalkalbeAt(currentXDir + xDir, currentYDir - yDir) && !isWalkalbeAt(currentXDir, currentYDir - yDir)
-                )
+                || isWalkalbeAt(currentXDir + xDir, currentYDir - yDir) && !isWalkalbeAt(currentXDir, currentYDir - yDir))
             {
-
                 return currentNode;
             }
 
             Nodes temp;
-            temp = jumpVertical(currentNode, yDir);
+            temp = jumpVertical(currentNode, yDir, goalNode);
             if (temp != null && !temp.onCloseList && !temp.onOpenList)
             {
                 return currentNode;
             }
-            temp = jumpHorizontal(currentNode, xDir);
+            temp = jumpHorizontal(currentNode, xDir, goalNode);
             if (temp != null && !temp.onCloseList && !temp.onOpenList)
             {
-
                 return currentNode;
             }
         }
-
     }
 
     bool isWalkalbeAt(int x, int y)
@@ -415,147 +442,63 @@ public class PathFinder : MonoBehaviour
         return 0 <= x && x < numCols && 0 <= y && y < numRows && !nodes[x, y].isWall;
     }
 
-
-
-
-    bool areTwoNodesStraight(Nodes node1, Nodes node2)
-    {
-        return node1.XIndex == node2.XIndex ||
-            node1.YIndex == node2.YIndex;
-    }
-
     Nodes findNodeOnPosition(Vector2 position)
     {
-        if (nodes == null) return null;
+        if (nodes == null)
+        {
+            Debug.LogError("[PathFinder] findNodeOnPosition: nodes가 null!");
+            return null;
+        }
 
         if (position.x < gridStartPoint.x || position.y < gridStartPoint.y
-            || position.x > gridEndPoint.x || position.y > gridEndPoint.y) return null;
+            || position.x > gridEndPoint.x || position.y > gridEndPoint.y)
+        {
+            Debug.LogWarning($"[PathFinder] 위치 {position}가 그리드 범위 밖 (범위: {gridStartPoint} ~ {gridEndPoint})");
+            return null;
+        }
 
         Vector2 relativePosition = position - gridStartPoint;
         int x = (int)(relativePosition.x / cellSize);
         int y = (int)(relativePosition.y / cellSize);
 
+        if (x < 0 || x >= numCols || y < 0 || y >= numRows)
+        {
+            Debug.LogWarning($"[PathFinder] 계산된 인덱스 [{x}, {y}]가 범위 밖 (그리드: {numCols} x {numRows})");
+            return null;
+        }
+
         return nodes[x, y];
     }
 
-
-
 #if DEBUG
     [SerializeField] bool DrawGizmo;
-    Color goalGizmoColor = new Color(1, 1, 0, 0.5f);
+
     void OnDrawGizmos()
     {
-        if (DrawGizmo)
+        if (DrawGizmo && nodes != null)
         {
-            drawPlayerPositionNode();
-            drawNodeOnGizmo(goalNode, goalGizmoColor);
             drawGridLine();
             drawObstacles();
-            drawShortestPath();
-            //drawFinalWaypoints();
-            //drawFinalNodes();
-            //drawClosedNodes();
         }
-
-
-    }
-
-    void drawShortestPath()
-    {
-        if (finalPath != null && finalPath.Count > 0)
-        {
-            drawLineBetweenNodes(transform.position, finalPath.First.Value);
-
-
-            for (LinkedListNode<Vector2> iter = finalPath.First; iter.Next != null; iter = iter.Next)
-            {
-                drawLineBetweenNodes(iter.Value, iter.Next.Value);
-            }
-        }
-    }
-
-    void drawFinalNodes()
-    {
-        if (openList != null)
-            foreach (Nodes n in nodeOnPathList)
-            {
-                drawNodeOnGizmo(n, Color.red);
-            }
-    }
-
-    void drawFinalWaypoints()
-    {
-        if (nodeOnPathList != null && nodeOnPathList.Count > 1)
-        {
-
-            for (LinkedListNode<Nodes> iter = nodeOnPathList.First; iter.Next != null; iter = iter.Next)
-            {
-                drawLineBetweenNodes(iter.Value.nodeCenter, iter.Next.Value.nodeCenter);
-            }
-        }
-
-    }
-
-    void drawLineBetweenNodes(Vector2 start, Vector2 end)
-    {
-        Gizmos.color = Color.white;
-
-        Gizmos.DrawLine(start, end);
-    }
-
-    Color playerGizmoColor = new Color(0, 1, 1, 0.5f);
-    void drawPlayerPositionNode()
-    {
-        if (transform != null)
-            drawNodeOnGizmo(findNodeOnPosition(transform.position), playerGizmoColor);
     }
 
     void drawGridLine()
     {
         Gizmos.color = Color.gray;
 
-        Vector2 lineStartPoint = new Vector2();
-        Vector2 lineEndPoint = new Vector2();
-
-        //drawVerticalLines
-        lineStartPoint.x = gridStartPoint.x;
-        lineStartPoint.y = gridStartPoint.y;
-        lineEndPoint.x = gridStartPoint.x;
-        lineEndPoint.y = gridEndPoint.y; // line end point
         for (int i = 0; i <= numCols; i++)
         {
-            Gizmos.DrawLine(lineStartPoint, lineEndPoint);
-            lineStartPoint.x += cellSize;
-            lineEndPoint.x += cellSize;
+            Vector2 start = new Vector2(gridStartPoint.x + i * cellSize, gridStartPoint.y);
+            Vector2 end = new Vector2(gridStartPoint.x + i * cellSize, gridEndPoint.y);
+            Gizmos.DrawLine(start, end);
         }
 
-
-        //drawHorizontalLines
-        lineStartPoint.x = gridStartPoint.x;
-        lineStartPoint.y = gridStartPoint.y;
-        lineEndPoint.y = gridStartPoint.y;
-        lineEndPoint.x = gridEndPoint.x; //line end point
         for (int i = 0; i <= numRows; i++)
         {
-            Gizmos.DrawLine(lineStartPoint, lineEndPoint);
-            lineStartPoint.y += cellSize;
-            lineEndPoint.y += cellSize;
+            Vector2 start = new Vector2(gridStartPoint.x, gridStartPoint.y + i * cellSize);
+            Vector2 end = new Vector2(gridEndPoint.x, gridStartPoint.y + i * cellSize);
+            Gizmos.DrawLine(start, end);
         }
-
-    }
-
-    void drawClosedNodes()
-    {
-        if (closeList != null)
-            foreach (Nodes n in closeList)
-            {
-                if (n.parent != null)
-                {
-                    drawNodeOnGizmo(n, new Color(0, 0, 0, 0.5f));
-                    drawLineBetweenNodes(n.nodeCenter, n.parent.nodeCenter);
-                }
-            }
-
     }
 
     void drawObstacles()
@@ -566,19 +509,12 @@ public class PathFinder : MonoBehaviour
             for (int x = 0; x < numCols; x++)
             {
                 if (nodes[x, y].isWall)
-                    drawNodeOnGizmo(nodes[x, y], red);
-
+                {
+                    Gizmos.color = red;
+                    Gizmos.DrawCube(nodes[x, y].nodeCenter, new Vector2(cellSize, cellSize));
+                }
             }
         }
     }
-
-    void drawNodeOnGizmo(Nodes node, Color gizmoColor)
-    {
-        if (node == null) return;
-
-        Gizmos.color = gizmoColor;
-        Gizmos.DrawCube(node.nodeCenter, new Vector2(cellSize, cellSize));
-    }
-
-}
 #endif
+}

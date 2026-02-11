@@ -1,70 +1,91 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float m_movementSpeed = 10;
+    [SerializeField] float arrivalThreshold = 0.2f;
 
     Vector2 m_start;
     Vector2 m_goal;
-    //LinkedList<Vector2> path = null;
-    LinkedList<Vector2> m_fasterPath = new();
+    LinkedList<Vector2> m_fasterPath = new LinkedList<Vector2>();
 
     public enum Status { Attack, Move, idle }
     public Status status = Status.idle;
 
-    BoxCollider2D m_boxCollider;
     Animator anim;
-    PathFinder m_pathFinder; 
+    PathFinder m_pathFinder;
     SpriteRenderer sr;
     public Scanner scanner;
     Weapon weapon;
+    BoxCollider2D boxCollider;
 
-    
     public bool moveable = false;
 
     private void Awake()
     {
-        m_pathFinder = GetComponent<PathFinder>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
         sr = GetComponent<SpriteRenderer>();
         weapon = GetComponentInChildren<Weapon>();
+        boxCollider = GetComponent<BoxCollider2D>();
+
+        if (boxCollider == null)
+        {
+            Debug.LogWarning($"{gameObject.name}: BoxCollider2D가 없습니다!");
+        }
+    }
+
+    private void Start()
+    {
+        m_pathFinder = PathFinder.instance;
+        if (m_pathFinder == null)
+        {
+            Debug.LogError($"{gameObject.name}: PathFinder instance를 찾을 수 없습니다!");
+        }
+    }
+
+    public void MoveToPosition(Vector3 targetPosition)
+    {
+        if (!moveable)
+        {
+            Debug.LogWarning($"[{gameObject.name}] moveable이 false입니다!");
+            return;
+        }
+
+        if (m_pathFinder == null)
+        {
+            Debug.LogError($"[{gameObject.name}] PathFinder가 null입니다!");
+            return;
+        }
+
+        m_start = transform.position;
+        m_goal = targetPosition;
+        status = Status.Move;
+
+        m_fasterPath.Clear();
+
+        if (boxCollider != null)
+        {
+            m_fasterPath = m_pathFinder.getShortestPath(m_start, m_goal, boxCollider);
+        }
+        else
+        {
+            m_fasterPath = m_pathFinder.getShortestPath(m_start, m_goal, new Vector2(1f, 1f));
+        }
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && moveable)
-        {
-            
-            m_start = transform.position;
-            m_goal = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            status = Status.Move;
-            
-
-            long jpsElapsedMS;
-            long jpsElapsedTick;
-            m_fasterPath.Clear();
-            {
-                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-                {
-                    m_fasterPath = m_pathFinder.getShortestPath(m_start, m_goal);
-                }
-                watch.Stop();
-                jpsElapsedMS = watch.ElapsedMilliseconds;
-                jpsElapsedTick = watch.ElapsedTicks;
-
-                Debug.Log(
-                    "JPS: " + jpsElapsedMS + "ms" + "(" + jpsElapsedTick + "ticks)"
-                );
-            }
-        }
-        
         if (m_fasterPath != null && m_fasterPath.Count > 0)
         {
-            transform.position = Vector2.MoveTowards(transform.position, m_fasterPath.First.Value, m_movementSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                m_fasterPath.First.Value,
+                m_movementSpeed * Time.deltaTime
+            );
+
             if (m_fasterPath.First.Value.x >= transform.position.x)
             {
                 sr.flipX = false;
@@ -73,14 +94,16 @@ public class PlayerMovement : MonoBehaviour
             {
                 sr.flipX = true;
             }
-            if ((Vector2)transform.position == m_fasterPath.First.Value)
+
+            if (Vector2.Distance(transform.position, m_fasterPath.First.Value) < arrivalThreshold)
             {
                 m_fasterPath.RemoveFirst();
             }
         }
+
         if (m_fasterPath.Count == 0 && status != Status.Attack)
         {
-            if (scanner.inAttackRange)
+            if (scanner != null && scanner.inAttackRange)
                 status = Status.Attack;
             else
                 status = Status.idle;
@@ -88,37 +111,41 @@ public class PlayerMovement : MonoBehaviour
 
         if (status == Status.Attack)
         {
-            if(scanner.AttackTarget.position.x >= transform.position.x)
+            if (scanner != null && scanner.AttackTarget != null)
             {
-                if(weapon != null)
-                    weapon.transform.localPosition = new Vector3(0.5f, 0, 0);
-                sr.flipX = false;
-            }
-            else if(scanner.AttackTarget.position.x < transform.position.x)
-            {
-                if(weapon != null)
-                    weapon.transform.localPosition = new Vector3(-0.5f, 0, 0);
-                sr.flipX = true;
+                if (scanner.AttackTarget.position.x >= transform.position.x)
+                {
+                    if (weapon != null)
+                        weapon.transform.localPosition = new Vector3(0.5f, 0, 0);
+                    sr.flipX = false;
+                }
+                else if (scanner.AttackTarget.position.x < transform.position.x)
+                {
+                    if (weapon != null)
+                        weapon.transform.localPosition = new Vector3(-0.5f, 0, 0);
+                    sr.flipX = true;
+                }
             }
         }
     }
 
-
     private void LateUpdate()
     {
+        if (anim == null) return;
+
         if (status == Status.idle)
         {
             anim.SetBool("IdleBool", true);
-            anim.SetBool("RunBool",false);
+            anim.SetBool("RunBool", false);
             anim.SetBool("AttackBool", false);
         }
-        if(status == Status.Move)
+        if (status == Status.Move)
         {
             anim.SetBool("IdleBool", false);
             anim.SetBool("RunBool", true);
             anim.SetBool("AttackBool", false);
         }
-        if(status == Status.Attack)
+        if (status == Status.Attack)
         {
             anim.SetBool("IdleBool", false);
             anim.SetBool("RunBool", false);
@@ -133,20 +160,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void WizardAttack()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Masic);
-        weapon.Fire();
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Masic);
+        if (weapon != null)
+            weapon.Fire();
     }
 
     public void SwordAttack()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
     }
-    
-
 
     private void OnDrawGizmos()
     {
-        if (EditorApplication.isPlaying)
+        if (EditorApplication.isPlaying && m_fasterPath != null)
         {
             Color originalColor = Gizmos.color;
 
@@ -163,7 +191,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector3 from = iter.Value;
                     Vector3 to = iter.Next.Value;
-
                     Gizmos.DrawLine(from, to);
                 }
             }

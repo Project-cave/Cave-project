@@ -1,31 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+Ôªøusing System.Collections.Generic;
 using UnityEngine;
 
 public class Selector : MonoBehaviour
 {
+    public static Selector instance;
     public RectTransform selectionBox;
+    public Canvas canvas;
+    [SerializeField] float formationSpacing = 0.5f;
 
     private Vector2 startPos;
     private Vector2 endPos;
     private bool isDragging = false;
 
-    private List<GameObject> selectedUnits = new List<GameObject>();
+    public List<GameObject> selectedUnits = new List<GameObject>();
+    public List<GameObject> SelectedUnits
+    {
+        get => selectedUnits;
+    }
 
     public LayerMask selectableLayer;
 
-    public Color selectedColor = Color.green;
-    private Dictionary<GameObject,Color> originalColors = new Dictionary<GameObject,Color>();
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        if(selectionBox != null)
-            selectionBox.gameObject.SetActive(false);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        if (selectionBox != null)
+            selectionBox.gameObject.SetActive(false);
+
+        if (canvas == null)
+        {
+            canvas = selectionBox.GetComponentInParent<Canvas>();
+        }
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -42,14 +59,91 @@ public class Selector : MonoBehaviour
         {
             EndDrag();
         }
+
+        if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0)
+        {
+            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            targetPosition.z = 0;
+            MoveSelectedUnitsWithFormation(targetPosition);
+        }
+    }
+
+    public void MoveSelectedUnitsWithFormation(Vector3 centerPosition)
+    {
+
+        if (selectedUnits.Count == 0)
+        {
+            Debug.LogWarning("[Selector] ÏÑ†ÌÉùÎêú Ïú†ÎãõÏù¥ ÏóÜÏäµÎãàÎã§!");
+            return;
+        }
+
+        if (selectedUnits.Count == 1)
+        {
+            PlayerMovement movement = selectedUnits[0].GetComponent<PlayerMovement>();
+            if (movement != null)
+            {
+                movement.MoveToPosition(centerPosition);
+            }
+            else
+            {
+                Debug.LogError($"[Selector] {selectedUnits[0].name}Ïóê PlayerMovementÍ∞Ä ÏóÜÏäµÎãàÎã§!");
+            }
+            return;
+        }
+
+        int unitsPerRow = Mathf.CeilToInt(Mathf.Sqrt(selectedUnits.Count));
+        int currentRow = 0;
+        int currentCol = 0;
+        int movedCount = 0;
+
+        foreach (GameObject unit in selectedUnits)
+        {
+            if (unit == null)
+            {
+                Debug.LogWarning("[Selector] null Ïú†Îãõ Î∞úÍ≤¨!");
+                continue;
+            }
+
+            PlayerMovement movement = unit.GetComponent<PlayerMovement>();
+            if (movement != null)
+            {
+                float offsetX = (currentCol - unitsPerRow / 2f) * formationSpacing;
+                float offsetY = (currentRow - unitsPerRow / 2f) * formationSpacing;
+
+                Vector3 targetPos = new Vector3(
+                    centerPosition.x + offsetX,
+                    centerPosition.y + offsetY,
+                    0
+                );
+                movement.MoveToPosition(targetPos);
+                movedCount++;
+
+                currentCol++;
+                if (currentCol >= unitsPerRow)
+                {
+                    currentCol = 0;
+                    currentRow++;
+                }
+            }
+            else
+            {
+                Debug.LogError($"[Selector] {unit.name}Ïóê PlayerMovementÍ∞Ä ÏóÜÏäµÎãàÎã§!");
+            }
+        }
     }
 
     void StartDrag()
     {
         isDragging = true;
-        startPos = Input.mousePosition;
 
-        if(selectionBox != null)
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            Input.mousePosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out startPos
+        );
+
+        if (selectionBox != null)
         {
             selectionBox.gameObject.SetActive(true);
             selectionBox.anchoredPosition = startPos;
@@ -64,15 +158,20 @@ public class Selector : MonoBehaviour
 
     void UpdateDrag()
     {
-        endPos = Input.mousePosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            Input.mousePosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out endPos
+        );
 
-        if(selectionBox != null)
+        if (selectionBox != null)
         {
             Vector2 boxStart = startPos;
             Vector2 boxEnd = endPos;
 
-            Vector2 boxCentor = (boxStart + boxEnd) / 2;
-            selectionBox.anchoredPosition = boxCentor;
+            Vector2 boxCenter = (boxStart + boxEnd) / 2;
+            selectionBox.anchoredPosition = boxCenter;
 
             Vector2 boxSize = new Vector2(
                 Mathf.Abs(boxStart.x - boxEnd.x),
@@ -84,30 +183,27 @@ public class Selector : MonoBehaviour
 
     void EndDrag()
     {
-        isDragging=false;
+        isDragging = false;
 
-        if(selectionBox != null )
+        if (selectionBox != null)
             selectionBox.gameObject.SetActive(false);
 
         Rect selectionRect = GetScreenRect(startPos, endPos);
 
         GameObject[] selectables = GameObject.FindGameObjectsWithTag("selectable");
-        
-        foreach(GameObject obj in selectables)
+
+        foreach (GameObject obj in selectables)
         {
-            
             Collider2D collider = obj.GetComponent<Collider2D>();
-            
+            if (collider == null) continue;
+
             Rect colliderScreenRect = GetColliderScreenRect(collider);
 
             if (selectionRect.Overlaps(colliderScreenRect))
             {
                 SelectUnit(obj);
             }
-
-            
         }
-
     }
 
     Rect GetColliderScreenRect(Collider2D collider)
@@ -117,7 +213,23 @@ public class Selector : MonoBehaviour
         Vector3 bottomLeft = Camera.main.WorldToScreenPoint(bounds.min);
         Vector3 topRight = Camera.main.WorldToScreenPoint(bounds.max);
 
-        return Rect.MinMaxRect(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
+        Vector2 canvasBottomLeft, canvasTopRight;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            bottomLeft,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out canvasBottomLeft
+        );
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            topRight,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out canvasTopRight
+        );
+
+        return Rect.MinMaxRect(canvasBottomLeft.x, canvasBottomLeft.y, canvasTopRight.x, canvasTopRight.y);
     }
 
     void SelectUnit(GameObject unit)
@@ -126,75 +238,48 @@ public class Selector : MonoBehaviour
         {
             selectedUnits.Add(unit);
 
-            // Ω√∞¢¿˚ ««µÂπÈ (ªˆªÛ ∫Ø∞Ê)
             SpriteRenderer renderer = unit.GetComponent<SpriteRenderer>();
             PlayerMovement movement = unit.GetComponent<PlayerMovement>();
-            movement.moveable = true;
+
+            if (movement != null)
+            {
+                movement.moveable = true;
+                Debug.Log($"[Selector] {unit.name} ÏÑ†ÌÉùÎê® (moveable = true)");
+            }
             if (renderer != null)
             {
                 renderer.color = Color.blue;
-                Debug.Log("blue");
-                //if (!originalColors.ContainsKey(unit))
-                //{
-                //    originalColors[unit] = renderer.material.color;
-                //}
-                //renderer.material.color = selectedColor;
             }
-
         }
     }
 
-    void DeselectAll()
+    public void DeselectAll()
     {
         foreach (GameObject unit in selectedUnits)
         {
             if (unit != null)
             {
-                // ø¯∑° ªˆªÛ¿∏∑Œ ∫πø¯
                 SpriteRenderer renderer = unit.GetComponent<SpriteRenderer>();
                 PlayerMovement movement = unit.GetComponent<PlayerMovement>();
-                movement.moveable = false;
-                renderer.color = Color.white;
-                //if (renderer != null && originalColors.ContainsKey(unit))
-                //{
-                //    renderer.material.color = originalColors[unit];
-                //}
 
-               
+                if (movement != null)
+                    movement.moveable = false;
+                if (renderer != null)
+                    renderer.color = Color.white;
             }
         }
 
         selectedUnits.Clear();
-        originalColors.Clear();
     }
 
     Rect GetScreenRect(Vector2 start, Vector2 end)
     {
-        // Ω√¿€¡°∞˙ ≥°¡°¿∏∑Œ∫Œ≈Õ Rect ª˝º∫
-        //start.y = Screen.height - start.y;
-        //end.y = Screen.height - end.y;
-
         Vector2 topLeft = Vector2.Min(start, end);
         Vector2 bottomRight = Vector2.Max(start, end);
-        Debug.Log(topLeft);
-        Debug.Log(bottomRight);
 
         return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
     }
 
-    //º±≈√µ» ¿Ø¥÷µÈø°∞‘ ∏Ì∑…¿ª ≥ª∏Æ¥¬ øπ¡¶ «‘ºˆ
-    public void MoveSelectedUnits(Vector3 destination)
-    {
-        foreach (GameObject unit in selectedUnits)
-        {
-            // ∞¢ ¿Ø¥÷¿« ¿Ãµø Ω∫≈©∏≥∆Æ »£√‚
-            PlayerMovement movement = unit.GetComponent<PlayerMovement>();
-            movement.moveable = true;
-            
-        }
-    }
-
-    // «ˆ¿Á º±≈√µ» ¿Ø¥÷ ∏Ò∑œ ∞°¡Æø¿±‚
     public List<GameObject> GetSelectedUnits()
     {
         return new List<GameObject>(selectedUnits);

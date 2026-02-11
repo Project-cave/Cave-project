@@ -84,7 +84,7 @@ public class CameraController : MonoBehaviour
     // 중간 마우스 버튼 드래그로 이동
     void HandlePan()
     {
-        if (Mouse.current.rightButton.isPressed)
+        if (Mouse.current.rightButton.isPressed && Selector.instance.SelectedUnits.Count == 0)
         {
             Vector2 delta = Mouse.current.delta.ReadValue();
             
