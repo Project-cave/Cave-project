@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
 
     [Header("# Game Object")]
     public GameObject spawnUnit;
-    public PlayerMovement player;
     public PoolManager pool;
 
     private void Awake()
@@ -28,6 +27,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
+    }
+
+    public void SpawnUnit(GameObject spawnUnit)
+    {
+        this.spawnUnit = spawnUnit;
     }
 
     // Start is called before the first frame update

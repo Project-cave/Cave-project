@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3424274415452896268}
   - component: {fileID: 3996388855277459192}
   - component: {fileID: 8295157291845575848}
+  - component: {fileID: -268761023666642841}
   m_Layer: 6
   m_Name: Player 1 1 (1)
   m_TagString: selectable
@@ -228,3 +229,15 @@ MonoBehaviour:
   nearsetTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
   inAttackRange: 0
+--- !u!114 &-268761023666642841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836709381487180731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4027f075f612d8649907f802042d645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit

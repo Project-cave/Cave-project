@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEditor;
 
 public class PlayerMovement : MonoBehaviour
-{
-    [SerializeField] float m_movementSpeed = 10;
-    [SerializeField] float arrivalThreshold = 0.2f;
+{    
+    enum Status { Attack, Move, idle }
 
+    [SerializeField] float m_movementSpeed = 10;
+    public float Movement { set => m_movementSpeed = value; }
+    [SerializeField] float arrivalThreshold = 0.2f;
+      
+    Status status = Status.idle;
     Vector2 m_start;
     Vector2 m_goal;
     LinkedList<Vector2> m_fasterPath = new LinkedList<Vector2>();
 
-    public enum Status { Attack, Move, idle }
-    public Status status = Status.idle;
-
     Animator anim;
     PathFinder m_pathFinder;
     SpriteRenderer sr;
-    public Scanner scanner;
+    Scanner scanner;
     Weapon weapon;
     BoxCollider2D boxCollider;
 
@@ -28,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
         sr = GetComponent<SpriteRenderer>();
-        weapon = GetComponentInChildren<Weapon>();
         boxCollider = GetComponent<BoxCollider2D>();
 
         if (boxCollider == null)
@@ -44,6 +44,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError($"{gameObject.name}: PathFinder instance를 찾을 수 없습니다!");
         }
+    }
+
+    public void SetWeapon(Weapon weapon)
+    {
+        this.weapon = weapon;
     }
 
     public void MoveToPosition(Vector3 targetPosition)
@@ -62,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
         m_start = transform.position;
         m_goal = targetPosition;
-        status = Status.Move;
+        ChangerStatus(Status.Move);
 
         m_fasterPath.Clear();
 
@@ -101,12 +106,17 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (m_fasterPath.Count == 0 && status != Status.Attack)
+        if (m_fasterPath.Count == 0 && status == Status.Move)
         {
             if (scanner != null && scanner.inAttackRange)
-                status = Status.Attack;
+            {
+                ChangerStatus(Status.Attack);
+            }
             else
-                status = Status.idle;
+            {
+                ChangerStatus(Status.idle);
+            }
+                
         }
 
         if (status == Status.Attack)
@@ -128,35 +138,18 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    private void LateUpdate()
+    
+    void ChangerStatus(Status newStatus)
     {
-        if (anim == null) return;
+        if (status == newStatus) return;
 
-        if (status == Status.idle)
-        {
-            anim.SetBool("IdleBool", true);
-            anim.SetBool("RunBool", false);
-            anim.SetBool("AttackBool", false);
-        }
-        if (status == Status.Move)
-        {
-            anim.SetBool("IdleBool", false);
-            anim.SetBool("RunBool", true);
-            anim.SetBool("AttackBool", false);
-        }
-        if (status == Status.Attack)
-        {
-            anim.SetBool("IdleBool", false);
-            anim.SetBool("RunBool", false);
-            anim.SetBool("AttackBool", true);
-        }
+        status = newStatus;
+
+        anim.SetBool("Run", status == Status.Move);
+        anim.SetBool("Attack", status == Status.Attack);
     }
 
-    public void SetWeapon(Weapon weapon)
-    {
-        this.weapon = weapon;
-    }
+
 
     public void WizardAttack()
     {
@@ -171,6 +164,7 @@ public class PlayerMovement : MonoBehaviour
         if (AudioManager.instance != null)
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
     }
+
 
     private void OnDrawGizmos()
     {

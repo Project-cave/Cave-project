@@ -34,16 +34,12 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Init(int id, float Damage, int per, Vector3 dir)
+    public void Init(int id, float Damage, int per, Vector3 dir, int bulletVelocity)
     {
         this.Damage = Damage;
         this.per = per;
-        this.id = id;
-        Debug.Log(dir);
-        if(per > -1)
-        {
-            rigid.linearVelocity = dir * 7f;
-        }
+        this.id = id;      
+        rigid.linearVelocity = dir * bulletVelocity;        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
