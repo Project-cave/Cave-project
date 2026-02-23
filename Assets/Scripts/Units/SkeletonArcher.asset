@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SkeletonArcher
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
   unitName: "\uD574\uACE8 \uAD81\uC218"
+  unitNum: 1
   race: 1
   rank: 0
   health: 20
@@ -23,6 +24,10 @@ MonoBehaviour:
   damageMult: 0.5
   bulletSpeed: 1
   speed: 0.8
-  unitDesc: 
+  unitDesc: "\uD574\uACE8 \uAD81\uC218 \uC785\uB2C8\uB2E4."
+  request: 10
+  requestDesc: "[\uD574\uACE8 \uAD81\uC218]\n\u2605\u2605\n\uC870\uAC74: 10"
+  material: 20
+  materialDesc: "\uC0DD\uC0B0 \uC870\uAC74: 20"
   animController: {fileID: 22100000, guid: 32a0f37b7104ac24fbca2d9a18d075b5, type: 2}
   DebuffPrefab: {fileID: 0}

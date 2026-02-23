@@ -6,7 +6,9 @@ public class UnitSo : ScriptableObject
     public enum Race { Goblin, Undead }
     public enum Rank { Normal }
 
+    [Header("유닛 데이터")]
     public string unitName;
+    public int unitNum;
     public Race race;
     public Rank rank;
     public int health;
@@ -22,6 +24,18 @@ public class UnitSo : ScriptableObject
 
     [TextArea]
     public string unitDesc;
+
+    [Header("해금 조건")]
+    public int request;
+
+    [TextArea]
+    public string requestDesc;
+
+    [Header("생산 조건")]
+    public int material;
+
+    [TextArea]
+    public string materialDesc;
 
     public RuntimeAnimatorController animController;
     public GameObject DebuffPrefab;
