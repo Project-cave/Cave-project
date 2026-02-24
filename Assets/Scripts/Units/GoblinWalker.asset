@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GoblinWalker
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
   unitName: "\uACE0\uBE14\uB9B0 \uC6CC\uCEE4"
+  unitNum: 0
   race: 0
   rank: 0
   health: 30
@@ -23,6 +24,10 @@ MonoBehaviour:
   damageMult: 0.5
   bulletSpeed: 0
   speed: 1
-  unitDesc: 
+  unitDesc: "\uACE0\uBE14\uB9B0 \uC6CC\uCEE4 \uC785\uB2C8\uB2E4."
+  request: 5
+  requestDesc: "[\uACE0\uBE14\uB9B0 \uC6CC\uCEE4]\n\u2605\n\uC870\uAC74: 5"
+  material: 10
+  materialDesc: "\uC0DD\uC0B0 \uC870\uAC74: 10"
   animController: {fileID: 9100000, guid: bc04717ab2a405f45acdfb732fb8cd8a, type: 2}
   DebuffPrefab: {fileID: 0}

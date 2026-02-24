@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Skill.unity
     guid: 559f927761f49054b95a271e463ec813
+  - enabled: 1
+    path: Assets/Scenes/Monster.unity
+    guid: 037295e547faeb044aa0dbd491df6aa6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
