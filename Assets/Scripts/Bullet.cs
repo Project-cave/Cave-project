@@ -56,5 +56,19 @@ public class Bullet : MonoBehaviour
             rigid.linearVelocity = Vector2.zero;
             gameObject.SetActive(false);
         }
+
+        // Enemy에게 데미지 주는 로직
+        if (collision.CompareTag("Enemy"))
+        {
+            StatHandler stat = collision.GetComponent<StatHandler>();
+
+            if (stat != null)
+            {
+                stat.TakeDamage((int)Damage);
+            }
+
+            rigid.linearVelocity = Vector2.zero;
+            gameObject.SetActive(false);
+        }
     }
 }

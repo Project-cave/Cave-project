@@ -25,6 +25,9 @@ public class PlayerMovement : MonoBehaviour
     Weapon weapon;
     BoxCollider2D boxCollider;
 
+    // 스탯 관리
+    StatHandler stat;
+
     public bool moveable = false;
     public bool tileCenterMode = false;
 
@@ -34,6 +37,9 @@ public class PlayerMovement : MonoBehaviour
         scanner = GetComponent<Scanner>();
         sr = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
+
+        // StatHandler 가져오기
+        stat = GetComponent<StatHandler>();
 
         if (boxCollider == null)
         {
@@ -128,15 +134,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (status == Status.Attack)
         {
-            if (scanner != null && scanner.AttackTarget != null)
+            if (scanner != null && scanner.attackTarget != null)
             {
-                if (scanner.AttackTarget.position.x >= transform.position.x)
+                if (scanner.attackTarget.position.x >= transform.position.x)
                 {
                     if (weapon != null)
                         weapon.transform.localPosition = new Vector3(0.5f, 0, 0);
                     sr.flipX = false;
                 }
-                else if (scanner.AttackTarget.position.x < transform.position.x)
+                else if (scanner.attackTarget.position.x < transform.position.x)
                 {
                     if (weapon != null)
                         weapon.transform.localPosition = new Vector3(-0.5f, 0, 0);
@@ -171,6 +177,14 @@ public class PlayerMovement : MonoBehaviour
         if (AudioManager.instance != null)
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
     }
+
+
+    // 사망 처리 함수
+    public void Death()
+    {
+        // 사망 로직
+    }
+
 
 
     private void OnDrawGizmos()

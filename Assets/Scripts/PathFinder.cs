@@ -470,6 +470,101 @@ public class PathFinder : MonoBehaviour
         return nodes[x, y];
     }
 
+    // 방향
+    private readonly Vector2Int[] directions =
+    {
+        new Vector2Int(1, 0), new Vector2Int(-1, 0),
+        new Vector2Int(0, 1), new Vector2Int(0, -1)
+    };
+
+    // 방향 섞기
+    private void ShuffleDirections()
+    {
+        int len = directions.Length;
+        for (int i = len - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (directions[i], directions[j]) = (directions[j], directions[i]);
+        }
+    }
+
+    // 가장 가까운 미탐색 타일 찾기 (BFS)
+    public LinkedList<Vector2> FindNearestUnexplored(Vector2 startPos, HashSet<Vector3Int> exploredTile)
+    {
+        Nodes startNode = findNodeOnPosition(startPos);
+        if (startNode == null) return null;
+
+        Queue<Nodes> queue = new Queue<Nodes>();
+        Dictionary<Nodes, Nodes> parentMap = new Dictionary<Nodes, Nodes>();
+        Dictionary<Nodes, int> distMap = new Dictionary<Nodes, int>();
+
+        queue.Enqueue(startNode);
+        parentMap[startNode] = null;
+        distMap[startNode] = 0;
+
+        int minDist = -1;
+        List<Nodes> candidates = new List<Nodes>();
+
+        while (queue.Count > 0)
+        {
+            Nodes current = queue.Dequeue();
+            int curDist = distMap[current];
+
+            if (minDist != -1 && curDist > minDist) break;
+
+            Vector3Int tilePos = Vector3Int.RoundToInt(current.nodeCenter);
+
+            if (!exploredTile.Contains(tilePos) && !current.isWall)
+            {
+                if (minDist == -1) minDist = curDist;
+                if (curDist == minDist) candidates.Add(current);
+                continue;
+            }
+
+            ShuffleDirections();
+
+            foreach (var d in directions)
+            {
+                int nextX = current.XIndex + d.x, nextY = current.YIndex + d.y;
+                if (isWalkalbeAt(nextX, nextY))
+                {
+                    Nodes nextNode = nodes[nextX, nextY];
+
+                    if (!distMap.ContainsKey(nextNode))
+                    {
+                        distMap[nextNode] = curDist + 1;
+                        parentMap[nextNode] = current;
+                        queue.Enqueue(nextNode);
+                    }
+                }
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            Nodes targetNode = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+            return ReconstructPath(parentMap, targetNode);
+        }
+        return null;
+    }
+
+    // 경로 뒤집기
+    private LinkedList<Vector2> ReconstructPath(Dictionary<Nodes, Nodes> parentMap, Nodes targetNode)
+    {
+        LinkedList<Vector2> path = new LinkedList<Vector2>();
+        Nodes current = targetNode;
+
+        while (current != null)
+        {
+            path.AddFirst(current.nodeCenter);
+
+            if (!parentMap.ContainsKey(current)) break;
+            current = parentMap[current];
+        }
+
+        return path;
+    }
+
 #if DEBUG
     [SerializeField] bool DrawGizmo;
 
