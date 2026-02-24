@@ -111,7 +111,7 @@ public class Scanner : MonoBehaviour
             {
                 Vector3Int pos = currentPos + new Vector3Int(x, y, 0);
 
-                if (Vector3.Distance(currentPos, pos) >= scan || Explored.Contains(pos) || !IsTargetVisible(pos)) continue;
+                if (Vector3.Distance(currentPos, pos) > scan || Explored.Contains(pos) || !IsTargetVisible(pos)) continue;
 
                 Explored.Add(pos);
             }
