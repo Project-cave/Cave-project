@@ -45,10 +45,10 @@ public class Weapon : MonoBehaviour
 
     public void Fire()
     {
-        if (!scanner.AttackTarget)
+        if (!scanner.attackTarget)
             return;
 
-        Vector3 targetPos = scanner.AttackTarget.position;
+        Vector3 targetPos = scanner.attackTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized;
 

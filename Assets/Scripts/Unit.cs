@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour
     {
         anim.runtimeAnimatorController = unitData.animController;
         movement.Movement = unitData.speed;
-        scanner.AttackRange = unitData.range;
+        scanner.attackRange = unitData.range;
         health = unitData.health;
         bulletSpeed = unitData.bulletSpeed;
     }

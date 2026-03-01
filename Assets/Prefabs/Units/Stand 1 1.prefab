@@ -11,9 +11,12 @@ GameObject:
   - component: {fileID: 1665126873407354288}
   - component: {fileID: 975689860533920299}
   - component: {fileID: 3305189462848899492}
-  - component: {fileID: 8539614931032309405}
   - component: {fileID: 3453456932539018424}
   - component: {fileID: -4228504197720874875}
+  - component: {fileID: -6539037688975422501}
+  - component: {fileID: 4434517062908809430}
+  - component: {fileID: 8360928328047151701}
+  - component: {fileID: 8462225806353567652}
   m_Layer: 7
   m_Name: Stand 1 1
   m_TagString: Enemy
@@ -30,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 6115133992853605259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -122,23 +125,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &8539614931032309405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6115133992853605259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1031e533a0b1b3c49b6a1f85a258a50a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  status: 0
-  isMoving: 0
-  isAttack: 0
-  target: {fileID: 0}
-  speed: 2
 --- !u!114 &3453456932539018424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,12 +138,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanRange: 3
-  AttackRange: 1
+  attackRange: 0.8
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  nearsetTarget: {fileID: 0}
-  AttackTarget: {fileID: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  nearestTarget: {fileID: 0}
+  attackTarget: {fileID: 0}
   inAttackRange: 0
 --- !u!61 &-4228504197720874875
 BoxCollider2D:
@@ -205,3 +194,76 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.68727493, y: 0.8293977}
   m_EdgeRadius: 0
+--- !u!95 &-6539037688975422501
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6115133992853605259}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e5fa9ffc531f05541b5e2ec47a7b8b59, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4434517062908809430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6115133992853605259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52db8b7140b95034a8bf3691062e305b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyWarriorClass
+  anim: {fileID: -6539037688975422501}
+  rigid: {fileID: 3305189462848899492}
+  scanner: {fileID: 3453456932539018424}
+  stat: {fileID: 8360928328047151701}
+  pathFinder: {fileID: 0}
+  isCriticalContext: 0
+--- !u!114 &8360928328047151701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6115133992853605259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64d97bac1c5bea408ef107588b82f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatHandler
+  maxHP: 100
+  attackPower: 10
+  damageMultiplier: 0.5
+  criticalRate: 20
+  criticalMultiplier: 2
+  baseAttackSpeed: 1
+  attackMotionDelay: 0.7
+  moveSpeed: 3
+--- !u!114 &8462225806353567652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6115133992853605259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a4684c5dfe4bff4a9bcf3a8c5fffe3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Targetable
+  priority: 1
