@@ -2,29 +2,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
     [Header("Resource Display")]
-    [SerializeField] private TextMeshProUGUI resourceText;
+    [SerializeField] private TextMeshProUGUI woodText;
+    [SerializeField] private TextMeshProUGUI scrapText;
+    [SerializeField] private TextMeshProUGUI stoneText;
     
     [Header("Unit Buttons")]
     [SerializeField] private Button[] unitButtons;
     [SerializeField] private Image[] unitButtonImages;
     [SerializeField] private TextMeshProUGUI[] unitCostTexts;
-    
-    [Header("Expand Button")]
-    [SerializeField] private Button expandButton;
-    
-    [Header("Scout Button")]
-    [SerializeField] private Button scoutButton;
-    [SerializeField] private TextMeshProUGUI scoutButtonText;
-    
-    [Header("Scout Result Panel")]
-    [SerializeField] private GameObject scoutResultPanel;
-    [SerializeField] private TextMeshProUGUI scoutResultText;
-    [SerializeField] private Button closeButton;
-    [SerializeField] private Button scoutAgainButton;
     
     [Header("Craft Confirm Panel")]
     [SerializeField] private GameObject craftConfirmPanel;
@@ -34,35 +24,69 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button craftYesButton;
     [SerializeField] private Button craftNoButton;
     
+    [Header("Raid Village Panel (1단계: 마을 선택)")]
+    [SerializeField] private GameObject raidVillagePanel;
+    [SerializeField] private Button village1Button;
+    [SerializeField] private Button village2Button;
+    [SerializeField] private Button village3Button;
+    [SerializeField] private Button raidVillageCloseButton;
+    
+    [Header("Raid Difficulty Panel (2단계: 난이도 선택)")]
+    [SerializeField] private GameObject raidDifficultyPanel;
+    [SerializeField] private TextMeshProUGUI selectedVillageText;
+    [SerializeField] private Transform difficultyContent;
+    [SerializeField] private GameObject difficultyButtonPrefab;
+    [SerializeField] private Button raidDifficultyBackButton;
+    
+    [Header("Raid Confirm Panel (3단계: 확인)")]
+    [SerializeField] private GameObject raidConfirmPanel;
+    [SerializeField] private TextMeshProUGUI raidLocationNameText;
+    [SerializeField] private TextMeshProUGUI raidSuccessRateText;
+    [SerializeField] private TextMeshProUGUI raidTimeText;
+    [SerializeField] private Button raidStartButton;
+    [SerializeField] private Button raidCancelButton;
+    
+    [Header("Raid Result Panel")]
+    [SerializeField] private GameObject raidResultPanel;
+    [SerializeField] private TextMeshProUGUI raidResultText;
+    [SerializeField] private Button raidResultCloseButton;
+    
     [Header("Inventory Panel")]
     [SerializeField] private GameObject inventoryPanel;
     
     [Header("Unit Data")]
     [SerializeField] private UnitData[] unitDataArray;
     
-    // 제작할 아이템 정보 임시 저장
     private CraftItemData pendingCraftItem;
     private float pendingCraftTime;
+    private RaidData selectedRaid;
+    private int selectedVillageId;
     
     void Start()
     {
         ResourceManager.Instance.OnResourceChanged += UpdateResourceDisplay;
-        UpdateResourceDisplay(ResourceManager.Instance.GetCurrentResources());
+        UpdateResourceDisplay();
         SetupUnitButtons();
-        SetupExpandButton();
-        SetupScoutButton();
-        SetupScoutResultPanel();
         SetupCraftConfirmPanel();
-        
-        // 알림 창 초기에는 숨김
-        if (scoutResultPanel != null)
-            scoutResultPanel.SetActive(false);
+        SetupRaidPanels();
         
         if (craftConfirmPanel != null)
             craftConfirmPanel.SetActive(false);
         
         if (inventoryPanel != null)
             inventoryPanel.SetActive(false);
+        
+        if (raidVillagePanel != null)
+            raidVillagePanel.SetActive(false);
+        
+        if (raidDifficultyPanel != null)
+            raidDifficultyPanel.SetActive(false);
+        
+        if (raidConfirmPanel != null)
+            raidConfirmPanel.SetActive(false);
+        
+        if (raidResultPanel != null)
+            raidResultPanel.SetActive(false);
     }
     
     void OnDestroy()
@@ -87,27 +111,6 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    void SetupExpandButton()
-    {
-        if (expandButton != null)
-            expandButton.onClick.AddListener(OnExpandButtonClicked);
-    }
-    
-    void SetupScoutButton()
-    {
-        if (scoutButton != null)
-            scoutButton.onClick.AddListener(OnScoutButtonClicked);
-    }
-    
-    void SetupScoutResultPanel()
-    {
-        if (closeButton != null)
-            closeButton.onClick.AddListener(OnCloseResultPanel);
-        
-        if (scoutAgainButton != null)
-            scoutAgainButton.onClick.AddListener(OnScoutAgain);
-    }
-    
     void SetupCraftConfirmPanel()
     {
         if (craftYesButton != null)
@@ -117,33 +120,54 @@ public class UIManager : MonoBehaviour
             craftNoButton.onClick.AddListener(OnCraftNo);
     }
     
+    void SetupRaidPanels()
+    {
+        if (village1Button != null)
+            village1Button.onClick.AddListener(() => OnVillageSelected(1));
+        
+        if (village2Button != null)
+            village2Button.onClick.AddListener(() => OnVillageSelected(2));
+        
+        if (village3Button != null)
+            village3Button.onClick.AddListener(() => OnVillageSelected(3));
+        
+        if (raidVillageCloseButton != null)
+            raidVillageCloseButton.onClick.AddListener(() => raidVillagePanel.SetActive(false));
+        
+        if (raidDifficultyBackButton != null)
+            raidDifficultyBackButton.onClick.AddListener(OnDifficultyBack);
+        
+        if (raidStartButton != null)
+            raidStartButton.onClick.AddListener(OnRaidStart);
+        
+        if (raidCancelButton != null)
+            raidCancelButton.onClick.AddListener(() => raidConfirmPanel.SetActive(false));
+        
+        if (raidResultCloseButton != null)
+            raidResultCloseButton.onClick.AddListener(() => raidResultPanel.SetActive(false));
+    }
+    
     void Update()
     {
         UpdateButtonStates();
-        UpdateScoutButton();
         HandleInventoryInput();
     }
     
-    // I 키로 인벤토리 토글
     void HandleInventoryInput()
     {
         if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
         {
             if (inventoryPanel != null)
-            {
                 inventoryPanel.SetActive(!inventoryPanel.activeSelf);
-            }
         }
     }
     
     void UpdateButtonStates()
     {
-        int currentResources = ResourceManager.Instance.GetCurrentResources();
-        
-        // 유닛 버튼 상태 업데이트
         for (int i = 0; i < unitButtons.Length && i < unitDataArray.Length; i++)
         {
-            bool canAfford = currentResources >= unitDataArray[i].cost;
+            int wood = ResourceManager.Instance.GetResource(ResourceType.Wood);
+            bool canAfford = wood >= unitDataArray[i].cost;
             unitButtons[i].interactable = canAfford;
             
             if (UnitPlacementManager.Instance.GetSelectedUnit() == unitDataArray[i])
@@ -151,46 +175,20 @@ public class UIManager : MonoBehaviour
             else
                 unitButtons[i].GetComponent<Image>().color = canAfford ? Color.white : new Color(0.5f, 0.5f, 0.5f);
         }
-        
-        // 확장 버튼 하이라이트
-        if (expandButton != null)
-        {
-            if (WallExpansionManager.Instance != null && WallExpansionManager.Instance.IsExpansionMode())
-                expandButton.GetComponent<Image>().color = new Color(1f, 0.7f, 0.3f);
-            else
-                expandButton.GetComponent<Image>().color = Color.white;
-        }
     }
     
-    void UpdateScoutButton()
+    void UpdateResourceDisplay()
     {
-        if (scoutButton == null || scoutButtonText == null || ScoutManager.Instance == null)
-            return;
+        if (woodText != null)
+            woodText.text = $"나무: {ResourceManager.Instance.GetResource(ResourceType.Wood)}";
         
-        if (ScoutManager.Instance.IsScoutActive())
-        {
-            scoutButton.interactable = false;
-            float progress = ScoutManager.Instance.GetScoutProgress();
-            scoutButtonText.text = $"정찰 중... {(int)(progress * 100)}%";
-        }
-        else
-        {
-            scoutButton.interactable = true;
-            scoutButtonText.text = "정찰";
-        }
+        if (scrapText != null)
+            scrapText.text = $"고철: {ResourceManager.Instance.GetResource(ResourceType.Scrap)}";
+        
+        if (stoneText != null)
+            stoneText.text = $"돌: {ResourceManager.Instance.GetResource(ResourceType.Stone)}";
     }
     
-    // 정찰 결과 알림 창 표시
-    public void ShowScoutResult(int reward)
-    {
-        if (scoutResultPanel == null || scoutResultText == null)
-            return;
-        
-        scoutResultText.text = $"정찰 완료!\n\n자원 +{reward}";
-        scoutResultPanel.SetActive(true);
-    }
-    
-    // 제작 확인 창 표시
     public void ShowCraftConfirm(CraftItemData item, float craftTime)
     {
         if (craftConfirmPanel == null)
@@ -211,15 +209,133 @@ public class UIManager : MonoBehaviour
         craftConfirmPanel.SetActive(true);
     }
     
+    public void OpenRaidMenu()
+    {
+        if (raidVillagePanel != null)
+            raidVillagePanel.SetActive(true);
+    }
+    
+    void OnVillageSelected(int villageId)
+    {
+        selectedVillageId = villageId;
+        raidVillagePanel.SetActive(false);
+        ShowDifficultyPanel(villageId);
+    }
+    
+    void ShowDifficultyPanel(int villageId)
+    {
+        if (raidDifficultyPanel == null || difficultyContent == null || difficultyButtonPrefab == null)
+            return;
+        
+        if (selectedVillageText != null)
+            selectedVillageText.text = $"마을 {villageId}";
+        
+        foreach (Transform child in difficultyContent)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        RaidData[] allRaids = RaidManager.Instance.GetRaidLocations();
+        RaidData[] villageRaids = allRaids.Where(r => r.villageId == villageId).ToArray();
+        
+        foreach (var raid in villageRaids)
+        {
+            GameObject btnObj = Instantiate(difficultyButtonPrefab, difficultyContent);
+            Button btn = btnObj.GetComponent<Button>();
+            
+            if (btn != null)
+            {
+                RaidData raidData = raid;
+                btn.onClick.AddListener(() => OnDifficultySelected(raidData));
+                
+                TextMeshProUGUI[] texts = btnObj.GetComponentsInChildren<TextMeshProUGUI>();
+                if (texts.Length >= 3)
+                {
+                    texts[0].text = raid.GetDifficultyName();
+                    texts[1].text = GetRewardText(raid);
+                    texts[2].text = $"성공률: {raid.baseSuccessRate}%";
+                }
+            }
+        }
+        
+        raidDifficultyPanel.SetActive(true);
+    }
+    
+    string GetRewardText(RaidData raid)
+    {
+        string text = "";
+        foreach (var reward in raid.possibleRewards)
+        {
+            string resName = reward.resourceType == ResourceType.Wood ? "나무" :
+                           reward.resourceType == ResourceType.Scrap ? "고철" : "돌";
+            text += $"{resName} {reward.minAmount}~{reward.maxAmount}\n";
+        }
+        return text.TrimEnd('\n');
+    }
+    
+    void OnDifficultyBack()
+    {
+        raidDifficultyPanel.SetActive(false);
+        raidVillagePanel.SetActive(true);
+    }
+    
+    void OnDifficultySelected(RaidData raid)
+    {
+        selectedRaid = raid;
+        raidDifficultyPanel.SetActive(false);
+        ShowRaidConfirmPanel(raid);
+    }
+    
+    void ShowRaidConfirmPanel(RaidData raid)
+    {
+        if (raidConfirmPanel == null)
+            return;
+        
+        if (raidLocationNameText != null)
+            raidLocationNameText.text = $"{raid.GetLocationName()} - {raid.GetDifficultyName()}";
+        
+        if (raidSuccessRateText != null)
+            raidSuccessRateText.text = $"성공률: {raid.baseSuccessRate}%";
+        
+        if (raidTimeText != null)
+            raidTimeText.text = $"획득 시간: {raid.raidDuration}초";
+        
+        raidConfirmPanel.SetActive(true);
+    }
+    
+    void OnRaidStart()
+    {
+        if (selectedRaid != null && RaidManager.Instance != null)
+        {
+            RaidManager.Instance.StartRaid(selectedRaid);
+            raidConfirmPanel.SetActive(false);
+        }
+    }
+    
+    public void ShowRaidResult(bool success, RaidData raid)
+    {
+        if (raidResultPanel == null || raidResultText == null)
+            return;
+        
+        if (success)
+        {
+            raidResultText.text = $"{raid.GetLocationName()} 약탈 성공!\n\n자원 획득";
+        }
+        else
+        {
+            raidResultText.text = $"{raid.GetLocationName()} 약탈 실패!";
+        }
+        
+        raidResultPanel.SetActive(true);
+    }
+    
     void OnCraftYes()
     {
-        // 제작 시작
         if (CraftingManager.Instance != null && pendingCraftItem != null)
         {
             CraftingManager.Instance.StartCrafting(pendingCraftItem, pendingCraftTime);
         }
         
-        // 창 닫기
         if (craftConfirmPanel != null)
             craftConfirmPanel.SetActive(false);
         
@@ -228,26 +344,10 @@ public class UIManager : MonoBehaviour
     
     void OnCraftNo()
     {
-        // 창 닫기
         if (craftConfirmPanel != null)
             craftConfirmPanel.SetActive(false);
         
         pendingCraftItem = null;
-    }
-    
-    void OnCloseResultPanel()
-    {
-        if (scoutResultPanel != null)
-            scoutResultPanel.SetActive(false);
-    }
-    
-    void OnScoutAgain()
-    {
-        if (scoutResultPanel != null)
-            scoutResultPanel.SetActive(false);
-        
-        if (ScoutManager.Instance != null)
-            ScoutManager.Instance.StartScout();
     }
     
     void OnUnitButtonClicked(int unitIndex)
@@ -256,25 +356,5 @@ public class UIManager : MonoBehaviour
             WallExpansionManager.Instance.SetExpansionMode(false);
         
         UnitPlacementManager.Instance.SelectUnit(unitIndex);
-    }
-    
-    void OnExpandButtonClicked()
-    {
-        if (UnitPlacementManager.Instance != null)
-            UnitPlacementManager.Instance.CancelPlacement();
-        
-        if (WallExpansionManager.Instance != null)
-            WallExpansionManager.Instance.SetExpansionMode(!WallExpansionManager.Instance.IsExpansionMode());
-    }
-    
-    void OnScoutButtonClicked()
-    {
-        if (ScoutManager.Instance != null)
-            ScoutManager.Instance.StartScout();
-    }
-    
-    void UpdateResourceDisplay(int resources)
-    {
-        resourceText.text = $"자원: {resources}";
     }
 }
