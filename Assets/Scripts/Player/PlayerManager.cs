@@ -31,6 +31,11 @@ public class PlayerManager : MonoBehaviour
 
     public void AddSkill(SkillSo skill) => skills.Add(skill);
 
+    public void PushSkill(SkillSo skill, int index)
+    {
+        skills[index] = skill;
+    }
+
     public void Save()
     {
         PlayerSaveData data = new PlayerSaveData();
@@ -47,7 +52,11 @@ public class PlayerManager : MonoBehaviour
     public void Load()
     {
         string path = SavePath();
-        if (!System.IO.File.Exists(path)) return;
+        if (!System.IO.File.Exists(path))
+        {
+            InitDefault();
+            return;
+        }
 
         string json = System.IO.File.ReadAllText(path);
         PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
@@ -64,10 +73,17 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void InitDefault()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            skills.Add(null);
+        }
+    }
+
     private string SavePath()
     {
         Debug.Log(Application.persistentDataPath);
-        return Application.persistentDataPath + "/playerData.json";
-        
+        return Application.persistentDataPath + "/playerData.json";      
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d727331a64c926e469947bc2490eb0dd, type: 3}
+  m_Name: skill1 9
+  m_EditorClassIdentifier: Assembly-CSharp::SkillSo
+  skillName: "\uD658\uAC01"
+  damage: 1
+  coolTime: 60
+  cost: 30
+  Range: 3
+  Desc: "[\uD658\uAC01]\n\n5\uCD08\uAC04 \uBAA8\uD5D8\uAC00\uAC00 \uBAA8\uD5D8\uAC00\uB97C
+    \uACF5\uACA9"

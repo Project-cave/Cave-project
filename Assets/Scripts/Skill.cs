@@ -1,28 +1,56 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Skill : MonoBehaviour
+public class Skill : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public SkillSo skillData;
-    Image Desc;
-    TextMeshProUGUI text;
+    Transform canvas;
+    public Transform previousParent;
+    RectTransform rect;
+    CanvasGroup canvasGroup;
+    public SkillSo skill;
+    public bool isDragged = false;
 
     private void Awake()
     {
-        Desc = GetComponentsInChildren<Image>(true)[1];
-        text = GetComponentInChildren<TextMeshProUGUI>(true);
-        text.text = skillData.Desc;
+        canvas = FindFirstObjectByType<Canvas>().transform;
+        rect = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    public void OnDesc()
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        Desc.gameObject.SetActive(true);
+        isDragged = true;
+        previousParent = transform.parent;
+
+        transform.SetParent(canvas);
+        transform.SetAsLastSibling();
+
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
     }
 
-    public void OffDesc()
+    public void OnDrag(PointerEventData eventData)
     {
-        Desc.gameObject.SetActive(false);
+        rect.position = eventData.position;
     }
 
+    public void OnEndDrag(PointerEventData eventData)
+    {
+
+        isDragged = false;
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+        bool isInvalidDrop = transform.parent == canvas;
+
+        if (isInvalidDrop) { RevertToParent(); return; }      
+        PlayerManager.instance.PushSkill(skill, GetComponentInParent<ItemSlot>().index);
+        previousParent = transform.parent;
+    }
+
+    private void RevertToParent()
+    {
+        transform.SetParent(previousParent);
+        rect.position = previousParent.GetComponent<RectTransform>().position;
+    }
 }

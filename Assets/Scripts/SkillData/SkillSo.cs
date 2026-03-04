@@ -7,6 +7,7 @@ public class SkillSo : ScriptableObject
     public int damage;
     public int coolTime;
     public int cost;
+    public int Range;
 
     [TextArea]
     public string Desc;
