@@ -27,13 +27,5 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null || transform.childCount > 0) return;
-
-        var skillComp = eventData.pointerDrag.GetComponent<Skill>();
-        if (skillComp == null) return;
-        if (skill != null && skillComp.skill != skill) return;
-
-        eventData.pointerDrag.transform.SetParent(transform);
-        eventData.pointerDrag.GetComponent<RectTransform>().position = rect.position;
     }
 }

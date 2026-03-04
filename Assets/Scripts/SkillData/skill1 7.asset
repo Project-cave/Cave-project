@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: skill1 7
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo
   skillName: "\uB9C8\uC655\uD328\uAE30"
+  icon: {fileID: 21300000, guid: ee40d72ece864764f9d17d015aedb524, type: 3}
   damage: 1
   coolTime: 60
   cost: 30

@@ -36,6 +36,11 @@ public class PlayerManager : MonoBehaviour
         skills[index] = skill;
     }
 
+    public void PopSkill(int index)
+    {
+        skills[index] = null;
+    }
+
     public void Save()
     {
         PlayerSaveData data = new PlayerSaveData();

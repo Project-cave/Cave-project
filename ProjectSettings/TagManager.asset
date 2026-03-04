@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - Unit
   - SkillList
+  - Slot
+  - Skill
   layers:
   - Default
   - TransparentFX
