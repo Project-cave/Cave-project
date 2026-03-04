@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d727331a64c926e469947bc2490eb0dd, type: 3}
-  m_Name: skill1
+  m_Name: skill1 5
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo
-  skillName: "\uB2AA\uC0DD\uC131"
+  skillName: "\uC548\uAC1C"
   damage: 1
   coolTime: 60
   cost: 30
   Range: 3
-  Desc: "[\uB2AA\uC0DD\uC131]\n\n[\uC740]\uC774\uD558 \uBAA8\uD5D8\uAC00 3\uCD08\uAC04
-    \uC815\uC9C0"
+  Desc: "[\uC548\uAC1C]\n\n5\uCD08\uAC04 \uBC94\uC704 \uB0B4 \uCE58\uBA85\uD0C0\uC728
+    0%"
