@@ -31,8 +31,7 @@ public class SceneChanger : MonoBehaviour
     }
 
     public void LoadMonsterScene()
-    {
-        
+    {        
         SceneManager.LoadScene("Monster");
     }
 }
