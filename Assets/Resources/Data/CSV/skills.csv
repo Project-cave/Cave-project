@@ -1,0 +1,4 @@
+skillName,skillId,isUnlocked,damage,cooldown,icon,description
+파이어볼,0,TRUE,150,5,AttackSkill,강력한 불덩이를 발사합니다
+아이스 스피어,1,TRUE,120,4,LaserSkill,얼음 창을 던져 적을 빙결시킵니다
+번개 일격,2,TRUE,200,8,LightningSkill,번개로 적을 강타합니다

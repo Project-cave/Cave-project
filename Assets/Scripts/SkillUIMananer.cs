@@ -8,7 +8,13 @@ public class SkillUIMananer : MonoBehaviour
 
     private void Start()
     {
-        CloseBtn.onClick.AddListener(() => SceneChanger.instance.LoadBattleScene());
+        CloseBtn.onClick.AddListener(OnCloseBtn);
+    }
+
+    private void OnCloseBtn()
+    {
+        PlayerSkillManager.instance.SaveSkillToPlayerManager();
+        SceneChanger.instance.LoadBattleScene();
     }
 
 }

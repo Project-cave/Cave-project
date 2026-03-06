@@ -6,13 +6,11 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
 
-    public List<SkillSo> skills = new List<SkillSo>();
-    //public List<ItemSo> items = new List<ItemSo>();
+    public List<SkillData> skills = new List<SkillData>();
     public int gold;
     public int level;
 
-    private SkillSo[] allSkills;
-    //private ItemSo[] allItems;
+    private SkillData[] allSkills;
 
     private void Awake()
     {
@@ -26,20 +24,10 @@ public class PlayerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }          
-        allSkills = Resources.LoadAll<SkillSo>("Skills");
+        allSkills = Resources.LoadAll<SkillData>("Data/So/Skills");
     }
 
-    public void AddSkill(SkillSo skill) => skills.Add(skill);
-
-    public void PushSkill(SkillSo skill, int index)
-    {
-        skills[index] = skill;
-    }
-
-    public void PopSkill(int index)
-    {
-        skills[index] = null;
-    }
+    public void SetSkills(List<SkillData> skills) => this.skills = skills;
 
     public void Save()
     {
@@ -48,7 +36,7 @@ public class PlayerManager : MonoBehaviour
         data.level = level;
 
         foreach (var skill in skills)
-            data.skillNames.Add(skill.name);
+            data.skillNames.Add(skill != null ? skill.name : "");
         
         string json = JsonUtility.ToJson(data, true);
         System.IO.File.WriteAllText(SavePath(), json);
@@ -73,6 +61,8 @@ public class PlayerManager : MonoBehaviour
 
         foreach(var name in data.skillNames)
         {
+            if (string.IsNullOrEmpty(name)) skills.Add(null);
+
             var skill = System.Array.Find(allSkills, s=>s.name == name);
             if (skill != null) skills.Add(skill);
         }
