@@ -12,9 +12,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stoneText;
     
     [Header("Unit Buttons")]
-    [SerializeField] private Button[] unitButtons;
+    [SerializeField] private Button[] unitButtons;  // 4개 버튼 (독통, 보라색알, 가시함정, 생산포탈)
     [SerializeField] private Image[] unitButtonImages;
     [SerializeField] private TextMeshProUGUI[] unitCostTexts;
+    
+    [Header("Special Unit Data")]
+    [SerializeField] private UnitData spawnPortalUnitData;  // 생산 포탈 UnitData
     
     [Header("Craft Confirm Panel")]
     [SerializeField] private GameObject craftConfirmPanel;
@@ -23,6 +26,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI craftTimeText;
     [SerializeField] private Button craftYesButton;
     [SerializeField] private Button craftNoButton;
+    
+    [Header("Unit Selection Panel (생산 시설)")]
+    [SerializeField] private GameObject unitSelectionPanel;
+    [SerializeField] private Transform unitSelectionContent;
+    [SerializeField] private GameObject unitSelectionButtonPrefab;
+    [SerializeField] private Button unitSelectionCloseButton;
     
     [Header("Raid Village Panel (1단계: 마을 선택)")]
     [SerializeField] private GameObject raidVillagePanel;
@@ -55,7 +64,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryPanel;
     
     [Header("Unit Data")]
-    [SerializeField] private UnitData[] unitDataArray;
+    [SerializeField] private UnitData[] unitDataArray;  // 4개 (독통, 보라색알, 가시함정, 생산포탈)
     
     private CraftItemData pendingCraftItem;
     private float pendingCraftTime;
@@ -68,6 +77,7 @@ public class UIManager : MonoBehaviour
         UpdateResourceDisplay();
         SetupUnitButtons();
         SetupCraftConfirmPanel();
+        SetupUnitSelectionPanel();
         SetupRaidPanels();
         
         if (craftConfirmPanel != null)
@@ -75,6 +85,9 @@ public class UIManager : MonoBehaviour
         
         if (inventoryPanel != null)
             inventoryPanel.SetActive(false);
+        
+        if (unitSelectionPanel != null)
+            unitSelectionPanel.SetActive(false);
         
         if (raidVillagePanel != null)
             raidVillagePanel.SetActive(false);
@@ -118,6 +131,12 @@ public class UIManager : MonoBehaviour
         
         if (craftNoButton != null)
             craftNoButton.onClick.AddListener(OnCraftNo);
+    }
+    
+    void SetupUnitSelectionPanel()
+    {
+        if (unitSelectionCloseButton != null)
+            unitSelectionCloseButton.onClick.AddListener(() => unitSelectionPanel.SetActive(false));
     }
     
     void SetupRaidPanels()
@@ -187,6 +206,83 @@ public class UIManager : MonoBehaviour
         
         if (stoneText != null)
             stoneText.text = $"돌: {ResourceManager.Instance.GetResource(ResourceType.Stone)}";
+    }
+    
+    void OnUnitButtonClicked(int unitIndex)
+    {
+        if (unitIndex < 0 || unitIndex >= unitDataArray.Length)
+            return;
+        
+        // 확장 모드 끄기
+        if (WallExpansionManager.Instance != null)
+            WallExpansionManager.Instance.SetExpansionMode(false);
+        
+        // 생산 포탈 유닛인지 확인
+        if (spawnPortalUnitData != null && unitDataArray[unitIndex] == spawnPortalUnitData)
+        {
+            // 생산 포탈 → 유닛 선택 패널 열기
+            OpenUnitSelectionPanel();
+        }
+        else
+        {
+            // 일반 유닛 → 기존 배치 모드
+            UnitPlacementManager.Instance.SelectUnit(unitIndex);
+        }
+    }
+    
+    // 유닛 선택 패널 열기
+    public void OpenUnitSelectionPanel()
+    {
+        if (unitSelectionPanel == null || unitSelectionContent == null || unitSelectionButtonPrefab == null)
+            return;
+        
+        // 기존 버튼 삭제
+        foreach (Transform child in unitSelectionContent)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        // 12개 유닛 버튼 생성
+        if (SpawnFacilityManager.Instance == null)
+            return;
+        
+        UnitSo[] units = SpawnFacilityManager.Instance.GetAvailableUnits();
+        
+        foreach (var unit in units)
+        {
+            GameObject btnObj = Instantiate(unitSelectionButtonPrefab, unitSelectionContent);
+            Button btn = btnObj.GetComponent<Button>();
+            
+            if (btn != null)
+            {
+                UnitSo unitData = unit;
+                btn.onClick.AddListener(() => OnUnitSelected(unitData));
+                
+                // 버튼 텍스트 설정
+                TextMeshProUGUI btnText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+                if (btnText != null)
+                {
+                    btnText.text = unit.unitName;
+                }
+            }
+        }
+        
+        unitSelectionPanel.SetActive(true);
+    }
+    
+    void OnUnitSelected(UnitSo unit)
+    {
+        // 시설 배치 모드 시작
+        if (FacilityPlacementController.Instance != null)
+        {
+            FacilityPlacementController.Instance.StartPlacement(unit);
+        }
+        
+        // 패널 닫기
+        if (unitSelectionPanel != null)
+            unitSelectionPanel.SetActive(false);
+        
+        Debug.Log($"{unit.unitName} 선택! 맵에서 보라색 타일을 클릭하세요.");
     }
     
     public void ShowCraftConfirm(CraftItemData item, float craftTime)
@@ -348,13 +444,5 @@ public class UIManager : MonoBehaviour
             craftConfirmPanel.SetActive(false);
         
         pendingCraftItem = null;
-    }
-    
-    void OnUnitButtonClicked(int unitIndex)
-    {
-        if (WallExpansionManager.Instance != null)
-            WallExpansionManager.Instance.SetExpansionMode(false);
-        
-        UnitPlacementManager.Instance.SelectUnit(unitIndex);
     }
 }
