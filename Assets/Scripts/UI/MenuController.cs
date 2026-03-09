@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Button raidButton;  // 약탈
     
     [Header("Sub Panels")]
-    [SerializeField] private GameObject unitButtonPanel;  // 유닛 3개 버튼
+    [SerializeField] private GameObject unitButtonPanel;  // 유닛 4개 버튼 패널
     
     private bool isMenuOpen = false;
     private bool isUnitPanelOpen = false;
@@ -65,6 +65,7 @@ public class MenuController : MonoBehaviour
     
     void OnUnitPlacementClicked()
     {
+        // 유닛 버튼 패널 토글
         isUnitPanelOpen = !isUnitPanelOpen;
         
         if (unitButtonPanel != null)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000932c2ff815224f8769394081d1be6, type: 3}
   m_Name: 6.Dragon
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
-  unitName: "\uD574\uACE8 \uAD81\uC218"
+  unitName: "\uB4DC\uB798\uACE4"
   unitNum: 1
   race: 1
   rank: 0
