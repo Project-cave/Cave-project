@@ -1,11 +1,16 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RequestMonster : MonoBehaviour
 {
     public UnitSo unitData;
-    private RectTransform rectTransform;
+    public InvenMonster linkedInvenMonster;
+    public GameObject[] connectLines;
+    public Sprite solidLine;
+    public RectTransform rectTransform;
+
+
+    [SerializeField] private Button[] nextBtns;
 
     private void Start()
     {
@@ -14,7 +19,25 @@ public class RequestMonster : MonoBehaviour
 
     public void OnClickRequestBtn()
     {
-        PopupManager.instance.OpenPopup(unitData, rectTransform, false);
+        MonsterPopupManager.instance.OpenPopup(this);
     }
 
+    public void OnUnlock()
+    {
+        foreach (var line in connectLines)
+            line.GetComponent<Image>().sprite = solidLine;
+        linkedInvenMonster.Lock = false;
+        linkedInvenMonster.GetComponent<Button>().interactable = true;
+        OnClickRequest();
+    }
+
+    public void OnClickRequest()
+    {
+        if (nextBtns == null) return;
+
+        foreach(var btn in nextBtns)
+        {
+            btn.interactable = true;
+        }
+    }
 }
