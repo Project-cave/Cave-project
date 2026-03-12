@@ -27,7 +27,7 @@ public class MonsterPopupManager : MonoBehaviour
 
     private void Start()
     {
-        CloseBtn.onClick.AddListener(() => SceneChanger.instance.LoadBattleScene());
+        CloseBtn.onClick.AddListener(() => SceneController.instance.LoadGameScene());
     }
 
     public void OpenPopup(RequestMonster node)
