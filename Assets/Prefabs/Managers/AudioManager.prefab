@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8545593378173360172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8947074387386329980}
+  - component: {fileID: 6438346762865921083}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8947074387386329980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8545593378173360172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.99553, y: 2.57611, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6438346762865921083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8545593378173360172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dbba3f0bb43a464f8413a140b3a8ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  bgmClip:
+  - {fileID: 8300000, guid: 70518e03c497fbd4fbf4454bb99a45cf, type: 3}
+  - {fileID: 8300000, guid: e944b90ca5a62bb46852d9102342a75e, type: 3}
+  - {fileID: 8300000, guid: 4505c69135abd8a40b013857914137de, type: 3}
+  - {fileID: 8300000, guid: 64901f5782a6a444ebee31bc0736bdef, type: 3}
+  bgmVolume: 0.1
+  bgmVolumeMute: 0
+  bgm: 0
+  sfxClips:
+  - {fileID: 8300000, guid: d6287c71876176f4784597ed4187815c, type: 3}
+  - {fileID: 8300000, guid: 77d7fe968a216ac4284e2d15ee302f60, type: 3}
+  - {fileID: 8300000, guid: 8b722f0c427dd9f4dab85b1d04bc4a06, type: 3}
+  sfxVolume: 0.1
+  sfxVolumeMute: 0
+  channels: 4
