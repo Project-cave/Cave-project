@@ -54,14 +54,15 @@ public class UnitPlacementManager : MonoBehaviour
             return;
         }
         
-        if (!ResourceManager.Instance.CanAfford(selectedUnit.cost))
+        // 임시: 나무로만 비용 지불
+        if (!ResourceManager.Instance.CanAfford(ResourceType.Wood, selectedUnit.cost))
         {
             Debug.Log("자원이 부족합니다!");
             return;
         }
         
         // 자원 소모
-        ResourceManager.Instance.SpendResources(selectedUnit.cost);
+        ResourceManager.Instance.SpendResource(ResourceType.Wood, selectedUnit.cost);
         
         // 유닛 배치
         TilemapManager.Instance.PlaceUnit(cellPosition, selectedUnit.unitPrefab);

@@ -58,6 +58,11 @@ public class TilemapManager : MonoBehaviour
         {
             WallExpansionManager.Instance.TryExpand(cellPosition);
         }
+        // 시설 배치 모드
+        else if (FacilityPlacementController.Instance != null && FacilityPlacementController.Instance.IsPlacementMode())
+        {
+            FacilityPlacementController.Instance.TryPlaceFacility(cellPosition);
+        }
     }
     
     public bool CanPlaceUnit(Vector3Int cellPosition)
