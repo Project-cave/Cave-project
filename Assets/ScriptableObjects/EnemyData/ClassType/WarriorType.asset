@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da2ec76443bb9664e811e8102e7ef399, type: 3}
+  m_Name: WarriorType
+  m_EditorClassIdentifier: Assembly-CSharp::ClassData
+  classType: 0
+  attackType: 0
+  hpMultiplier: 1.5
+  atkMultiplier: 1.5
+  defMultiplier: 1.5
+  moveSpeedMultiplier: 1
+  baseAttackSpeed: 2
+  baseAttackRange: 1
+  collisionSpeed: 0
+  collisionSpecial: 
+  specialGimmick: 
+  raceInfo:
+  - race: 0
+    animController: {fileID: 22100000, guid: 182912279039df246b117dd318bf096e, type: 2}
+    collisionMultiplier: 1
+  - race: 1
+    animController: {fileID: 22100000, guid: 182912279039df246b117dd318bf096e, type: 2}
+    collisionMultiplier: 1
+  - race: 2
+    animController: {fileID: 22100000, guid: 182912279039df246b117dd318bf096e, type: 2}
+    collisionMultiplier: 1.5
+  - race: 3
+    animController: {fileID: 22100000, guid: 182912279039df246b117dd318bf096e, type: 2}
+    collisionMultiplier: 1.2
+  classShape: {fileID: 7482667652216324306, guid: d408ef85d72b3ec4ca16071a3ade781b, type: 3}

@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Init(int id, float Damage, int per, Vector3 dir, int bulletVelocity)
+    public void Init(int id, float Damage, int per, Vector3 dir, float bulletVelocity)
     {
         this.Damage = Damage;
         this.per = per;

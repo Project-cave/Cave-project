@@ -45,7 +45,7 @@ public class Scanner : MonoBehaviour
             Targetable targetInfo = target.transform.GetComponent<Targetable>();
             Vector3 targetPos = target.transform.position;
 
-            if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(targetPos)) continue;
+            if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(targetPos, transform.position)) continue;
 
             int curPriority = targetInfo.priority;
             float curDist = Vector3.Distance(mypos, targetPos);
@@ -90,10 +90,8 @@ public class Scanner : MonoBehaviour
     }
 
     // 라인캐스팅
-    public bool IsTargetVisible(Vector3 to)
+    public bool IsTargetVisible(Vector3 to, Vector3 from)
     {
-        Vector3 from = transform.position;
-
         RaycastHit2D hitWall = Physics2D.Linecast(from, to, wallLayer);
 
         return hitWall.collider == null;
@@ -102,18 +100,23 @@ public class Scanner : MonoBehaviour
     // 타일 탐색
     public void ExploreTiles()
     {
-        Vector3Int currentPos = Vector3Int.RoundToInt(transform.position);
-        int scan = Mathf.RoundToInt(scanRange);
+        int currentX = Mathf.RoundToInt(transform.position.x);
+        int currentY = Mathf.RoundToInt(transform.position.y);
+        Vector3Int currentIndex = new Vector3Int(currentX, currentY, 0);
+
+        int scan = Mathf.CeilToInt(scanRange);
 
         for (int x = -scan; x <= scan; x++)
         {
             for (int y = -scan; y <= scan; y++)
             {
-                Vector3Int pos = currentPos + new Vector3Int(x, y, 0);
+                Vector3Int targetIndex = new Vector3Int(currentX + x, currentY + y, 0);
+                Vector3 targetPos = new Vector3(currentX + x + 0.5f, currentY + y + 0.5f, 0);
 
-                if (Vector3.Distance(currentPos, pos) > scan || Explored.Contains(pos) || !IsTargetVisible(pos)) continue;
+                if (Vector3.Distance(transform.position, targetPos) > scanRange || Explored.Contains(targetIndex) ||
+                    !IsTargetVisible(targetPos, transform.position)) continue;
 
-                Explored.Add(pos);
+                Explored.Add(targetIndex);
             }
         }
     }

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/ScriptableObjects/UnitData/Newbie.asset.meta
+guid: 0f34c4e1d33934a4a829016c5f67ab6e
+========
 guid: 3badced7ef83b814990af3dde1d358a6
+>>>>>>>> upstream/main:Assets/ScriptableObjects/UnitData/UnitData_SpawnPortal.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000
