@@ -34,16 +34,12 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Init(int id, float Damage, int per, Vector3 dir)
+    public void Init(int id, float Damage, int per, Vector3 dir, float bulletVelocity)
     {
         this.Damage = Damage;
         this.per = per;
-        this.id = id;
-        Debug.Log(dir);
-        if(per > -1)
-        {
-            rigid.linearVelocity = dir * 7f;
-        }
+        this.id = id;      
+        rigid.linearVelocity = dir * bulletVelocity;        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -57,6 +53,20 @@ public class Bullet : MonoBehaviour
 
         if(per == -1 || collision.CompareTag("Wall"))
         {
+            rigid.linearVelocity = Vector2.zero;
+            gameObject.SetActive(false);
+        }
+
+        // Enemy에게 데미지 주는 로직
+        if (collision.CompareTag("Enemy"))
+        {
+            StatHandler stat = collision.GetComponent<StatHandler>();
+
+            if (stat != null)
+            {
+                stat.TakeDamage((int)Damage);
+            }
+
             rigid.linearVelocity = Vector2.zero;
             gameObject.SetActive(false);
         }

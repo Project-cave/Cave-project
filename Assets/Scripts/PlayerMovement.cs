@@ -1,70 +1,116 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
 
 public class PlayerMovement : MonoBehaviour
-{
-    [SerializeField] float m_movementSpeed = 10;
+{    
+    enum Status { Attack, Move, idle }
 
+    [SerializeField] float m_movementSpeed = 10;
+    public float Movement { set => m_movementSpeed = value; }
+    [SerializeField] float arrivalThreshold = 0.2f;
+      
+    Status status = Status.idle;
     Vector2 m_start;
     Vector2 m_goal;
-    //LinkedList<Vector2> path = null;
-    LinkedList<Vector2> m_fasterPath = new();
 
-    public enum Status { Attack, Move, idle }
-    public Status status = Status.idle;
+    Vector2Int m_startCenter;
+    Vector2 m_goalCenter;
+    LinkedList<Vector2> m_fasterPath = new LinkedList<Vector2>();
 
-    BoxCollider2D m_boxCollider;
     Animator anim;
-    PathFinder m_pathFinder; 
+    PathFinder m_pathFinder;
     SpriteRenderer sr;
-    public Scanner scanner;
+    Scanner scanner;
     Weapon weapon;
+    BoxCollider2D boxCollider;
 
-    
+    // 스탯 관리
+    StatHandler stat;
+
     public bool moveable = false;
+    public bool tileCenterMode = false;
 
     private void Awake()
     {
-        m_pathFinder = GetComponent<PathFinder>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
         sr = GetComponent<SpriteRenderer>();
-        weapon = GetComponentInChildren<Weapon>();
+        boxCollider = GetComponent<BoxCollider2D>();
+
+        // StatHandler 가져오기
+        stat = GetComponent<StatHandler>();
+        if (stat != null) stat.OnDeath += Death;
+
+        if (boxCollider == null)
+        {
+            Debug.LogWarning($"{gameObject.name}: BoxCollider2D가 없습니다!");
+        }
+    }
+
+    private void Start()
+    {
+        m_pathFinder = PathFinder.instance;
+        if (m_pathFinder == null)
+        {
+            Debug.LogError($"{gameObject.name}: PathFinder instance를 찾을 수 없습니다!");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (stat != null) stat.OnDeath -= Death;
+
+    }
+
+    public void SetWeapon(Weapon weapon)
+    {
+        this.weapon = weapon;
+    }
+
+    public void MoveToPosition(Vector3 targetPosition)
+    {
+        if (!moveable)
+        {
+            Debug.LogWarning($"[{gameObject.name}] moveable이 false입니다!");
+            return;
+        }
+
+        if (m_pathFinder == null)
+        {
+            Debug.LogError($"[{gameObject.name}] PathFinder가 null입니다!");
+            return;
+        }
+
+        m_start = transform.position;
+
+        if (tileCenterMode) m_goal = new Vector2((int)(targetPosition.x) + 0.5f,(int)(targetPosition.y) + 0.5f);
+        else m_goal = targetPosition;
+       
+        ChangerStatus(Status.Move);
+
+        m_fasterPath.Clear();
+
+        if (boxCollider != null)
+        {
+            m_fasterPath = m_pathFinder.getShortestPath(m_start, m_goal, boxCollider);
+        }
+        else
+        {
+            m_fasterPath = m_pathFinder.getShortestPath(m_start, m_goal, new Vector2(1f, 1f));
+        }
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && moveable)
-        {
-            
-            m_start = transform.position;
-            m_goal = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            status = Status.Move;
-            
-
-            long jpsElapsedMS;
-            long jpsElapsedTick;
-            m_fasterPath.Clear();
-            {
-                System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-                {
-                    m_fasterPath = m_pathFinder.getShortestPath(m_start, m_goal);
-                }
-                watch.Stop();
-                jpsElapsedMS = watch.ElapsedMilliseconds;
-                jpsElapsedTick = watch.ElapsedTicks;
-
-                Debug.Log(
-                    "JPS: " + jpsElapsedMS + "ms" + "(" + jpsElapsedTick + "ticks)"
-                );
-            }
-        }
-        
         if (m_fasterPath != null && m_fasterPath.Count > 0)
         {
-            transform.position = Vector2.MoveTowards(transform.position, m_fasterPath.First.Value, m_movementSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                m_fasterPath.First.Value,
+                m_movementSpeed * Time.deltaTime
+            );
+
             if (m_fasterPath.First.Value.x >= transform.position.x)
             {
                 sr.flipX = false;
@@ -73,80 +119,84 @@ public class PlayerMovement : MonoBehaviour
             {
                 sr.flipX = true;
             }
-            if ((Vector2)transform.position == m_fasterPath.First.Value)
+
+            if (Vector2.Distance(transform.position, m_fasterPath.First.Value) < arrivalThreshold)
             {
                 m_fasterPath.RemoveFirst();
             }
         }
-        if (m_fasterPath.Count == 0 && status != Status.Attack)
+
+        if (m_fasterPath.Count == 0 && status == Status.Move)
         {
-            if (scanner.inAttackRange)
-                status = Status.Attack;
+            if (scanner != null && scanner.inAttackRange)
+            {
+                ChangerStatus(Status.Attack);
+            }
             else
-                status = Status.idle;
+            {
+                ChangerStatus(Status.idle);
+            }
+                
         }
 
         if (status == Status.Attack)
         {
-            if(scanner.AttackTarget.position.x >= transform.position.x)
+            if (scanner != null && scanner.attackTarget != null)
             {
-                if(weapon != null)
-                    weapon.transform.localPosition = new Vector3(0.5f, 0, 0);
-                sr.flipX = false;
+                if (scanner.attackTarget.position.x >= transform.position.x)
+                {
+                    if (weapon != null)
+                        weapon.transform.localPosition = new Vector3(0.5f, 0, 0);
+                    sr.flipX = false;
+                }
+                else if (scanner.attackTarget.position.x < transform.position.x)
+                {
+                    if (weapon != null)
+                        weapon.transform.localPosition = new Vector3(-0.5f, 0, 0);
+                    sr.flipX = true;
+                }
             }
-            else if(scanner.AttackTarget.position.x < transform.position.x)
-            {
-                if(weapon != null)
-                    weapon.transform.localPosition = new Vector3(-0.5f, 0, 0);
-                sr.flipX = true;
-            }
         }
     }
-
-
-    private void LateUpdate()
+    
+    void ChangerStatus(Status newStatus)
     {
-        if (status == Status.idle)
-        {
-            anim.SetBool("IdleBool", true);
-            anim.SetBool("RunBool",false);
-            anim.SetBool("AttackBool", false);
-        }
-        if(status == Status.Move)
-        {
-            anim.SetBool("IdleBool", false);
-            anim.SetBool("RunBool", true);
-            anim.SetBool("AttackBool", false);
-        }
-        if(status == Status.Attack)
-        {
-            anim.SetBool("IdleBool", false);
-            anim.SetBool("RunBool", false);
-            anim.SetBool("AttackBool", true);
-        }
+        if (status == newStatus) return;
+
+        status = newStatus;
+
+        anim.SetBool("Run", status == Status.Move);
+        anim.SetBool("Attack", status == Status.Attack);
     }
 
-    public void SetWeapon(Weapon weapon)
-    {
-        this.weapon = weapon;
-    }
+
 
     public void WizardAttack()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Masic);
-        weapon.Fire();
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Masic);
+        if (weapon != null)
+            weapon.Fire();
     }
 
     public void SwordAttack()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
     }
-    
+
+
+    // 사망 처리 함수
+    public void Death()
+    {
+        // 사망 로직
+    }
+
 
 
     private void OnDrawGizmos()
     {
-        if (EditorApplication.isPlaying)
+        if (EditorApplication.isPlaying && m_fasterPath != null)
         {
             Color originalColor = Gizmos.color;
 
@@ -163,7 +213,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector3 from = iter.Value;
                     Vector3 to = iter.Next.Value;
-
                     Gizmos.DrawLine(from, to);
                 }
             }

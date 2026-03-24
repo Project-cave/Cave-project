@@ -1,21 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    [Header("# Game Control")]
-    public bool isLive;
-    //public float gameTime;
-
-    //[Header("# player Info")]
-    //public int playerId;
 
     [Header("# Game Object")]
     public GameObject spawnUnit;
-    public PlayerMovement player;
     public PoolManager pool;
+    public Button monsterBtn;
+    public Button skillBtn;
 
     private void Awake()
     {
@@ -27,19 +24,18 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        AudioManager.instance.PlayBgm(AudioManager.Bgm.Battle ,true);
+        AudioManager.instance.PlayBgm(AudioManager.Bgm.Battle, true);
+        monsterBtn.onClick.AddListener(() => SceneChanger.instance.LoadMonsterScene());
+        skillBtn.onClick.AddListener(() => SceneChanger.instance.LoadSkillScene());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SpawnUnit(GameObject spawnUnit)
     {
-        
+        this.spawnUnit = spawnUnit;
     }
-
 }
