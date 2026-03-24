@@ -98,4 +98,6 @@ public class RandomEnemySpawner : MonoBehaviour
 
         Debug.Log($"[소환됨] {randomRank.rankType} 등급의 {randomRace.raceType} {randomClass.classType} 출현!");
     }
+
+
 }

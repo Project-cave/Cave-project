@@ -15,10 +15,16 @@ public class Bullet : MonoBehaviour
     public float BulletTime;
 
     Rigidbody2D rigid;
+    private string targetTag;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnEnable()
+    {
+        BulletTime = 0f;
     }
 
     // Update is called once per frame
@@ -30,15 +36,15 @@ public class Bullet : MonoBehaviour
         {
             rigid.linearVelocity = Vector2.zero;
             gameObject.SetActive(false);
-            BulletTime = 0;
         }
     }
 
-    public void Init(int id, float Damage, int per, Vector3 dir, float bulletVelocity)
+    public void Init(int id, float Damage, int per, Vector3 dir, float bulletVelocity, string targetTag)
     {
         this.Damage = Damage;
         this.per = per;
-        this.id = id;      
+        this.id = id;
+        this.targetTag = targetTag;
         rigid.linearVelocity = dir * bulletVelocity;        
     }
 
@@ -48,17 +54,15 @@ public class Bullet : MonoBehaviour
             return;
         
 
-        per--;
-        
-
         if(per == -1 || collision.CompareTag("Wall"))
         {
             rigid.linearVelocity = Vector2.zero;
             gameObject.SetActive(false);
+            return;
         }
 
         // Enemy에게 데미지 주는 로직
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag(targetTag))
         {
             StatHandler stat = collision.GetComponent<StatHandler>();
 

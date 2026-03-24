@@ -5,14 +5,16 @@ using UnityEngine;
 public class EnemyRangedClass : Enemy
 {
     [Header("Bullet Settings")]
-    public GameObject projectilePrefab;
+    public int bulletPoolIndex = 4;
+    public float bulletSpeed = 5f;
 
     public override void AttackAction()
     {
-        if (scanner.attackTarget != null && projectilePrefab != null)
+        if (scanner.attackTarget != null && GameManager.instance.pool != null)
         {
             Vector2 spawnPos = transform.position;
-            GameObject bulletObj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+            GameObject bulletObj = GameManager.instance.pool.Get(bulletPoolIndex);
+            bulletObj.transform.position = spawnPos;
 
             Bullet bullet = bulletObj.GetComponent<Bullet>();
 
@@ -25,7 +27,9 @@ public class EnemyRangedClass : Enemy
                     finalDamage *= stat.CriticalMultiplier;
                 }
 
-                // bullet.Init(scanner.attackTarget, Mathf.RoundToInt(finalDamage));
+                Vector2 dir = ((Vector2)scanner.attackTarget.position - spawnPos).normalized;
+
+                bullet.Init(gameObject.GetInstanceID(), finalDamage, 0, dir, bulletSpeed * stat.CollisionSpeed, "Unit");
             }
         }
     }
