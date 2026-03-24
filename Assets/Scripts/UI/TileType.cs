@@ -1,6 +1,5 @@
 public enum TileType
 {
-    Floor,              // 바닥
-    Wall,               // 벽
-    UnitSpawnFacility   // 유닛 생산 시설
+    Floor,  // 바닥 타일 (배치 가능)
+    Wall    // 벽 타일 (배치 불가)
 }
