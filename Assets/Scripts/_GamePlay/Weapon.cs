@@ -30,10 +30,10 @@ public class Weapon : MonoBehaviour
         damage = data.baseDamage;
         count = data.baseCount;
 
-        for(int index = 0; index < GameManager.instance.pool.prefebs.Length; index++)
+        for(int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
         {
             Debug.Log(data.prejectile.name);
-            if(data.prejectile == GameManager.instance.pool.prefebs[index])
+            if(data.prejectile == GameManager.instance.pool.prefabs[index])
             {
                 
                 prefabId = index;
@@ -61,7 +61,7 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                bullet.GetComponent<Bullet>().Init(id, damage, count, dir, 5 * unit.bulletSpeed);
+                bullet.GetComponent<Bullet>().Init(id, damage, count, dir, 5 * unit.bulletSpeed, "Enemy");
                 break;
         }
     }

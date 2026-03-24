@@ -183,6 +183,8 @@ public class UIManager : MonoBehaviour
     
     void UpdateButtonStates()
     {
+        if (UnitPlacementManager.Instance == null) return;
+
         for (int i = 0; i < unitButtons.Length && i < unitDataArray.Length; i++)
         {
             int wood = ResourceManager.Instance.GetResource(ResourceType.Wood);
