@@ -3,23 +3,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Unit", menuName = "Scriptable Object/unit")]
 public class UnitSo : ScriptableObject
 {
-    public enum Race { Goblin, Undead }
-    public enum Rank { Normal }
+    public enum UnitRaceType { Goblin, Undead }
+    public enum UnitRankType { Normal }
+    public enum UnitAttackType { Melee, Ranged }
 
     [Header("유닛 데이터")]
     public string unitName;
     public int unitNum;
-    public Race race;
-    public Rank rank;
-    public int health;
-    public bool isRanged;
-    public int Damage;
-    public int count;
-    public int range;
-    public float damageMult;
-    public int bulletSpeed;
-    public float speed;
-    //public int defand;
+    public UnitRaceType raceType;
+    public UnitRankType rankType;
+    public int baseHP;
+    public UnitAttackType attackType;
+    public int baseAtk;
+    public float baseAttackSpeed;
+    public float baseAttackRange;
+    public float damageMultiplier;
+    public float collisionSpeed;
+    public float baseMoveSpeed;
+    public int baseDefence;
+    public float critRate;
+    public float critMultiplier;
     // 특수 기믹 안넣음
 
     [TextArea]

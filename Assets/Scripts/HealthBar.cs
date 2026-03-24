@@ -1,4 +1,3 @@
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,13 +11,25 @@ public class HealthBar : MonoBehaviour
     [Header("Target")]
     [SerializeField] private StatHandler targetHP;
 
-    // Unity Event
-    private void Start()
+    private void Awake()
     {
-        if (targetHP != null) targetHP.OnHealthChanged += UpdateHealthUI;
+        if (targetHP == null)
+        {
+            targetHP = GetComponentInParent<StatHandler>();
+        }
     }
 
-    private void OnDestroy()
+    // Unity Event
+    private void OnEnable()
+    {
+        if (targetHP != null)
+        {
+            targetHP.OnHealthChanged += UpdateHealthUI;
+            UpdateHealthUI(targetHP.CurrentHP, targetHP.MaxHP);
+        }
+    }
+
+    private void OnDisable()
     {
         if (targetHP != null) targetHP.OnHealthChanged -= UpdateHealthUI;
     }
@@ -28,7 +39,10 @@ public class HealthBar : MonoBehaviour
     {
         if (hpSlider != null)
         {
-            hpSlider.value = (float)current / max;
+            if (max <= 0)
+                hpSlider.value = 0;
+            else
+                hpSlider.value = (float)current / max;
         }
 
         if (hpText != null)

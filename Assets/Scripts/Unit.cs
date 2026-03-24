@@ -5,23 +5,31 @@ public class Unit : MonoBehaviour
     Animator anim;
     PlayerMovement movement;
     Scanner scanner;
-    public int health;
-    public int bulletSpeed;
+    UnitStatHandler stat;
+    public float bulletSpeed;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         movement = GetComponent<PlayerMovement>();
         scanner = GetComponent<Scanner>();
+        stat = GetComponent<UnitStatHandler>();
     }
 
-    public void InitUnit(UnitSo unitData)
+    private void Start()
     {
-        anim.runtimeAnimatorController = unitData.animController;
-        movement.Movement = unitData.speed;
-        scanner.attackRange = unitData.range;
-        health = unitData.health;
-        bulletSpeed = unitData.bulletSpeed;
+        InitUnit(); 
     }
-    
+
+    public void InitUnit()
+    {
+        if (stat != null)
+        {
+            stat.InitializeStats();
+            if (anim != null && stat.unitData != null) anim.runtimeAnimatorController = stat.unitData.animController;
+            if (movement != null) movement.Movement = stat.MoveSpeed;
+            if (scanner != null) scanner.attackRange = stat.AttackRange;
+            bulletSpeed = stat.CollisionSpeed;
+        }
+    }
 }

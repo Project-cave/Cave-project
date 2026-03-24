@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
         // StatHandler 가져오기
         stat = GetComponent<StatHandler>();
+        if (stat != null) stat.OnDeath += Death;
 
         if (boxCollider == null)
         {
@@ -54,6 +55,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError($"{gameObject.name}: PathFinder instance를 찾을 수 없습니다!");
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (stat != null) stat.OnDeath -= Death;
+
     }
 
     public void SetWeapon(Weapon weapon)

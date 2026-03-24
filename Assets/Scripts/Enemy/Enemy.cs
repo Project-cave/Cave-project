@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
@@ -7,10 +8,12 @@ public abstract class Enemy : MonoBehaviour
     #region 1. 설정값
     [Header("Reference")]
     SpriteRenderer sr;
+    BoxCollider2D col;
+    Transform healthBarTransform;
     public Animator anim;
     public Rigidbody2D rigid;
     public Scanner scanner;
-    public StatHandler stat;
+    public EnemyStatHandler stat;
     public PathFinder pathFinder;
 
     #endregion
@@ -30,6 +33,9 @@ public abstract class Enemy : MonoBehaviour
     public AttackState attack;
     public InteractState interact;
 
+    // 임시 종족 구분용 텍스트
+    public TMP_Text raceText;
+
     #endregion
 
     #region 3. 이벤트
@@ -38,8 +44,13 @@ public abstract class Enemy : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         scanner = GetComponent<Scanner>();
-        stat = GetComponent<StatHandler>();
+        stat = GetComponent<EnemyStatHandler>();
         sr = GetComponent<SpriteRenderer>();
+        col = GetComponent<BoxCollider2D>();
+        anim = GetComponent<Animator>();
+        healthBarTransform = GetComponentInChildren<HealthBar>().transform;
+
+        if (stat != null) stat.OnDeath += Death;
 
         explore = new ExploreState(this);
         chase = new ChaseState(this);
@@ -55,8 +66,6 @@ public abstract class Enemy : MonoBehaviour
         {
             Debug.LogError($"{gameObject.name}: PathFinder instance를 찾을 수 없습니다!");
         }
-
-        ChangeState(explore);
     }
 
     protected virtual void Update()
@@ -75,6 +84,11 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    protected virtual void OnDestroy()
+    {
+        if (stat != null) stat.OnDeath -= Death;
+    }
+
     #endregion
 
     #region 4. 오버라이딩
@@ -85,6 +99,82 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
     #region 5. 함수
+
+    // 초기화
+    public void InitEnemy()
+    {
+        if (raceText == null)
+        {
+            raceText = GetComponentInChildren<TMP_Text>();
+        }
+
+        GetComponent<Collider2D>().enabled = true;
+        rigid.bodyType = RigidbodyType2D.Dynamic;
+
+        if (sr != null)
+        {
+            Color c = sr.color;
+            c.a = 1f;
+            sr.color = c;
+        }
+
+        if (stat != null)
+        {
+            stat.InitializeStats();
+            if (scanner != null)
+            {
+                scanner.attackRange = stat.AttackRange;
+                if (stat.classData.attackType == EnemyAttackType.Melee) scanner.scanRange = 3.0f;
+                else scanner.scanRange = stat.AttackRange;
+
+                scanner.nearestTarget = null;
+            }
+
+            if (sr != null && stat.classData != null && stat.classData.classShape != null)
+            {
+                sr.sprite = stat.classData.classShape;
+            }
+
+            if (raceText != null && stat.raceData != null)
+            {
+                raceText.text = stat.raceData.raceType.ToString();
+            }
+
+            if (anim != null && stat.classData != null && stat.raceData != null)
+            {
+                foreach (RaceInfo info in stat.classData.raceInfo)
+                {
+                    if (info.race == stat.raceData.raceType)
+                    {
+                        anim.runtimeAnimatorController = info.animController;
+                        anim.Update(0f);
+                        break;
+                    }
+                }
+            }
+        }
+
+        currentPath?.Clear();
+
+        if (anim != null)
+        {
+            anim.Rebind();
+            anim.Update(0f);
+        }
+
+        if (sr != null && col != null && sr.sprite != null)
+        {
+            col.size = sr.sprite.bounds.size;
+            col.offset = sr.sprite.bounds.center;
+        }
+        if (sr != null && healthBarTransform != null)
+        {
+            float topOfHead = sr.bounds.extents.y;
+            healthBarTransform.localPosition = new Vector3(0, topOfHead + 0.2f, 0);
+        }
+
+        ChangeState(explore);
+    }
 
     // 상태 변경
     public void ChangeState(EnemyState newState)
@@ -130,7 +220,7 @@ public abstract class Enemy : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     // 애니메이션
