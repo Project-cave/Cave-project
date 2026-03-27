@@ -13,10 +13,13 @@ GameObject:
   - component: {fileID: 5071264047945724911}
   - component: {fileID: 7102752373406569413}
   - component: {fileID: 1417341943075450285}
-  - component: {fileID: 1187760047823983753}
   - component: {fileID: 4095881901337675537}
   - component: {fileID: 4965012050383935047}
   - component: {fileID: 8781618614529473607}
+  - component: {fileID: 5971381057891969201}
+  - component: {fileID: 3627289983965764101}
+  - component: {fileID: 1077544256089167948}
+  - component: {fileID: 6601757776808852143}
   m_Layer: 6
   m_Name: Player 1 1 (2)
   m_TagString: selectable
@@ -194,22 +197,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.65625, y: 1.3269806}
   m_EdgeRadius: 0
---- !u!114 &1187760047823983753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2777609182724018126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b7eaacbe971d674b94844856f6c9801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_movementSpeed: 3
-  arrivalThreshold: 0.2
-  moveable: 0
-  tileCenterMode: 0
 --- !u!114 &4095881901337675537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +253,61 @@ MonoBehaviour:
   baseAttackSpeed: 1
   attackMotionDelay: 1.085
   moveSpeed: 3
+--- !u!114 &5971381057891969201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777609182724018126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f19b7cd033dfb4682ad33f7e26d0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitCombat
+  health: 0
+  bulletSpeed: 0
+--- !u!114 &3627289983965764101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777609182724018126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e77ac4be8d91b84f8fe10a4ba74989f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
+  movementSpeed: 10
+  arrivalThreshold: 0.2
+  tileCenterMode: 0
+--- !u!114 &1077544256089167948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777609182724018126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 612bffa4ec40dba409942f022d84ec08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitAnimator
+--- !u!114 &6601757776808852143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777609182724018126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4027f075f612d8649907f802042d645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  moveable: 0
+  hasPlayerCommand: 0
 --- !u!1 &8564365504221821562
 GameObject:
   m_ObjectHideFlags: 0

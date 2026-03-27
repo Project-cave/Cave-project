@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
@@ -25,6 +24,7 @@ public class PoolManager : MonoBehaviour
             {
                 select = item;
                 select.SetActive(true);
+                UnitManager.instance.RegisterUnit(select);
                 return select;
             }
         }
@@ -35,7 +35,7 @@ public class PoolManager : MonoBehaviour
             pools[index].Add(select);
         }
 
-        GameManager.instance.SpawnUnit(select);
+        UnitManager.instance.RegisterUnit(select);
         return select;
     }
 

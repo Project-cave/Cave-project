@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UnitSpawner : MonoBehaviour
@@ -7,7 +6,8 @@ public class UnitSpawner : MonoBehaviour
 
     public void SpawnSword()
     {
-        GameObject select = GameManager.instance.pool.Get(0);   
+        GameObject select = GameManager.instance.pool.Get(0);
+        GameManager.instance.spawnUnit = select;
         select.GetComponent<Unit>().InitUnit(unitData[0]);
         if (select != null && AudioManager.instance != null)
         {
@@ -19,6 +19,7 @@ public class UnitSpawner : MonoBehaviour
     public void SpawnWizard()
     {
         GameObject select = GameManager.instance.pool.Get(0);
+        GameManager.instance.spawnUnit = select;
         select.GetComponent<Unit>().InitUnit(unitData[1]);
         if (select != null && AudioManager.instance != null)
         {

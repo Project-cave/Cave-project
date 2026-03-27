@@ -11,22 +11,15 @@ public class Scanner : MonoBehaviour
     public RaycastHit2D[] targets;
     public Transform nearestTarget;
     public Transform attackTarget;
-    PlayerMovement player;
     public bool inAttackRange;
     public HashSet<Vector3Int> Explored { get; protected set; } = new HashSet<Vector3Int>();
-
-    private void Awake()
-    {
-        player = GetComponent<PlayerMovement>();
-    }
-
 
     private void FixedUpdate()
     {
         targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
         nearestTarget = GetNearest();
         if(nearestTarget != null )
-            attackTarget = GetAttackTarget();       
+            attackTarget = GetAttackTarget(); 
     }
 
     // 우선도가 가장 높은 것 중 가까운 것을 찾도록 수정

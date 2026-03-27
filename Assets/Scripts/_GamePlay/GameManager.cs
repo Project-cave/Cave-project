@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         AudioManager.instance.PlayBgm(AudioManager.Bgm.Battle, true);
+
     }
 
     public void SpawnUnit(GameObject spawnUnit)

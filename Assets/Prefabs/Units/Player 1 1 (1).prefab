@@ -13,11 +13,13 @@ GameObject:
   - component: {fileID: 6478215272247441885}
   - component: {fileID: 4429009210854993023}
   - component: {fileID: 3424274415452896268}
-  - component: {fileID: 3996388855277459192}
   - component: {fileID: 8295157291845575848}
-  - component: {fileID: -268761023666642841}
   - component: {fileID: -2787186233358528497}
   - component: {fileID: -6378543759765080913}
+  - component: {fileID: -268761023666642841}
+  - component: {fileID: 6868573727484094375}
+  - component: {fileID: 1085151388084710335}
+  - component: {fileID: 4995465410470617279}
   m_Layer: 6
   m_Name: Player 1 1 (1)
   m_TagString: selectable
@@ -194,22 +196,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &3996388855277459192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4836709381487180731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b7eaacbe971d674b94844856f6c9801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_movementSpeed: 3
-  arrivalThreshold: 0.2
-  moveable: 0
-  tileCenterMode: 0
 --- !u!114 &8295157291845575848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanRange: 5
-  attackRange: 1
+  attackRange: 2
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -233,20 +219,6 @@ MonoBehaviour:
   nearestTarget: {fileID: 0}
   attackTarget: {fileID: 0}
   inAttackRange: 0
---- !u!114 &-268761023666642841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4836709381487180731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4027f075f612d8649907f802042d645d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit
-  health: 0
-  bulletSpeed: 0
 --- !u!114 &-2787186233358528497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,3 +252,58 @@ MonoBehaviour:
   baseAttackSpeed: 1
   attackMotionDelay: 0.5
   moveSpeed: 3
+--- !u!114 &-268761023666642841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836709381487180731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4027f075f612d8649907f802042d645d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  moveable: 0
+  hasPlayerCommand: 0
+--- !u!114 &6868573727484094375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836709381487180731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f19b7cd033dfb4682ad33f7e26d0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitCombat
+  health: 0
+  bulletSpeed: 0
+--- !u!114 &1085151388084710335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836709381487180731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 612bffa4ec40dba409942f022d84ec08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitAnimator
+--- !u!114 &4995465410470617279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836709381487180731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e77ac4be8d91b84f8fe10a4ba74989f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitMovement
+  movementSpeed: 2
+  arrivalThreshold: 0.2
+  tileCenterMode: 0

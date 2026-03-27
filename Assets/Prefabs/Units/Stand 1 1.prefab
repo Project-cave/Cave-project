@@ -253,7 +253,7 @@ MonoBehaviour:
   criticalMultiplier: 2
   baseAttackSpeed: 1
   attackMotionDelay: 0.7
-  moveSpeed: 3
+  moveSpeed: 0.1
 --- !u!114 &8462225806353567652
 MonoBehaviour:
   m_ObjectHideFlags: 0

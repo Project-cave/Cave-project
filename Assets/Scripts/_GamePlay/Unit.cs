@@ -2,26 +2,106 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    Animator anim;
-    PlayerMovement movement;
-    Scanner scanner;
-    public int health;
-    public int bulletSpeed;
+    // 컴포넌트 참조
+    private UnitMovement movement;
+    private UnitAnimator unitAnimator;
+    private UnitCombat combat;
+    private Scanner scanner;
+
+    public UnitMovement Movement => movement;
+    public UnitAnimator Animator => unitAnimator;
+    public UnitCombat Combat => combat;
+    public Scanner Scanner => scanner;
+
+    // StateMachine
+    private StateMachine stateMachine;
+    private IdleState idleState;
+    private MoveState moveState;
+    private UnitAttackState attackState;
+
+    public IdleState IdleState => idleState;
+    public MoveState MoveState => moveState;
+    public UnitAttackState AttackState => attackState;
+
+    public bool moveable = false;
+    public bool hasPlayerCommand = false;
+    public bool HasPlayerCommand => hasPlayerCommand;
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
-        movement = GetComponent<PlayerMovement>();
+        movement = GetComponent<UnitMovement>();
+        unitAnimator = GetComponent<UnitAnimator>();
+        combat = GetComponent<UnitCombat>();
         scanner = GetComponent<Scanner>();
+
+        stateMachine = new StateMachine();
+        idleState = new IdleState(this);
+        moveState = new MoveState(this);
+        attackState = new UnitAttackState(this);
+    }
+
+    private void Start()
+    {
+        stateMachine.ChangeState(idleState);
+    }
+
+    private void Update()
+    {
+        stateMachine.Update();
+    }
+
+    public void ChangeState(IState newState)
+    {
+        stateMachine.ChangeState(newState);
     }
 
     public void InitUnit(UnitSo unitData)
     {
-        anim.runtimeAnimatorController = unitData.animController;
-        movement.Movement = unitData.speed;
-        scanner.attackRange = unitData.range;
-        health = unitData.health;
-        bulletSpeed = unitData.bulletSpeed;
+        unitAnimator.SetAnimator(unitData.animController);
+        movement.SetSpeed(unitData.speed);
+        combat.SetAttackRange(unitData.range);
+        combat.health = unitData.health;
+        combat.bulletSpeed = unitData.bulletSpeed;
     }
-    
+
+    public void MoveToPosition(Vector3 targetPosition)
+    {
+        if (!moveable)
+        {
+            Debug.LogWarning($"[{name}] moveable이 false입니다!");
+            return;
+        }
+
+        hasPlayerCommand = true;
+        movement.SetDestination(targetPosition);
+        ChangeState(moveState);
+    }
+
+    public void ClearPlayerCommand()
+    {
+        hasPlayerCommand = false;
+    }
+
+    public void AttackTarget(Transform target)
+    {
+        if (!moveable) return;
+
+        hasPlayerCommand = true;
+        movement.SetDestination(target.position);
+        ChangeState(moveState);
+    }
+
+    // 무기 설정
+    public void SetWeapon(Weapon weapon)
+    {
+        combat.SetWeapon(weapon);
+    }
+
+    private void OnDisable()
+    {
+        if (UnitManager.instance != null)
+        {
+            UnitManager.instance.UnRegisterUnit(gameObject);
+        }
+    }
 }

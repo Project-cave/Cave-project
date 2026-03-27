@@ -18,7 +18,7 @@ public class SpawnFacilityManager : MonoBehaviour
     [SerializeField] private Sprite defaultFacilitySprite;  // 기본 포탈 스프라이트
     
     // 배치된 시설 정보 저장 (셀 위치 -> 유닛)
-    private Dictionary<Vector3Int, UnitSo> placedFacilities = new Dictionary<Vector3Int, UnitSo>();
+    public Dictionary<Vector3Int, UnitSo> placedFacilities { get; private set; } = new Dictionary<Vector3Int, UnitSo>();
     // 배치된 시설 GameObject 저장
     private Dictionary<Vector3Int, GameObject> facilityObjects = new Dictionary<Vector3Int, GameObject>();
     
