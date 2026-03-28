@@ -102,6 +102,8 @@ public class UnitManager : MonoBehaviour
 
         Dictionary<Vector3Int, string> unitData = new Dictionary<Vector3Int, string>();
 
+        Debug.Log(activeUnits.Values.Count);
+
         foreach (var kvp in activeUnits)
         {
             List<string> unitNames = new List<string>();
@@ -110,7 +112,7 @@ public class UnitManager : MonoBehaviour
             {
                 if (unit != null && unit.activeSelf)
                 {
-                    string prefabName = unit.name.Replace("(Clone)", "").Trim();
+                    string prefabName = unit.GetComponent<Unit>().unitData.unitName;
                     unitNames.Add(prefabName);
                 }
             }

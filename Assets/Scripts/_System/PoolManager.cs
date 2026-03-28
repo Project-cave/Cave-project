@@ -24,7 +24,7 @@ public class PoolManager : MonoBehaviour
             {
                 select = item;
                 select.SetActive(true);
-                UnitManager.instance.RegisterUnit(select);
+                
                 return select;
             }
         }
@@ -35,7 +35,7 @@ public class PoolManager : MonoBehaviour
             pools[index].Add(select);
         }
 
-        UnitManager.instance.RegisterUnit(select);
+        
         return select;
     }
 

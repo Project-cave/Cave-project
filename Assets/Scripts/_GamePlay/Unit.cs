@@ -23,6 +23,7 @@ public class Unit : MonoBehaviour
     public MoveState MoveState => moveState;
     public UnitAttackState AttackState => attackState;
 
+    public UnitSo unitData;
     public bool moveable = false;
     public bool hasPlayerCommand = false;
     public bool HasPlayerCommand => hasPlayerCommand;
@@ -57,6 +58,7 @@ public class Unit : MonoBehaviour
 
     public void InitUnit(UnitSo unitData)
     {
+        this.unitData = unitData;
         unitAnimator.SetAnimator(unitData.animController);
         movement.SetSpeed(unitData.baseMoveSpeed);
         combat.SetAttackRange(unitData.baseAttackRange);

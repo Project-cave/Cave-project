@@ -22,7 +22,8 @@ public class RestoreMap : MonoBehaviour
     void Restore()
     {
         RestoreWalls();
-        RestoreBuildings();
+        RestoreBuildings(); 
+        RestoreUnits();
     }
 
     private void RestoreWalls()
@@ -73,6 +74,7 @@ public class RestoreMap : MonoBehaviour
     private void RestoreUnits()
     {
         var units = MapManager.instance.GetCurrentUnits();
+        Debug.Log(units.Values.Count);
 
         foreach (var kvp in units)
         {
@@ -81,6 +83,8 @@ public class RestoreMap : MonoBehaviour
 
             // "Sword,Wizard,Archer" 형태를 분리
             string[] unitNames = unitNamesStr.Split(',');
+
+            
 
             foreach (string unitName in unitNames)
             {
@@ -117,6 +121,8 @@ public class RestoreMap : MonoBehaviour
                 {
                     unitComponent.InitUnit(data);
                 }
+
+                UnitManager.instance.RegisterUnit(unit);
 
                 Debug.Log($"유닛 복원: {trimmedName} at {cellPos} (index: {unitIndex})");
             }
