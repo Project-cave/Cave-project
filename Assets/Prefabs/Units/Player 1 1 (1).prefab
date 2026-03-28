@@ -19,7 +19,6 @@ GameObject:
   - component: {fileID: 6868573727484094375}
   - component: {fileID: 1085151388084710335}
   - component: {fileID: 4995465410470617279}
-  - component: {fileID: 3016503528706596801}
   m_Layer: 6
   m_Name: Player 1 1 (1)
   m_TagString: selectable
@@ -287,29 +286,3 @@ MonoBehaviour:
   movementSpeed: 2
   arrivalThreshold: 0.2
   tileCenterMode: 0
---- !u!114 &3016503528706596801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4836709381487180731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272ba8cd920b1da418ebb29509642037, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitStatHandler
-  <MaxHP>k__BackingField: 0
-  <AttackPower>k__BackingField: 0
-  <Defence>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 0
-  <BaseAttackSpeed>k__BackingField: 0
-  <AttackRange>k__BackingField: 0
-  <DamageMultiplier>k__BackingField: 0
-  <CollisionSpeed>k__BackingField: 0
-  <CollisionEffect>k__BackingField: 
-  <CriticalRate>k__BackingField: 0
-  <CriticalMultiplier>k__BackingField: 0
-  <SpecialGimmick>k__BackingField: 
-  <AttackMotionDelay>k__BackingField: 0
-  unitData: {fileID: 0}

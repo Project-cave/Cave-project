@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -4228504197720874875}
   - component: {fileID: -6539037688975422501}
   - component: {fileID: 4434517062908809430}
-  - component: {fileID: 8360928328047151701}
   - component: {fileID: 8462225806353567652}
   m_Layer: 7
   m_Name: Stand 1 1
@@ -231,29 +230,10 @@ MonoBehaviour:
   anim: {fileID: -6539037688975422501}
   rigid: {fileID: 3305189462848899492}
   scanner: {fileID: 3453456932539018424}
-  stat: {fileID: 8360928328047151701}
+  stat: {fileID: 0}
   pathFinder: {fileID: 0}
   isCriticalContext: 0
---- !u!114 &8360928328047151701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6115133992853605259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64d97bac1c5bea408ef107588b82f67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StatHandler
-  maxHP: 100
-  attackPower: 10
-  damageMultiplier: 0.5
-  criticalRate: 20
-  criticalMultiplier: 2
-  baseAttackSpeed: 1
-  attackMotionDelay: 0.7
-  moveSpeed: 0.1
+  raceText: {fileID: 0}
 --- !u!114 &8462225806353567652
 MonoBehaviour:
   m_ObjectHideFlags: 0
