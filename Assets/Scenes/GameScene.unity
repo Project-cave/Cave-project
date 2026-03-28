@@ -28484,11 +28484,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0130efc475291b741809efe48bed2310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PoolManager
-  prefebs:
+  prefabs:
   - {fileID: 4836709381487180731, guid: dd5db6f698510d947b12fbe216a0310d, type: 3}
   - {fileID: 2777609182724018126, guid: 649637e90654021478b5992daddfbab1, type: 3}
+  - {fileID: 7295768222200447943, guid: eb2a740f1be206d4fb82052ebce4a742, type: 3}
   - {fileID: 8733746590267342836, guid: 895db8914f23c5c478512d494ba733c4, type: 3}
-  - {fileID: 5169438878288650987, guid: 72054f395223a29488babe9fd690f3f5, type: 3}
 --- !u!4 &1258185663
 Transform:
   m_ObjectHideFlags: 0

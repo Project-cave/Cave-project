@@ -58,10 +58,10 @@ public class Unit : MonoBehaviour
     public void InitUnit(UnitSo unitData)
     {
         unitAnimator.SetAnimator(unitData.animController);
-        movement.SetSpeed(unitData.speed);
-        combat.SetAttackRange(unitData.range);
-        combat.health = unitData.health;
-        combat.bulletSpeed = unitData.bulletSpeed;
+        movement.SetSpeed(unitData.baseMoveSpeed);
+        combat.SetAttackRange(unitData.baseAttackRange);
+        combat.health = unitData.baseHP;
+        combat.bulletSpeed = unitData.baseAttackSpeed;
     }
 
     public void MoveToPosition(Vector3 targetPosition)

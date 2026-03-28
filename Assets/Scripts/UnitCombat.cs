@@ -7,7 +7,7 @@ public class UnitCombat : MonoBehaviour
     private UnitAnimator unitAnimator;
 
     public int health;
-    public int bulletSpeed;
+    public float bulletSpeed;
 
     private void Awake()
     {
