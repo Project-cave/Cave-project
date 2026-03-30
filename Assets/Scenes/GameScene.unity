@@ -5316,8 +5316,8 @@ MonoBehaviour:
   gridStartPoint: {x: -7, y: -18}
   gridEndPoint: {x: 51, y: 14}
   cellSize: 1
-  collisionCheckSensorSize: {x: 0.3, y: 0.3}
-  priorityQueueMaxSize: 100
+  collisionCheckSensorSize: {x: 0.4, y: 0.4}
+  priorityQueueMaxSize: 8000
   layerTocheckCollide:
     serializedVersion: 2
     m_Bits: 8
@@ -28747,18 +28747,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnitSpawner, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
