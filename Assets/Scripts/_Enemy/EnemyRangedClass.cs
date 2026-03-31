@@ -5,8 +5,8 @@ using UnityEngine;
 public class EnemyRangedClass : Enemy
 {
     [Header("Bullet Settings")]
-    public int bulletPoolIndex = 5;
-    public int criticalPoolIndex = 4;
+    public int bulletPoolIndex = 4;
+    public int criticalPoolIndex = 3;
 
     public override void AttackAction()
     {

@@ -289,7 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   enemySpawner: {fileID: 456862865}
   currentGrade: 2
-  currentStage: 4
+  currentStage: 2
 --- !u!4 &24055175
 Transform:
   m_ObjectHideFlags: 0

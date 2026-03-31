@@ -41,7 +41,7 @@ public class RandomEnemySpawner : MonoBehaviour
         RankData randomRank = rankList[Random.Range(0, rankList.Count)];
         ClassData randomClass = classList[Random.Range(0, classList.Count)];
 
-        GameObject spawnedEnemy = GameManager.instance.pool.Get(3);
+        GameObject spawnedEnemy = GameManager.instance.pool.Get(2);
         spawnedEnemy.transform.position = spawnPoint.position;
 
         EnemyStatHandler statHandler = spawnedEnemy.GetComponent<EnemyStatHandler>();
