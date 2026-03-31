@@ -5315,7 +5315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PathFinder
   gridStartPoint: {x: -7, y: -18}
   gridEndPoint: {x: 51, y: 14}
-  cellSize: 1
+  cellSize: 0.5
   collisionCheckSensorSize: {x: 0.4, y: 0.4}
   priorityQueueMaxSize: 8000
   layerTocheckCollide:
@@ -5323,7 +5323,7 @@ MonoBehaviour:
     m_Bits: 8
   optimizingPath: 1
   defaultUnitSize: {x: 1, y: 1}
-  DrawGizmo: 0
+  DrawGizmo: 1
 --- !u!4 &512630835
 Transform:
   m_ObjectHideFlags: 0
