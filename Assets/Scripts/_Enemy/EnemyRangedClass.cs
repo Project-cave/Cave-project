@@ -5,15 +5,26 @@ using UnityEngine;
 public class EnemyRangedClass : Enemy
 {
     [Header("Bullet Settings")]
-    public int bulletPoolIndex = 4;
-    public float bulletSpeed = 5f;
+    public int bulletPoolIndex = 5;
+    public int criticalPoolIndex = 4;
 
     public override void AttackAction()
     {
         if (scanner.attackTarget != null && GameManager.instance.pool != null)
         {
             Vector2 spawnPos = transform.position;
-            GameObject bulletObj = GameManager.instance.pool.Get(bulletPoolIndex);
+
+            GameObject bulletObj;
+            if (isCriticalContext)
+            {
+                bulletObj = GameManager.instance.pool.Get(criticalPoolIndex);
+            }
+            else
+            {
+                bulletObj = GameManager.instance.pool.Get(bulletPoolIndex);
+            }
+
+            if (bulletObj == null) return;
             bulletObj.transform.position = spawnPos;
 
             Bullet bullet = bulletObj.GetComponent<Bullet>();
@@ -29,7 +40,9 @@ public class EnemyRangedClass : Enemy
 
                 Vector2 dir = ((Vector2)scanner.attackTarget.position - spawnPos).normalized;
 
-                bullet.Init(gameObject.GetInstanceID(), finalDamage, 0, dir, bulletSpeed * stat.CollisionSpeed, "Unit");
+                string dynamicTargetTag = scanner.attackTarget.tag;
+
+                bullet.Init(gameObject.GetInstanceID(), finalDamage, 0, dir, stat.CollisionSpeed, dynamicTargetTag, transform);
             }
         }
     }
@@ -38,7 +51,14 @@ public class EnemyRangedClass : Enemy
     {
         Vector2 targetPos = scanner.attackTarget.position;
         Vector2 bestPos = GetBestShootingPos(targetPos);
-        
+
+        if (Vector2.Distance(transform.position, bestPos) <= 0.1f)
+        {
+            currentPath?.Clear();
+            rigid.linearVelocity = Vector2.zero; // 제자리에 멈춰서 사격 대기
+            return;
+        }
+
         if (!HasPath)
         {
             currentPath = pathFinder.getShortestPath(transform.position, bestPos);
@@ -64,6 +84,7 @@ public class EnemyRangedClass : Enemy
             }
         }
 
+        anim.SetBool("RunBool", true);
         MoveToDestination();
     }
 
@@ -109,6 +130,64 @@ public class EnemyRangedClass : Enemy
                     if (moveDist < minMove)
                     {
                         minMove = moveDist;
+                        bestPos = checkPos;
+                    }
+                }
+            }
+        }
+
+        return bestPos;
+    }
+
+    public override void HandleHit(Transform attacker)
+    {
+        base.HandleHit(attacker);
+
+        if (attacker == null) return;
+
+        if (scanner.attackTarget != null && (Time.time - stat.LastAttackTime >= stat.CurrentAttackSpeed)) return;
+
+        float distToAttacker = Vector2.Distance(transform.position, attacker.position);
+
+        if (distToAttacker <= 1.5f || distToAttacker < scanner.attackRange * 0.5f)
+        {
+            scanner.aggroTarget = null;
+
+            Vector2 fleePos = GetFleePosition(attacker.position);
+
+            currentPath = pathFinder.getShortestPath(transform.position, fleePos);
+            ChangeState(explore);
+            isFleeing = true;
+        }
+    }
+
+    public Vector2 GetFleePosition(Vector2 attackerPos)
+    {
+        Vector2 myPos = transform.position;
+        Vector2 bestPos = myPos;
+        float maxDistFromAttacker = Vector2.Distance(myPos, attackerPos);
+
+        int range = 3;
+        for (int x = -range; x <= range; x++)
+        {
+            for (int y = -range; y <= range; y++)
+            {
+                Vector2 checkPos = myPos + new Vector2(x, y);
+
+                if (!scanner.IsTargetVisible(checkPos, myPos)) continue;
+
+                float distFromAttacker = Vector2.Distance(checkPos, attackerPos);
+
+                if (distFromAttacker > maxDistFromAttacker)
+                {
+                    maxDistFromAttacker = distFromAttacker;
+                    bestPos = checkPos;
+                }
+                else if (distFromAttacker == maxDistFromAttacker)
+                {
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        maxDistFromAttacker = distFromAttacker;
                         bestPos = checkPos;
                     }
                 }

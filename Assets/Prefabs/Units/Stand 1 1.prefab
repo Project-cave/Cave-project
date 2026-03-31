@@ -274,12 +274,15 @@ MonoBehaviour:
   attackRange: 1
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   wallLayer:
     serializedVersion: 2
     m_Bits: 8
   nearestTarget: {fileID: 0}
   attackTarget: {fileID: 0}
+  aggroTarget: {fileID: 0}
+  lastAggroTime: 0
+  aggroTime: 11
   inAttackRange: 0
 --- !u!61 &-4228504197720874875
 BoxCollider2D:
@@ -396,6 +399,9 @@ MonoBehaviour:
   stat: {fileID: 160595029483875892}
   pathFinder: {fileID: 0}
   isCriticalContext: 0
+  isFleeing: 0
+  raceText: {fileID: 0}
+  lastDetectedTarget: {fileID: 0}
 --- !u!114 &8462225806353567652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
+  isIndestructible: 0
+  requiredRank: 0
 --- !u!1 &7091806581842277606
 GameObject:
   m_ObjectHideFlags: 0

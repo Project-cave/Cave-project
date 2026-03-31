@@ -679,12 +679,15 @@ MonoBehaviour:
   attackRange: 5
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   wallLayer:
     serializedVersion: 2
     m_Bits: 8
   nearestTarget: {fileID: 0}
   attackTarget: {fileID: 0}
+  aggroTarget: {fileID: 0}
+  lastAggroTime: 0
+  aggroTime: 11
   inAttackRange: 0
 --- !u!114 &7672051797109798736
 MonoBehaviour:
@@ -733,7 +736,11 @@ MonoBehaviour:
   stat: {fileID: 7672051797109798736}
   pathFinder: {fileID: 0}
   isCriticalContext: 0
-  projectilePrefab: {fileID: 0}
+  isFleeing: 0
+  raceText: {fileID: 0}
+  lastDetectedTarget: {fileID: 0}
+  bulletPoolIndex: 5
+  criticalPoolIndex: 4
 --- !u!114 &2941821464306371570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,6 +754,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
+  isIndestructible: 0
+  requiredRank: 0
 --- !u!1 &8754398556438825716
 GameObject:
   m_ObjectHideFlags: 0

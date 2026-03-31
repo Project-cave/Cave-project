@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc564e3c7989a347acff0726663e7a0, type: 3}
   m_Name: PlatinumType
   m_EditorClassIdentifier: Assembly-CSharp::RankData
-  rankType: 0
+  rankType: 3
   hpMultiplier: 4
   atkMultiplier: 4
   defMultiplier: 4
