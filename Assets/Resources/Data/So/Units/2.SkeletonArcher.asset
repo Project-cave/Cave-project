@@ -14,16 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
   unitName: "\uD574\uACE8 \uAD81\uC218"
   unitNum: 1
-  race: 1
-  rank: 0
-  health: 20
-  isRanged: 1
-  Damage: 6
-  count: 3
-  range: 5
-  damageMult: 0.5
-  bulletSpeed: 1
-  speed: 0.8
+  raceType: 0
+  rankType: 0
+  baseHP: 40
+  attackType: 0
+  baseAtk: 15
+  baseAttackSpeed: 2
+  baseAttackRange: 3
+  damageMultiplier: 1
+  collisionSpeed: 1
+  baseMoveSpeed: 1
+  baseDefence: 1
+  critRate: 1
+  critMultiplier: 1
   unitDesc: "\uD574\uACE8 \uAD81\uC218 \uC785\uB2C8\uB2E4."
   request: 10
   requestDesc: "[\uD574\uACE8 \uAD81\uC218]\n\u2605\u2605\n\uC870\uAC74: 10"

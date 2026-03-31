@@ -68,7 +68,9 @@ public class UnitPlacementManager : MonoBehaviour
         TilemapManager.Instance.PlaceUnit(cellPosition, selectedUnit.unitPrefab);
         
         Debug.Log($"{selectedUnit.unitName} 배치 완료!");
-        
+
+        MapManager.instance.RecordPlacedBuilding(cellPosition, selectedUnit.unitName);
+
         // 배치 모드 종료
         CancelPlacement();
     }

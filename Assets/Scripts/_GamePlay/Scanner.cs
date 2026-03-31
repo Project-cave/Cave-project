@@ -32,8 +32,7 @@ public class Scanner : MonoBehaviour
         targetFilter.SetLayerMask(targetLayer);
         targetFilter.useTriggers = false;
     }
-
-
+    
     private void FixedUpdate()
     {
         hitCount = Physics2D.CircleCast(transform.position, scanRange, Vector2.zero, targetFilter, targets ,0f);

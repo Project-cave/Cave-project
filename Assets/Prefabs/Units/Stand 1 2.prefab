@@ -502,7 +502,7 @@ Transform:
   m_GameObject: {fileID: 7295768222200447943}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.5, y: -3.5, z: 0}
+  m_LocalPosition: {x: 26, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -701,20 +701,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea03cf6dd6ce52499e5dcf348739f73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatHandler
-  <MaxHP>k__BackingField: 0
-  <AttackPower>k__BackingField: 0
-  <Defence>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 0
-  <BaseAttackSpeed>k__BackingField: 0
-  <AttackRange>k__BackingField: 0
-  <DamageMultiplier>k__BackingField: 0
-  <CollisionSpeed>k__BackingField: 0
-  <CollisionEffect>k__BackingField: 
-  <CriticalRate>k__BackingField: 0
-  <CriticalMultiplier>k__BackingField: 0
+  <MaxHP>k__BackingField: 50
+  <AttackPower>k__BackingField: 1
+  <Defence>k__BackingField: 1
+  <MoveSpeed>k__BackingField: 1
+  <BaseAttackSpeed>k__BackingField: 1
+  <AttackRange>k__BackingField: 1
+  <DamageMultiplier>k__BackingField: 1
+  <CollisionSpeed>k__BackingField: 1
+  <CollisionEffect>k__BackingField: 1
+  <CriticalRate>k__BackingField: 1
+  <CriticalMultiplier>k__BackingField: 1
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0.8
-  <Sanity>k__BackingField: 0
+  <Sanity>k__BackingField: 1
   raceData: {fileID: 11400000, guid: df7a2b2b0a7f10b47aba3f367e8bc1a9, type: 2}
   classData: {fileID: 11400000, guid: a5c196e78f8caf245bf0d2486e011273, type: 2}
   rankData: {fileID: 11400000, guid: b3b152ec32bdc2741b19de414c381c1f, type: 2}
