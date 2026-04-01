@@ -10,6 +10,7 @@ public class Nodes : FastPriorityQueueNode
     public float fCost { get { return hCost + gCost; } }
 
     public bool isWall { get; }
+    public bool isNearWall { get; set; }
 
     public int XIndex { get; }
     public int YIndex { get; }
