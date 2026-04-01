@@ -9,34 +9,32 @@ public class Scanner : MonoBehaviour
     public float attackRange;
     public LayerMask targetLayer;
     public LayerMask wallLayer;
-    private RaycastHit2D[] targets = new RaycastHit2D[30];
-    private int hitCount;
+    private Collider2D[] targets = new Collider2D[30];
+    private int hitCount = 0;
     private ContactFilter2D targetFilter;
     [HideInInspector] public Transform nearestTarget;
     [HideInInspector] public Transform attackTarget;
     [HideInInspector] public Transform aggroTarget;
     [HideInInspector] public float lastAggroTime;
     public float aggroTime = 11.0f;
-    PlayerMovement player;
     EnemyStatHandler statHandler;
     public bool inAttackRange;
     public HashSet<Vector3Int> Explored { get; protected set; } = new HashSet<Vector3Int>();
 
     private void Awake()
     {
-        player = GetComponent<PlayerMovement>();
         statHandler = GetComponent<EnemyStatHandler>();
 
         targetFilter = new ContactFilter2D();
         targetFilter.useLayerMask = true;
         targetFilter.SetLayerMask(targetLayer);
-        targetFilter.useTriggers = false;
+        targetFilter.useTriggers = Physics2D.queriesHitTriggers;
     }
     
     private void FixedUpdate()
     {
-        hitCount = Physics2D.CircleCast(transform.position, scanRange, Vector2.zero, targetFilter, targets ,0f);
-        
+        hitCount = Physics2D.OverlapCircle(transform.position, scanRange, targetFilter, targets);
+
         if (aggroTarget != null)
         {
             if (!aggroTarget.gameObject.activeSelf) aggroTarget = null;
@@ -102,14 +100,13 @@ public class Scanner : MonoBehaviour
 
         for (int i = 0; i < hitCount; i++)
         {
-            RaycastHit2D target = targets[i];
+            Transform target = targets[i].transform;
 
-            if (target.transform == null || target.transform == transform) continue;
+            if (target == null || target == transform) continue;
 
             Targetable targetInfo = target.transform.GetComponent<Targetable>();
-            Vector3 targetPos = target.transform.position;
 
-            if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(targetPos, transform.position)) continue;
+            if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(target.position, transform.position)) continue;
 
             if (targetInfo.isIndestructible) continue;
 
@@ -119,7 +116,7 @@ public class Scanner : MonoBehaviour
             }
 
             int curPriority = targetInfo.priority;
-            float curDist = Vector3.Distance(mypos, targetPos);
+            float curDist = Vector3.Distance(mypos, target.position);
 
             if (isAttackingBuilding && curPriority < currentBuildingPriority && curDist > attackRange)
             {

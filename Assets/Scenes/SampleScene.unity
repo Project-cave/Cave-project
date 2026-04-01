@@ -288,8 +288,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   enemySpawner: {fileID: 456862865}
-  currentGrade: 2
-  currentStage: 2
+  currentGrade: 1
+  currentStage: 1
 --- !u!4 &24055175
 Transform:
   m_ObjectHideFlags: 0
@@ -3070,9 +3070,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PathFinder
   gridStartPoint: {x: -7, y: -18}
   gridEndPoint: {x: 51, y: 14}
-  cellSize: 1
-  collisionCheckSensorSize: {x: 0.3, y: 0.3}
-  priorityQueueMaxSize: 100
+  cellSize: 0.25
+  collisionCheckSensorSize: {x: 0.2, y: 0.2}
+  priorityQueueMaxSize: 8000
   layerTocheckCollide:
     serializedVersion: 2
     m_Bits: 8
@@ -22489,8 +22489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PoolManager
   prefabs:
   - {fileID: 4836709381487180731, guid: dd5db6f698510d947b12fbe216a0310d, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2777609182724018126, guid: 649637e90654021478b5992daddfbab1, type: 3}
   - {fileID: 5169438878288650987, guid: 72054f395223a29488babe9fd690f3f5, type: 3}
   - {fileID: 8733746590267342836, guid: 895db8914f23c5c478512d494ba733c4, type: 3}
   - {fileID: 8733746590267342836, guid: cf944002a5642dd4e978bf7d4b8fc71d, type: 3}
@@ -23182,6 +23181,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1264146839236079451, guid: dd5db6f698510d947b12fbe216a0310d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4026488461430167966, guid: dd5db6f698510d947b12fbe216a0310d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4026488461430167966, guid: dd5db6f698510d947b12fbe216a0310d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -39863,6 +39870,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6768705561486692508, guid: 649637e90654021478b5992daddfbab1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7474318032050432667, guid: 649637e90654021478b5992daddfbab1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7474318032050432667, guid: 649637e90654021478b5992daddfbab1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
