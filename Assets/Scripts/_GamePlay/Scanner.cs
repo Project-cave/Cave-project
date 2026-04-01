@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Scanner : MonoBehaviour
@@ -12,8 +10,8 @@ public class Scanner : MonoBehaviour
     private RaycastHit2D[] targets = new RaycastHit2D[30];
     private int hitCount;
     private ContactFilter2D targetFilter;
-    [HideInInspector] public Transform nearestTarget;
-    [HideInInspector] public Transform attackTarget;
+    public Transform nearestTarget;
+    public Transform attackTarget;
     [HideInInspector] public Transform aggroTarget;
     [HideInInspector] public float lastAggroTime;
     public float aggroTime = 11.0f;
@@ -32,11 +30,12 @@ public class Scanner : MonoBehaviour
         targetFilter.SetLayerMask(targetLayer);
         targetFilter.useTriggers = false;
     }
-    
+
     private void FixedUpdate()
     {
-        hitCount = Physics2D.CircleCast(transform.position, scanRange, Vector2.zero, targetFilter, targets ,0f);
-        
+        hitCount = Physics2D.CircleCast(transform.position, scanRange, Vector2.zero, targetFilter, targets, 0f);
+        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
+
         if (aggroTarget != null)
         {
             if (!aggroTarget.gameObject.activeSelf) aggroTarget = null;
@@ -73,9 +72,8 @@ public class Scanner : MonoBehaviour
             }
         }
 
-        if (nearestTarget != null)
-            attackTarget = GetAttackTarget();
-        else attackTarget = null;
+
+        attackTarget = GetAttackTarget();
     }
 
     // 우선도가 가장 높은 것 중 가까운 것을 찾도록 수정
@@ -138,6 +136,32 @@ public class Scanner : MonoBehaviour
                 result = target.transform;
             }
         }
+
+        foreach (RaycastHit2D target in targets)
+        {
+            if (target.transform == null || target.transform == transform) continue;
+
+            Targetable targetInfo = target.transform.GetComponent<Targetable>();
+            Vector3 targetPos = target.transform.position;
+
+            if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(targetPos, transform.position)) continue;
+
+            int curPriority = targetInfo.priority;
+            float curDist = Vector3.Distance(mypos, targetPos);
+
+            if (curPriority < bestPriority)
+            {
+                bestPriority = curPriority;
+                bestDist = curDist;
+                result = target.transform;
+            }
+            else if (curPriority == bestPriority && curDist < bestDist)
+            {
+                bestDist = curDist;
+                result = target.transform;
+            }
+        }
+
         return result;
     }
 
@@ -151,7 +175,7 @@ public class Scanner : MonoBehaviour
 
         Vector3 mypos = transform.position;
         Vector3 targetPos = nearestTarget.position;
-        float curDiff = Vector3.Distance(mypos,targetPos);
+        float curDiff = Vector3.Distance(mypos, targetPos);
 
         if (curDiff < attackRange)
         {
@@ -163,7 +187,7 @@ public class Scanner : MonoBehaviour
             inAttackRange = false;
         }
 
-            return result;
+        return result;
     }
 
     // 라인캐스팅
