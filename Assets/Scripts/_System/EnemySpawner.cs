@@ -134,7 +134,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void InitializeEnemy(RankData rankData, RaceData raceData, ClassData classData)
     {
-        GameObject spawnedEnemy = GameManager.instance.pool.Get(3);
+        GameObject spawnedEnemy = GameManager.instance.pool.Get(2);
         spawnedEnemy.transform.position = spawnPoint.position;
 
         EnemyStatHandler statHandler = spawnedEnemy.GetComponent<EnemyStatHandler>();

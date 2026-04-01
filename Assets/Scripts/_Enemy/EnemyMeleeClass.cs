@@ -16,7 +16,7 @@ public class EnemyMeleeClass : Enemy
                 {
                     finalDamage *= stat.CriticalMultiplier;
                 }
-                targetStat.TakeDamage(Mathf.RoundToInt(finalDamage));
+                targetStat.TakeDamage(Mathf.RoundToInt(finalDamage), transform);
             }
         }
     }

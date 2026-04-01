@@ -22,9 +22,11 @@ public abstract class Enemy : MonoBehaviour
 
     // 전투 관련
     [HideInInspector] public bool isCriticalContext;
+    [HideInInspector] public bool isFleeing = false;
 
     // 이동 관련
     public LinkedList<Vector2> currentPath = new LinkedList<Vector2>();
+    private float lastExploreTime = 0f;
 
     // 상태 머신
     EnemyState state;
@@ -35,6 +37,13 @@ public abstract class Enemy : MonoBehaviour
 
     // 임시 종족 구분용 텍스트
     public TMP_Text raceText;
+
+    // 이모티콘 세팅
+    [HideInInspector] public Transform lastDetectedTarget = null;
+    private SpriteRenderer emoticonSR;
+    private Sprite detectionSprite;
+    private Sprite painSprite;
+    private Coroutine emoticonCoroutine;
 
     #endregion
 
@@ -50,7 +59,11 @@ public abstract class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         healthBarTransform = GetComponentInChildren<HealthBar>().transform;
 
-        if (stat != null) stat.OnDeath += Death;
+        if (stat != null)
+        {
+            stat.OnDeath += Death;
+            stat.OnHit += HandleHit;
+        }
 
         explore = new ExploreState(this);
         chase = new ChaseState(this);
@@ -76,7 +89,11 @@ public abstract class Enemy : MonoBehaviour
             return;
         }
 
-        scanner.ExploreTiles();
+        if (Time.time - lastExploreTime > 0.2f)
+        {
+            scanner.ExploreTiles();
+            lastExploreTime = Time.time;
+        }
 
         if (state != null)
         {
@@ -86,7 +103,11 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        if (stat != null) stat.OnDeath -= Death;
+        if (stat != null)
+        {
+            stat.OnDeath -= Death;
+            stat.OnHit -= HandleHit;
+        }
     }
 
     #endregion
@@ -173,6 +194,22 @@ public abstract class Enemy : MonoBehaviour
             healthBarTransform.localPosition = new Vector3(0, topOfHead + 0.2f, 0);
         }
 
+        Transform emoTransform = transform.Find("Emoticon");
+        if (emoTransform != null)
+        {
+            emoticonSR = emoTransform.GetComponent<SpriteRenderer>();
+
+            detectionSprite = Resources.Load<Sprite>("Emoticon/Detection");
+            painSprite = Resources.Load<Sprite>("Emoticon/Pain");
+
+            if (sr != null && healthBarTransform != null)
+            {
+                float topOfHead = sr.bounds.extents.y;
+                emoticonSR.transform.localPosition = new Vector3(0, topOfHead + 0.6f, 0);
+                emoticonSR.gameObject.SetActive(false);
+            }
+        }
+
         ChangeState(explore);
     }
 
@@ -256,30 +293,6 @@ public abstract class Enemy : MonoBehaviour
         if (Vector2.Distance(rigid.position, targetPos) < 0.1f)
         {
             currentPath.RemoveFirst();
-            if (currentPath.Count == 0)
-            {
-                ArrivingTarget(Vector2Int.RoundToInt(targetPos));
-            }
-        }
-    }
-
-
-    // 타겟 로직
-    private void ArrivingTarget(Vector2Int pos)
-    {
-        if (scanner.nearestTarget == null || !scanner.nearestTarget.gameObject.activeSelf)
-        {
-            scanner.nearestTarget = null;
-            currentPath = null;
-            return;
-        }
-
-        if (Vector2Int.RoundToInt(transform.position) == Vector2Int.RoundToInt(scanner.nearestTarget.position))
-        {
-            // TODO 시설에게 도착했다는 신호 보내기
-            scanner.nearestTarget = null;
-            currentPath = null;
-            return;
         }
     }
 
@@ -297,6 +310,79 @@ public abstract class Enemy : MonoBehaviour
             if (currentPath == null || currentPath.Count == 0) return false;
             return true;
         }
+    }
+
+    public virtual void HandleHit(Transform attacker)
+    {
+        ShowEmoticon("Pain");
+
+        if (attacker == null) return;
+
+        int attackerPriority = int.MaxValue;
+        int currentPriority = int.MaxValue;
+
+        Targetable attackTargetable = attacker.GetComponent<Targetable>();
+        if (attackTargetable != null) { attackerPriority = attackTargetable.priority; }
+
+        if (scanner.aggroTarget == attacker)
+        {
+            scanner.lastAggroTime = Time.time;
+            return;
+        }
+
+        Targetable currentTargetable = (scanner.nearestTarget != null) ? scanner.nearestTarget.GetComponent<Targetable>() : null;
+        if (currentTargetable != null) { currentPriority = currentTargetable.priority; }
+
+        if (scanner.nearestTarget == null || currentPriority > attackerPriority)
+        {
+            scanner.aggroTarget = attacker;
+            scanner.lastAggroTime = Time.time;
+            scanner.nearestTarget = attacker;
+            ChangeState(chase);
+        }
+    }
+
+    public void ShowEmoticon(string type)
+    {
+        if (emoticonSR == null) return;
+
+        if (emoticonCoroutine != null) StopCoroutine(emoticonCoroutine);
+
+        if (type == "Detection" && detectionSprite != null)
+        {
+            emoticonSR.sprite = detectionSprite;
+            emoticonSR.transform.localScale = new Vector3(48f / 56f, 40f / 45f, 1f);
+        }
+        else if (type == "Pain" && painSprite != null)
+        {
+            emoticonSR.sprite = painSprite;
+            emoticonSR.transform.localScale = new Vector3(48f / 64f, 48f / 64f, 1f);
+        }
+
+        emoticonCoroutine = StartCoroutine(EmoticonRoutine());
+    }
+
+    private System.Collections.IEnumerator EmoticonRoutine()
+    {
+        Color c = emoticonSR.color;
+        c.a = 1f;
+        emoticonSR.color = c;
+        emoticonSR.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1.0f);
+
+        float fadeDuration = 0.5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            c.a = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            emoticonSR.color = c;
+
+            yield return null;
+        }
+        emoticonSR.gameObject.SetActive(false);
     }
 
     #endregion
