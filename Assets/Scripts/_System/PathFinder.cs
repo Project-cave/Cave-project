@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using Priority_Queue;
 
@@ -66,7 +65,35 @@ public class PathFinder : MonoBehaviour
             }
         }
 
+        for (int y = 0; y < numRows; y++)
+        {
+            for (int x = 0; x < numCols; x++)
+            {
+                if (nodes[x, y].isWall) continue;
+                bool isNearWall =
+                    isWallAtLocal(nodes, x + 1, y) || isWallAtLocal(nodes, x - 1, y) ||
+                    isWallAtLocal(nodes, x, y + 1) || isWallAtLocal(nodes, x, y - 1);
+                nodes[x, y].isNearWall = isNearWall;
+            }
+        }
+
         return nodes;
+    }
+
+    bool isWalkalbeAt(int x, int y, Nodes goalNode = null)
+    {
+        if (x < 0 || x >= numCols || y < 0 || y >= numRows) return false;
+        if (nodes[x, y].isWall) return false;
+        if (nodes[x, y].isNearWall && nodes[x, y] != goalNode) return false;
+
+        return true;
+    }
+
+    bool isWallAtLocal(Nodes[,] nodes, int x, int y)
+    {
+        if (x < 0 || x >= numCols || y < 0 || y >= numRows) return false;
+        if (nodes[x, y] == null) return false;
+        return nodes[x, y].isWall;
     }
 
     public LinkedList<Vector2> getShortestPath(Vector2 start, Vector2 goal, Vector2 unitSize)
@@ -367,7 +394,7 @@ public class PathFinder : MonoBehaviour
         {
             currentXDir += xDir;
 
-            if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
+            if (!isWalkalbeAt(currentXDir, currentYDir, goalNode)) return null;
             Nodes currentNode = nodes[currentXDir, currentYDir];
 
             if (currentNode == goalNode) return goalNode;
@@ -389,7 +416,7 @@ public class PathFinder : MonoBehaviour
         {
             currentYDir += yDir;
 
-            if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
+            if (!isWalkalbeAt(currentXDir, currentYDir, goalNode)) return null;
             Nodes currentNode = nodes[currentXDir, currentYDir];
 
             if (currentNode == goalNode) return goalNode;
@@ -412,7 +439,7 @@ public class PathFinder : MonoBehaviour
             currentXDir += xDir;
             currentYDir += yDir;
 
-            if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
+            if (!isWalkalbeAt(currentXDir, currentYDir, goalNode)) return null;
             Nodes currentNode = nodes[currentXDir, currentYDir];
 
             if (currentNode == goalNode) return goalNode;
@@ -437,10 +464,7 @@ public class PathFinder : MonoBehaviour
         }
     }
 
-    bool isWalkalbeAt(int x, int y)
-    {
-        return 0 <= x && x < numCols && 0 <= y && y < numRows && !nodes[x, y].isWall;
-    }
+    
 
     Nodes findNodeOnPosition(Vector2 position)
     {

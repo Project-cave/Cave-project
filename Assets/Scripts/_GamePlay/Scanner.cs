@@ -18,8 +18,12 @@ public class Scanner : MonoBehaviour
     {
         targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
         nearestTarget = GetNearest();
-        if(nearestTarget != null )
-            attackTarget = GetAttackTarget(); 
+        if (nearestTarget == null)
+        {
+            attackTarget = null;
+            return;
+        }
+        attackTarget = GetAttackTarget(); 
     }
 
     // 우선도가 가장 높은 것 중 가까운 것을 찾도록 수정
