@@ -13,7 +13,10 @@ public class AttackState : EnemyState
 
     public void Enter()
     {
-        owner.anim.SetBool("RunBool", false);
+        if (owner.anim != null && owner.anim.runtimeAnimatorController != null)
+        {
+            owner.anim.SetBool("RunBool", false);
+        }
         owner.rigid.linearVelocity = Vector2.zero;
     }
 
@@ -37,11 +40,6 @@ public class AttackState : EnemyState
         if (dist > owner.scanner.attackRange || isWallBlocked)
         {
             owner.ChangeState(owner.chase);
-            return;
-        }
-        else if (dist > owner.scanner.scanRange)
-        {
-            owner.ChangeState(owner.explore);
             return;
         }
 
@@ -73,6 +71,11 @@ public class AttackState : EnemyState
     void PerformAttack()
     {
         owner.rigid.linearVelocity = Vector2.zero;
+
+        if (owner.anim != null && owner.anim.runtimeAnimatorController != null)
+        {
+            owner.anim.SetBool("RunBool", false);
+        }
 
         bool isCrit = (Random.Range(0, 100) <= owner.stat.CriticalRate);
         owner.isCriticalContext = isCrit;

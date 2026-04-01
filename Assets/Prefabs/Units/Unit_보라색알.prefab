@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8200716668846552249}
   - component: {fileID: 7917401058191679739}
   - component: {fileID: 2772366047800746481}
-  m_Layer: 0
+  - component: {fileID: 5335234682318385424}
+  m_Layer: 8
   m_Name: "Unit_\uBCF4\uB77C\uC0C9\uC54C"
-  m_TagString: Untagged
+  m_TagString: Facility
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3825484145518176853}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.93346, y: -3.02237, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -128,3 +129,29 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.3984375
+--- !u!114 &5335234682318385424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3825484145518176853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 817a1ecd5abe6254e8d83782eae47e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FacilityStatHandler
+  <MaxHP>k__BackingField: 0
+  <AttackPower>k__BackingField: 0
+  <Defence>k__BackingField: 0
+  <MoveSpeed>k__BackingField: 0
+  <BaseAttackSpeed>k__BackingField: 0
+  <AttackRange>k__BackingField: 0
+  <DamageMultiplier>k__BackingField: 0
+  <CollisionSpeed>k__BackingField: 0
+  <CollisionEffect>k__BackingField: 
+  <CriticalRate>k__BackingField: 0
+  <CriticalMultiplier>k__BackingField: 0
+  <SpecialGimmick>k__BackingField: 
+  <AttackMotionDelay>k__BackingField: 0
+  facilityData: {fileID: 0}

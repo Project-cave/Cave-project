@@ -20,7 +20,7 @@ MonoBehaviour:
   moveSpeedMultiplier: 0.9
   baseAttackSpeed: 4.5
   baseAttackRange: 5
-  collisionSpeed: 0
+  collisionSpeed: 2.4
   collisionSpecial: 
   specialGimmick: 
   raceInfo:

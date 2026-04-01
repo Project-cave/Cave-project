@@ -58,7 +58,7 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                bullet.GetComponent<Bullet>().Init(id, damage, count, dir, 5 * unitCombat.bulletSpeed, "Enemy");
+                bullet.GetComponent<Bullet>().Init(id, damage, count, dir, 5 * unitCombat.bulletSpeed, "Enemy", transform);
                 break;
         }
     }

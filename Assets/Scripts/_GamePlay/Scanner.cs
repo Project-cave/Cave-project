@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Scanner : MonoBehaviour
@@ -8,22 +9,73 @@ public class Scanner : MonoBehaviour
     public float attackRange;
     public LayerMask targetLayer;
     public LayerMask wallLayer;
-    public RaycastHit2D[] targets;
-    public Transform nearestTarget;
-    public Transform attackTarget;
+    private RaycastHit2D[] targets = new RaycastHit2D[30];
+    private int hitCount;
+    private ContactFilter2D targetFilter;
+    [HideInInspector] public Transform nearestTarget;
+    [HideInInspector] public Transform attackTarget;
+    [HideInInspector] public Transform aggroTarget;
+    [HideInInspector] public float lastAggroTime;
+    public float aggroTime = 11.0f;
+    PlayerMovement player;
+    EnemyStatHandler statHandler;
     public bool inAttackRange;
     public HashSet<Vector3Int> Explored { get; protected set; } = new HashSet<Vector3Int>();
 
+    private void Awake()
+    {
+        player = GetComponent<PlayerMovement>();
+        statHandler = GetComponent<EnemyStatHandler>();
+
+        targetFilter = new ContactFilter2D();
+        targetFilter.useLayerMask = true;
+        targetFilter.SetLayerMask(targetLayer);
+        targetFilter.useTriggers = false;
+    }
+    
     private void FixedUpdate()
     {
-        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
-        nearestTarget = GetNearest();
-        if (nearestTarget == null)
+        hitCount = Physics2D.CircleCast(transform.position, scanRange, Vector2.zero, targetFilter, targets ,0f);
+        
+        if (aggroTarget != null)
         {
-            attackTarget = null;
-            return;
+            if (!aggroTarget.gameObject.activeSelf) aggroTarget = null;
+            else
+            {
+                float dist = Vector2.Distance(transform.position, aggroTarget.position);
+                bool inSight = dist <= scanRange && IsTargetVisible(aggroTarget.position, transform.position);
+
+                if (!inSight && Time.time - lastAggroTime > aggroTime) aggroTarget = null;
+            }
         }
-        attackTarget = GetAttackTarget(); 
+
+        nearestTarget = GetNearest();
+
+        if (aggroTarget != null)
+        {
+            if (nearestTarget == null)
+            {
+                nearestTarget = aggroTarget;
+            }
+            else
+            {
+                int aggroPriority = aggroTarget.GetComponent<Targetable>().priority;
+                int nearestPriority = nearestTarget.GetComponent<Targetable>().priority;
+
+                if (nearestPriority > aggroPriority)
+                {
+                    nearestTarget = aggroTarget;
+                }
+                else
+                {
+                    aggroTarget = null;
+                }
+            }
+        }
+
+        if (nearestTarget != null)
+            attackTarget = GetAttackTarget();
+        else attackTarget = null;
     }
 
     // 우선도가 가장 높은 것 중 가까운 것을 찾도록 수정
@@ -35,8 +87,23 @@ public class Scanner : MonoBehaviour
 
         Vector3 mypos = transform.position;
 
-        foreach (RaycastHit2D target in targets)
+        bool isAttackingBuilding = false;
+        int currentBuildingPriority = int.MaxValue;
+
+        if (attackTarget != null)
         {
+            Targetable currentTargetInfo = attackTarget.GetComponent<Targetable>();
+            if (currentTargetInfo != null && currentTargetInfo.priority > 1)
+            {
+                isAttackingBuilding = true;
+                currentBuildingPriority = currentTargetInfo.priority;
+            }
+        }
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            RaycastHit2D target = targets[i];
+
             if (target.transform == null || target.transform == transform) continue;
 
             Targetable targetInfo = target.transform.GetComponent<Targetable>();
@@ -44,8 +111,20 @@ public class Scanner : MonoBehaviour
 
             if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(targetPos, transform.position)) continue;
 
+            if (targetInfo.isIndestructible) continue;
+
+            if (statHandler != null && statHandler.rankData != null)
+            {
+                if ((int)statHandler.rankData.rankType < (int)targetInfo.requiredRank) continue;
+            }
+
             int curPriority = targetInfo.priority;
             float curDist = Vector3.Distance(mypos, targetPos);
+
+            if (isAttackingBuilding && curPriority < currentBuildingPriority && curDist > attackRange)
+            {
+                continue;
+            }
 
             if (curPriority < bestPriority)
             {
@@ -67,7 +146,8 @@ public class Scanner : MonoBehaviour
         Transform result = null;
 
         // 몬스터와 유닛만 타겟 설정 가능하게 수정
-        if (!nearestTarget.CompareTag("selectable") && !nearestTarget.CompareTag("Enemy")) return result;
+        if (!nearestTarget.CompareTag("selectable") && !nearestTarget.CompareTag("Enemy") &&
+            !nearestTarget.CompareTag("Facility")) return result;
 
         Vector3 mypos = transform.position;
         Vector3 targetPos = nearestTarget.position;
