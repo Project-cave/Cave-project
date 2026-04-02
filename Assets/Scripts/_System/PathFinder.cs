@@ -6,7 +6,7 @@ public class PathFinder : MonoBehaviour
 {
     [SerializeField] Vector2 gridStartPoint;
     [SerializeField] Vector2 gridEndPoint;
-    [SerializeField] float cellSize = 1.0f;
+    [SerializeField] float cellSize;
     [SerializeField] Vector2 collisionCheckSensorSize = new Vector2(1f, 1f);
     [SerializeField] int priorityQueueMaxSize = 200;
     public LayerMask layerTocheckCollide;

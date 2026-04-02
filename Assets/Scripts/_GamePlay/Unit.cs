@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour
     private UnitAnimator unitAnimator;
     private UnitCombat combat;
     private Scanner scanner;
+    private UnitStatHandler statHandler;
 
     public UnitMovement Movement => movement;
     public UnitAnimator Animator => unitAnimator;
@@ -34,6 +35,7 @@ public class Unit : MonoBehaviour
         unitAnimator = GetComponent<UnitAnimator>();
         combat = GetComponent<UnitCombat>();
         scanner = GetComponent<Scanner>();
+        statHandler = GetComponent<UnitStatHandler>();
 
         stateMachine = new StateMachine();
         idleState = new IdleState(this);
@@ -44,6 +46,7 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         stateMachine.ChangeState(idleState);
+        InitUnit(unitData);
     }
 
     private void Update()
@@ -64,6 +67,8 @@ public class Unit : MonoBehaviour
         combat.SetAttackRange(unitData.baseAttackRange);
         combat.health = unitData.baseHP;
         combat.bulletSpeed = unitData.baseAttackSpeed;
+
+        statHandler.InitializeStats(unitData);
     }
 
     public void MoveToPosition(Vector3 targetPosition)

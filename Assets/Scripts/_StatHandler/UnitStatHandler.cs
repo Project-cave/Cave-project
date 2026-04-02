@@ -2,10 +2,7 @@
 
 public class UnitStatHandler : StatHandler
 {
-    [Header("Data")]
-    [SerializeField] public UnitSo unitData;
-
-    public void InitializeStats()
+    public void InitializeStats(UnitSo unitData)
     {
         MaxHP = unitData.baseHP;
         AttackPower = unitData.baseAtk;
