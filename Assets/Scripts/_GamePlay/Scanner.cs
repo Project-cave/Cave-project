@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Scanner : MonoBehaviour
@@ -12,8 +10,8 @@ public class Scanner : MonoBehaviour
     private Collider2D[] targets = new Collider2D[30];
     private int hitCount = 0;
     private ContactFilter2D targetFilter;
-    [HideInInspector] public Transform nearestTarget;
-    [HideInInspector] public Transform attackTarget;
+    public Transform nearestTarget;
+    public Transform attackTarget;
     [HideInInspector] public Transform aggroTarget;
     [HideInInspector] public float lastAggroTime;
     public float aggroTime = 11.0f;
@@ -30,7 +28,7 @@ public class Scanner : MonoBehaviour
         targetFilter.SetLayerMask(targetLayer);
         targetFilter.useTriggers = Physics2D.queriesHitTriggers;
     }
-    
+
     private void FixedUpdate()
     {
         hitCount = Physics2D.OverlapCircle(transform.position, scanRange, targetFilter, targets);
@@ -71,9 +69,12 @@ public class Scanner : MonoBehaviour
             }
         }
 
-        if (nearestTarget != null)
-            attackTarget = GetAttackTarget();
-        else attackTarget = null;
+        if(nearestTarget == null)
+        {
+            attackTarget = null;
+            return;
+        }
+        attackTarget = GetAttackTarget();
     }
 
     // 우선도가 가장 높은 것 중 가까운 것을 찾도록 수정
@@ -118,6 +119,7 @@ public class Scanner : MonoBehaviour
             int curPriority = targetInfo.priority;
             float curDist = Vector3.Distance(mypos, target.position);
 
+
             if (isAttackingBuilding && curPriority < currentBuildingPriority && curDist > attackRange)
             {
                 continue;
@@ -148,7 +150,7 @@ public class Scanner : MonoBehaviour
 
         Vector3 mypos = transform.position;
         Vector3 targetPos = nearestTarget.position;
-        float curDiff = Vector3.Distance(mypos,targetPos);
+        float curDiff = Vector3.Distance(mypos, targetPos);
 
         if (curDiff < attackRange)
         {
@@ -160,7 +162,7 @@ public class Scanner : MonoBehaviour
             inAttackRange = false;
         }
 
-            return result;
+        return result;
     }
 
     // 라인캐스팅
