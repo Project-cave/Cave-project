@@ -158,10 +158,10 @@ public abstract class Enemy : MonoBehaviour
                 sr.sprite = stat.classData.classShape;
             }
 
-            if (raceText != null && stat.raceData != null)
+            /*if (raceText != null && stat.raceData != null)
             {
                 raceText.text = stat.raceData.raceType.ToString();
-            }
+            }*/
 
             if (anim != null && stat.classData != null && stat.raceData != null)
             {

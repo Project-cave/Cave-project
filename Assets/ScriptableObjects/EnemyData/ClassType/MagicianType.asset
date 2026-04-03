@@ -25,7 +25,7 @@ MonoBehaviour:
   specialGimmick: 
   raceInfo:
   - race: 0
-    animController: {fileID: 22100000, guid: 38af5bc9eeefe05429878bd9be29e3c4, type: 2}
+    animController: {fileID: 9100000, guid: 5bef7e8f38a6023489fdd56a66bbf7b2, type: 2}
     collisionMultiplier: 1.5
   - race: 1
     animController: {fileID: 22100000, guid: 38af5bc9eeefe05429878bd9be29e3c4, type: 2}
