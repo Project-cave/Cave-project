@@ -60,5 +60,6 @@ public class MoveState : IState
 
     public void Exit()
     {
+        unit.rigid.linearVelocity = Vector2.zero;
     }
 }

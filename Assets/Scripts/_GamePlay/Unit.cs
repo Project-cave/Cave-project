@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Unit : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class Unit : MonoBehaviour
     private UnitCombat combat;
     private Scanner scanner;
     private UnitStatHandler statHandler;
+    public Rigidbody2D rigid;
+    private SpriteRenderer sr;
 
     public UnitMovement Movement => movement;
     public UnitAnimator Animator => unitAnimator;
@@ -16,6 +19,7 @@ public class Unit : MonoBehaviour
 
     // StateMachine
     private StateMachine stateMachine;
+    private IState state;
     private IdleState idleState;
     private MoveState moveState;
     private UnitAttackState attackState;
@@ -29,6 +33,7 @@ public class Unit : MonoBehaviour
     public bool hasPlayerCommand = false;
     public bool HasPlayerCommand => hasPlayerCommand;
 
+    [HideInInspector] public bool isCriticalContext;
     private void Awake()
     {
         movement = GetComponent<UnitMovement>();
@@ -36,6 +41,13 @@ public class Unit : MonoBehaviour
         combat = GetComponent<UnitCombat>();
         scanner = GetComponent<Scanner>();
         statHandler = GetComponent<UnitStatHandler>();
+        rigid = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+
+        if (statHandler != null)
+        {
+            statHandler.OnDeath += Death;
+        }
 
         stateMachine = new StateMachine();
         idleState = new IdleState(this);
@@ -49,9 +61,33 @@ public class Unit : MonoBehaviour
         InitUnit(unitData);
     }
 
+    private void OnEnable()
+    {
+        if (stateMachine != null && IdleState != null)
+        {
+            stateMachine.ChangeState(IdleState);
+        }
+    }
+
     private void Update()
     {
+        if (statHandler.isDead) return;
+
+        if (Time.time - statHandler.LastAttackTime < statHandler.AttackMotionDelay)
+        {
+            rigid.linearVelocity = Vector2.zero;
+            return;
+        }
+
         stateMachine.Update();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (statHandler != null)
+        {
+            statHandler.OnDeath -= Death;
+        }
     }
 
     public void ChangeState(IState newState)
@@ -65,7 +101,6 @@ public class Unit : MonoBehaviour
         unitAnimator.SetAnimator(unitData.animController);
         movement.SetSpeed(unitData.baseMoveSpeed);
         combat.SetAttackRange(unitData.baseAttackRange);
-        combat.health = unitData.baseHP;
         combat.bulletSpeed = unitData.baseAttackSpeed;
 
         statHandler.InitializeStats(unitData);
@@ -110,5 +145,93 @@ public class Unit : MonoBehaviour
         {
             UnitManager.instance.UnRegisterUnit(gameObject);
         }
+    }
+
+    public void OnAnimAttackHit()
+    {
+        if (unitData.attackType == UnitSo.UnitAttackType.Melee) {
+            if (scanner.attackTarget != null)
+            {
+                StatHandler targetStat = scanner.attackTarget.GetComponent<StatHandler>();
+
+                if (targetStat != null)
+                {
+                    float finalDamage = statHandler.AttackPower * statHandler.DamageMultiplier;
+
+                    if (isCriticalContext)
+                    {
+                        finalDamage *= statHandler.CriticalMultiplier;
+                    }
+                    targetStat.TakeDamage(Mathf.RoundToInt(finalDamage), transform);
+
+                    Debug.Log(statHandler.AttackPower + "°ú " + statHandler.DamageMultiplier + " = " + finalDamage);
+                }
+            }
+        }
+
+        else
+        {
+            if (scanner.attackTarget != null && GameManager.instance.pool != null)
+            {
+                Vector2 spawnPos = transform.position;
+
+                GameObject bulletObj = GameManager.instance.pool.Get(combat.GetWeapon());
+
+                if (bulletObj == null) return;
+                bulletObj.transform.position = spawnPos;
+
+                Bullet bullet = bulletObj.GetComponent<Bullet>();
+
+                if (bullet != null)
+                {
+                    float finalDamage = statHandler.AttackPower * statHandler.DamageMultiplier;
+
+                    if (isCriticalContext)
+                    {
+                        finalDamage *= statHandler.CriticalMultiplier;
+                    }
+
+                    Vector2 dir = ((Vector2)scanner.attackTarget.position - spawnPos).normalized;
+
+                    string dynamicTargetTag = scanner.attackTarget.tag;
+
+                    bullet.Init(gameObject.GetInstanceID(), finalDamage, 0, dir, statHandler.CollisionSpeed, dynamicTargetTag, transform);
+                }
+            }
+        }
+    }
+
+    public void Death()
+    {
+        if (state != null)
+        {
+            state.Exit();
+            state = null;
+        }
+
+        GetComponent<Collider2D>().enabled = false;
+        rigid.linearVelocity = Vector2.zero;
+        rigid.bodyType = RigidbodyType2D.Kinematic;
+
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        float fadeTime = 1.0f;
+        float startAlpha = sr.color.a;
+        float time = 0;
+
+        while (time < fadeTime)
+        {
+            time += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, 0, time / fadeTime);
+
+            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, alpha);
+
+            yield return null;
+        }
+
+        gameObject.SetActive(false);
     }
 }

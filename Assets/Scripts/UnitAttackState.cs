@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class UnitAttackState : IState
 {
     private Unit unit;
@@ -22,7 +24,7 @@ public class UnitAttackState : IState
         }
 
         // АјАн
-        if (unit.Combat.HasTarget() && unit.Combat.IsEnemyInRange())
+        if (unit.Combat.CanAttack())
         {
             unit.Combat.AimAtTarget();
         }
@@ -42,5 +44,6 @@ public class UnitAttackState : IState
 
     public void Exit()
     {
+        unit.rigid.linearVelocity = Vector2.zero;
     }
 }

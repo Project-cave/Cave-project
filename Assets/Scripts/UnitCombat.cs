@@ -5,19 +5,35 @@ public class UnitCombat : MonoBehaviour
     private Weapon weapon;
     private Scanner scanner;
     private UnitAnimator unitAnimator;
+    private UnitStatHandler stat;
+    private Unit owner;
 
-    public int health;
     public float bulletSpeed;
 
     private void Awake()
     {
         scanner = GetComponent<Scanner>();
         unitAnimator = GetComponent<UnitAnimator>();
+        stat = GetComponent<UnitStatHandler>();
+        owner = GetComponent<Unit>();
+        weapon = GetComponent<Weapon>();
+    }
+
+    public bool CanAttack()
+    {
+        if (stat == null) return false;
+
+        return HasTarget() && IsEnemyInRange() && (Time.time - stat.LastAttackTime >= (1f / stat.BaseAttackSpeed));
     }
 
     public void SetWeapon(Weapon weapon)
     {
         this.weapon = weapon;
+    }
+
+    public int GetWeapon()
+    {
+        return weapon.id;
     }
 
     public void SetAttackRange(float range)
@@ -30,7 +46,9 @@ public class UnitCombat : MonoBehaviour
 
     public void AimAtTarget()
     {
-        if (scanner == null || scanner.attackTarget == null) return;
+        owner.rigid.linearVelocity = Vector2.zero;
+
+        if (!CanAttack()) return;
 
         Transform target = scanner.attackTarget;
         unitAnimator?.FaceTarget(target);
@@ -43,12 +61,22 @@ public class UnitCombat : MonoBehaviour
             else
                 weapon.transform.localPosition = new Vector3(-0.5f, 0, 0);
         }
+
+        bool isCrit = (Random.Range(0, 100) <= stat.CriticalRate);
+        owner.isCriticalContext = isCrit;
+
+        int skillIndex = isCrit ? 1 : 0;
+
+        if (unitAnimator != null) unitAnimator.PlayAttackMotion();
+
+        stat.OnAttack();
     }
 
     public void ExecuteMeleeAttack()
     {
         if (AudioManager.instance != null)
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Sword);
+        owner.OnAnimAttackHit();
     }
 
     public void ExecuteRangedAttack()
@@ -56,8 +84,7 @@ public class UnitCombat : MonoBehaviour
         if (AudioManager.instance != null)
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Magic);
 
-        if (weapon != null)
-            weapon.Fire();
+        owner.OnAnimAttackHit();
     }
 
     public bool IsEnemyInRange()
@@ -68,9 +95,5 @@ public class UnitCombat : MonoBehaviour
     public bool HasTarget()
     {
         return scanner != null && scanner.attackTarget != null;
-    }
-
-    public void Death()
-    {
     }
 }
