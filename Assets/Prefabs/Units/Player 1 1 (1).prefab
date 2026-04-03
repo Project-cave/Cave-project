@@ -587,9 +587,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4027f075f612d8649907f802042d645d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
-  unitData: {fileID: 11400000, guid: cfcef58a77eef864197946a8f7d1c14f, type: 2}
+  rigid: {fileID: 0}
+  unitData: {fileID: 11400000, guid: 8fc1210fcecc71743a2ac0c2fc4e34f2, type: 2}
   moveable: 0
   hasPlayerCommand: 0
+  isCriticalContext: 0
 --- !u!114 &6868573727484094375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,7 +604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f19b7cd033dfb4682ad33f7e26d0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitCombat
-  health: 0
   bulletSpeed: 0
 --- !u!114 &1085151388084710335
 MonoBehaviour:

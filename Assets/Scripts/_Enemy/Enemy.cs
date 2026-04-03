@@ -83,6 +83,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (stat.isDead) return;
+
         if (Time.time - stat.LastAttackTime < stat.AttackMotionDelay)
         {
             rigid.linearVelocity = Vector2.zero;

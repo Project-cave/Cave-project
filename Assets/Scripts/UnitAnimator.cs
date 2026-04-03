@@ -9,6 +9,9 @@ public class UnitAnimator : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (animator == null) Debug.Log("Animator 실종");
+        if (spriteRenderer == null) Debug.Log("SR 실종");
     }
 
     public void SetAnimator(RuntimeAnimatorController controller)
@@ -22,19 +25,21 @@ public class UnitAnimator : MonoBehaviour
     public void PlayIdle()
     {
         animator.SetBool("Run", false);
-        animator.SetBool("Attack", false);
     }
 
     public void PlayMove()
     {
         animator.SetBool("Run", true);
-        animator.SetBool("Attack", false);
     }
 
     public void PlayAttack()
     {
         animator.SetBool("Run", false);
-        animator.SetBool("Attack", true);
+    }
+
+    public void PlayAttackMotion()
+    {
+        animator.SetTrigger("AttackTrigger");
     }
 
     // === 스프라이트 반전 (이동) ===

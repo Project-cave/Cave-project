@@ -18,15 +18,15 @@ public class EnemyStatHandler : StatHandler
         MoveSpeed = raceData.baseMoveSpeed * (classData.moveSpeedMultiplier + rankData.moveSpeedMultiplier - 1);
         Sanity = Mathf.RoundToInt(raceData.baseSanity * rankData.sanMultiplier);
         BaseAttackSpeed = classData.baseAttackSpeed * rankData.attackSpeedMultiplier;
-        if(classData.attackType == EnemyAttackType.Melee) AttackRange = classData.baseAttackRange * rankData.meleeRangeMultiplier;
+        if (classData.attackType == EnemyAttackType.Melee) AttackRange = classData.baseAttackRange * rankData.meleeRangeMultiplier;
         else AttackRange = classData.baseAttackRange * rankData.rangedRangeMultiplier;
         DamageMultiplier = 1.0f;
 
-        if(classData.raceInfo != null)
+        if (classData.raceInfo != null)
         {
             foreach (var info in classData.raceInfo)
             {
-                if( (info.race == raceData.raceType))
+                if ((info.race == raceData.raceType))
                 {
                     DamageMultiplier = info.collisionMultiplier;
                     break;
@@ -41,5 +41,11 @@ public class EnemyStatHandler : StatHandler
         CurrentHP = MaxHP;
         LastAttackTime = -AttackMotionDelay;
         isDead = false;
+
+        Rigidbody2D rigid = GetComponent<Rigidbody2D>();
+        if (rigid != null)
+        {
+            rigid.bodyType = RigidbodyType2D.Dynamic;
+        }   
     }
 }

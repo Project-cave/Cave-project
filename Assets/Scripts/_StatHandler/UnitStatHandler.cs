@@ -7,15 +7,19 @@ public class UnitStatHandler : StatHandler
         MaxHP = unitData.baseHP;
         AttackPower = unitData.baseAtk;
         BaseAttackSpeed = unitData.baseAttackSpeed;
-        AttackRange = unitData.baseAttackRange;
         DamageMultiplier = unitData.damageMultiplier;
         CollisionSpeed = unitData.collisionSpeed;
-        MoveSpeed = unitData.baseMoveSpeed;
         CriticalRate = Mathf.RoundToInt(unitData.critRate * 100);
         CriticalMultiplier = unitData.critMultiplier;
 
         CurrentHP = MaxHP;
         LastAttackTime = -AttackMotionDelay;
         isDead = false;
+
+        Rigidbody2D rigid = GetComponent<Rigidbody2D>();
+        if (rigid != null)
+        {
+            rigid.bodyType = RigidbodyType2D.Dynamic;
+        }
     }
 }

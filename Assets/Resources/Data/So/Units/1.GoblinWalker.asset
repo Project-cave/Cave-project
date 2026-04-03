@@ -19,14 +19,14 @@ MonoBehaviour:
   baseHP: 50
   attackType: 0
   baseAtk: 10
-  baseAttackSpeed: 1
+  baseAttackSpeed: 2
   baseAttackRange: 1
-  damageMultiplier: 1
-  collisionSpeed: 1
+  damageMultiplier: 0.2
+  collisionSpeed: 0
   baseMoveSpeed: 1
-  baseDefence: 1
-  critRate: 1
-  critMultiplier: 1
+  baseDefence: 0
+  critRate: 0.01
+  critMultiplier: 1.1
   unitDesc: "\uACE0\uBE14\uB9B0 \uC6CC\uCEE4 \uC785\uB2C8\uB2E4."
   request: 5
   requestDesc: "[\uACE0\uBE14\uB9B0 \uC6CC\uCEE4]\n\u2605\n\uC870\uAC74: 5"

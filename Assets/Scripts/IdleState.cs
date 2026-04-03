@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class IdleState : IState
 {
     private Unit unit;
@@ -36,5 +38,6 @@ public class IdleState : IState
 
     public void Exit()
     {
+        unit.rigid.linearVelocity = Vector2.zero;
     }
 }
