@@ -53,6 +53,10 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemiesCoroutine(int grade, int stage)
     {
+
+
+        yield return new WaitForSeconds(spawnDelay);
+
         if (levelDatabase == null)
         {
             Debug.LogError("[StageEnemySpawner] LevelDatabase가 할당되지 않음.");
