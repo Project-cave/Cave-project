@@ -243,7 +243,15 @@ public abstract class Enemy : MonoBehaviour
     {
         anim.SetTrigger("DeathTrigger");
 
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return null;
+
+        float animLength = anim.GetCurrentAnimatorStateInfo(0).length;
+        float waitTime = 0f;
+        while (waitTime < animLength)
+        {
+            waitTime += Time.deltaTime;
+            yield return null;
+        }
 
         float fadeTime = 1.0f;
         float startAlpha = sr.color.a;

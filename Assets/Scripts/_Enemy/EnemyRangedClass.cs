@@ -49,6 +49,8 @@ public class EnemyRangedClass : Enemy
 
     public override void OnCombatBehaviour()
     {
+        anim.SetBool("RunBool", false);
+
         Vector2 targetPos = scanner.attackTarget.position;
         Vector2 bestPos = GetBestShootingPos(targetPos);
 
@@ -83,6 +85,8 @@ public class EnemyRangedClass : Enemy
                 pathFinder.getShortestPath(transform.position, targetPos);
             }
         }
+
+        if (!HasPath) return;
 
         anim.SetBool("RunBool", true);
         MoveToDestination();
