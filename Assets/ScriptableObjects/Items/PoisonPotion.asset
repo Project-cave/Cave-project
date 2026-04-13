@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PoisonPotion
   m_EditorClassIdentifier: Assembly-CSharp::CraftItemData
   itemName: "\uB3C5 \uD3EC\uC158"
-  itemSprite: {fileID: 21300000, guid: 21e1f9cacc525ea4abd6387ed3e13b29, type: 3}
+  itemSprite: {fileID: 3823759988827888349, guid: e504b21d52d223b4fba68337b88b40ed, type: 3}
   description: "\uB3C5\uC744 \uB2F4\uC740 \uD3EC\uC158"
