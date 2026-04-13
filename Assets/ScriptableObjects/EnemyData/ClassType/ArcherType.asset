@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da2ec76443bb9664e811e8102e7ef399, type: 3}
+  m_Name: ArcherType
+  m_EditorClassIdentifier: Assembly-CSharp::ClassData
+  classType: 1
+  attackType: 1
+  hpMultiplier: 0.9
+  atkMultiplier: 1.2
+  defMultiplier: 1
+  moveSpeedMultiplier: 1.2
+  baseAttackSpeed: 1.5
+  baseAttackRange: 4
+  collisionSpeed: 4.5
+  collisionSpecial: 
+  specialGimmick: 
+  raceInfo:
+  - race: 0
+    animController: {fileID: 22100000, guid: 38af5bc9eeefe05429878bd9be29e3c4, type: 2}
+    collisionMultiplier: 1.1
+  - race: 1
+    animController: {fileID: 22100000, guid: 38af5bc9eeefe05429878bd9be29e3c4, type: 2}
+    collisionMultiplier: 1.5
+  - race: 2
+    animController: {fileID: 22100000, guid: 38af5bc9eeefe05429878bd9be29e3c4, type: 2}
+    collisionMultiplier: 0.9
+  - race: 3
+    animController: {fileID: 22100000, guid: 38af5bc9eeefe05429878bd9be29e3c4, type: 2}
+    collisionMultiplier: 1
+  classShape: {fileID: 3625043607559282579, guid: 262f507606c537f47a09a63a93500034, type: 3}

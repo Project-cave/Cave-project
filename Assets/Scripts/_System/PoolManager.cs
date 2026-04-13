@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public GameObject[] prefebs;
+    public GameObject[] prefabs;
     public List<GameObject>[] pools;
 
-    void Start()
+    void Awake()
     {
-        pools = new List<GameObject>[prefebs.Length];
+        pools = new List<GameObject>[prefabs.Length];
         for (int index = 0; index < pools.Length; index++)
         {
             pools[index] = new List<GameObject>();
@@ -25,24 +24,25 @@ public class PoolManager : MonoBehaviour
             {
                 select = item;
                 select.SetActive(true);
+                
                 return select;
             }
         }
 
         if (!select)
         {
-            select = Instantiate(prefebs[index], transform);
+            select = Instantiate(prefabs[index], transform);
             pools[index].Add(select);
         }
 
-        GameManager.instance.SpawnUnit(select);
+        
         return select;
     }
 
     // 임시 코드
     public void EnemySpawn()
     {
-        GameObject spawned = Get(1);
+        GameObject spawned = Get(2);
         if (spawned != null && AudioManager.instance != null)
         {
             AudioManager.instance.PlaySfx(0);

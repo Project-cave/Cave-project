@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using Priority_Queue;
 
@@ -7,8 +6,8 @@ public class PathFinder : MonoBehaviour
 {
     [SerializeField] Vector2 gridStartPoint;
     [SerializeField] Vector2 gridEndPoint;
-    [SerializeField] float cellSize = 0.5f;
-    [SerializeField] Vector2 collisionCheckSensorSize = new Vector2(1, 1);
+    [SerializeField] float cellSize;
+    [SerializeField] Vector2 collisionCheckSensorSize = new Vector2(1f, 1f);
     [SerializeField] int priorityQueueMaxSize = 200;
     public LayerMask layerTocheckCollide;
     [SerializeField] bool optimizingPath = true;
@@ -36,8 +35,8 @@ public class PathFinder : MonoBehaviour
     void Start()
     {
         // 그리드 크기
-        numCols = (int)((gridEndPoint.x - gridStartPoint.x) / cellSize + 0.5);
-        numRows = (int)((gridEndPoint.y - gridStartPoint.y) / cellSize + 0.5);
+        numCols = Mathf.FloorToInt((gridEndPoint.x - gridStartPoint.x) / cellSize);
+        numRows = Mathf.FloorToInt((gridEndPoint.y - gridStartPoint.y) / cellSize);
 
         nodes = generateNodes();
 
@@ -58,15 +57,43 @@ public class PathFinder : MonoBehaviour
             for (int x = 0; x < numCols; x++)
             {
                 Vector2 nodeCenter = new Vector2(
-                    gridStartPoint.x + cellSize / 2 + x * cellSize,
-                    gridStartPoint.y + cellSize / 2 + y * cellSize);
+                    gridStartPoint.x + cellSize * 0.5f + x * cellSize,
+                    gridStartPoint.y + cellSize * 0.5f + y * cellSize);
 
                 bool isWall = null != Physics2D.OverlapBox(nodeCenter, collisionCheckSensorSize, 0, layerTocheckCollide);
                 nodes[x, y] = new Nodes(x, y, nodeCenter, isWall);
             }
         }
 
+        for (int y = 0; y < numRows; y++)
+        {
+            for (int x = 0; x < numCols; x++)
+            {
+                if (nodes[x, y].isWall) continue;
+                bool isNearWall =
+                    isWallAtLocal(nodes, x + 1, y) || isWallAtLocal(nodes, x - 1, y) ||
+                    isWallAtLocal(nodes, x, y + 1) || isWallAtLocal(nodes, x, y - 1);
+                nodes[x, y].isNearWall = isNearWall;
+            }
+        }
+
         return nodes;
+    }
+
+    bool isWalkalbeAt(int x, int y, Nodes goalNode = null)
+    {
+        if (x < 0 || x >= numCols || y < 0 || y >= numRows) return false;
+        if (nodes[x, y].isWall) return false;
+        if (nodes[x, y].isNearWall && nodes[x, y] != goalNode) return false;
+
+        return true;
+    }
+
+    bool isWallAtLocal(Nodes[,] nodes, int x, int y)
+    {
+        if (x < 0 || x >= numCols || y < 0 || y >= numRows) return false;
+        if (nodes[x, y] == null) return false;
+        return nodes[x, y].isWall;
     }
 
     public LinkedList<Vector2> getShortestPath(Vector2 start, Vector2 goal, Vector2 unitSize)
@@ -367,7 +394,7 @@ public class PathFinder : MonoBehaviour
         {
             currentXDir += xDir;
 
-            if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
+            if (!isWalkalbeAt(currentXDir, currentYDir, goalNode)) return null;
             Nodes currentNode = nodes[currentXDir, currentYDir];
 
             if (currentNode == goalNode) return goalNode;
@@ -389,7 +416,7 @@ public class PathFinder : MonoBehaviour
         {
             currentYDir += yDir;
 
-            if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
+            if (!isWalkalbeAt(currentXDir, currentYDir, goalNode)) return null;
             Nodes currentNode = nodes[currentXDir, currentYDir];
 
             if (currentNode == goalNode) return goalNode;
@@ -412,7 +439,7 @@ public class PathFinder : MonoBehaviour
             currentXDir += xDir;
             currentYDir += yDir;
 
-            if (!isWalkalbeAt(currentXDir, currentYDir)) return null;
+            if (!isWalkalbeAt(currentXDir, currentYDir, goalNode)) return null;
             Nodes currentNode = nodes[currentXDir, currentYDir];
 
             if (currentNode == goalNode) return goalNode;
@@ -437,10 +464,7 @@ public class PathFinder : MonoBehaviour
         }
     }
 
-    bool isWalkalbeAt(int x, int y)
-    {
-        return 0 <= x && x < numCols && 0 <= y && y < numRows && !nodes[x, y].isWall;
-    }
+    
 
     Nodes findNodeOnPosition(Vector2 position)
     {
@@ -458,8 +482,8 @@ public class PathFinder : MonoBehaviour
         }
 
         Vector2 relativePosition = position - gridStartPoint;
-        int x = (int)(relativePosition.x / cellSize);
-        int y = (int)(relativePosition.y / cellSize);
+        int x = Mathf.FloorToInt(relativePosition.x / cellSize);
+        int y = Mathf.FloorToInt(relativePosition.y / cellSize);
 
         if (x < 0 || x >= numCols || y < 0 || y >= numRows)
         {
@@ -512,7 +536,7 @@ public class PathFinder : MonoBehaviour
 
             if (minDist != -1 && curDist > minDist) break;
 
-            Vector3Int tilePos = Vector3Int.RoundToInt(current.nodeCenter);
+            Vector3Int tilePos = Vector3Int.FloorToInt(current.nodeCenter);
 
             if (!exploredTile.Contains(tilePos) && !current.isWall)
             {
