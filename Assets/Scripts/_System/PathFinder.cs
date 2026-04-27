@@ -4,10 +4,10 @@ using Priority_Queue;
 
 public class PathFinder : MonoBehaviour
 {
-    [SerializeField] Vector2 gridStartPoint;
-    [SerializeField] Vector2 gridEndPoint;
-    [SerializeField] float cellSize;
-    [SerializeField] Vector2 collisionCheckSensorSize = new Vector2(1f, 1f);
+    public Vector2 gridStartPoint;
+    public Vector2 gridEndPoint;
+    public float cellSize;
+    public Vector2 collisionCheckSensorSize = new Vector2(1f, 1f);
     [SerializeField] int priorityQueueMaxSize = 200;
     public LayerMask layerTocheckCollide;
     [SerializeField] bool optimizingPath = true;
