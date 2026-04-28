@@ -158,10 +158,10 @@ public abstract class Enemy : MonoBehaviour
                 sr.sprite = stat.classData.classShape;
             }
 
-            /*if (raceText != null && stat.raceData != null)
+            if (raceText != null && stat.raceData != null)
             {
                 raceText.text = stat.raceData.raceType.ToString();
-            }*/
+            }
 
             if (anim != null && stat.classData != null && stat.raceData != null)
             {
@@ -243,7 +243,15 @@ public abstract class Enemy : MonoBehaviour
     {
         anim.SetTrigger("DeathTrigger");
 
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return null;
+
+        float animLength = anim.GetCurrentAnimatorStateInfo(0).length;
+        float waitTime = 0f;
+        while (waitTime < animLength)
+        {
+            waitTime += Time.deltaTime;
+            yield return null;
+        }
 
         float fadeTime = 1.0f;
         float startAlpha = sr.color.a;
@@ -286,7 +294,7 @@ public abstract class Enemy : MonoBehaviour
         if (currentPath == null || currentPath.Count == 0) return;
 
         Vector2 targetPos = currentPath.First.Value;
-        float speed = stat.MoveSpeed;
+        float speed = stat.CurrentMoveSpeed;
 
         LookAt(targetPos);
 
@@ -388,4 +396,41 @@ public abstract class Enemy : MonoBehaviour
     }
 
     #endregion
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (scanner != null && scanner.Explored != null)
+        {
+            Gizmos.color = new Color(0f, 0f, 1f, 0.3f);
+            foreach (Vector3Int tilePos in scanner.Explored)
+            {
+                Vector3 center = new Vector3(tilePos.x + 0.5f, tilePos.y + 0.5f, 0f);
+                Gizmos.DrawCube(center, new Vector3(1f, 1f, 0.1f));
+            }
+        }
+
+        if (currentPath != null && currentPath.Count > 0)
+        {
+            Gizmos.color = Color.yellow;
+            Vector2 previousPos = transform.position;
+
+            foreach (Vector2 pathNode in currentPath)
+            {
+                Gizmos.DrawSphere(pathNode, 0.1f);
+                Gizmos.DrawLine(previousPos, pathNode);
+                previousPos = pathNode;
+            }
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(previousPos, 0.3f);
+        }
+
+        if (scanner != null && scanner.attackTarget != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(transform.position, scanner.attackTarget.position);
+        }
+    }
+#endif
 }

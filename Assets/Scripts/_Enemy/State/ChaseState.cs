@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ChaseState : EnemyState
@@ -37,7 +38,8 @@ public class ChaseState : EnemyState
 
         if (owner.scanner.attackTarget != null)
         {
-            if (owner.scanner.IsTargetVisible(owner.scanner.nearestTarget.position, owner.transform.position))
+            if (owner.scanner.CanAttack(owner.scanner.nearestTarget.position,
+                owner.transform.position, owner.stat.projectileRadius))
             {
                 owner.ChangeState(owner.attack);
                 return;
@@ -83,8 +85,12 @@ public class ChaseState : EnemyState
     {
         if (owner.scanner.nearestTarget == null) return;
 
-        owner.currentPath =
-            owner.pathFinder.getShortestPath(owner.transform.position, owner.scanner.nearestTarget.position);
+        Vector2 snappedStart = GridConverter.SnapToLogicalGridCenter(owner.transform.position);
+        Vector2 snappedGoal = GridConverter.SnapToLogicalGridCenter(owner.scanner.nearestTarget.position);
+
+        LinkedList<Vector2> rawPath = owner.pathFinder.getShortestPath(snappedStart, snappedGoal);
+
+        owner.currentPath = GridConverter.CompressPathToLogicalGrid(rawPath);
     }
 
     #endregion

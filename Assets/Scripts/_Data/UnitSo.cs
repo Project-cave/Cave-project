@@ -23,6 +23,7 @@ public class UnitSo : ScriptableObject
     public int baseDefence;
     public float critRate;
     public float critMultiplier;
+    /* public BullletSo bulletData; */
     // 특수 기믹 안넣음
 
     [TextArea]

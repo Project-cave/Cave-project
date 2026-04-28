@@ -109,8 +109,6 @@ public class Scanner : MonoBehaviour
 
             if (targetInfo == null || !targetInfo.IsActive || !IsTargetVisible(target.position, transform.position)) continue;
 
-            if (targetInfo.isIndestructible) continue;
-
             if (statHandler != null && statHandler.rankData != null)
             {
                 if ((int)statHandler.rankData.rankType < (int)targetInfo.requiredRank) continue;
@@ -173,12 +171,22 @@ public class Scanner : MonoBehaviour
         return hitWall.collider == null;
     }
 
+    public bool CanAttack(Vector3 to, Vector3 from, float radius)
+    {
+        Vector2 dir = (to - from).normalized;
+        float dist = Vector2.Distance(from, to);
+
+        RaycastHit2D hitWall = Physics2D.CircleCast(from, radius, dir, dist, wallLayer);
+
+        return hitWall.collider == null;
+    }
+
     // 타일 탐색
     public void ExploreTiles()
     {
-        int currentX = Mathf.RoundToInt(transform.position.x);
-        int currentY = Mathf.RoundToInt(transform.position.y);
-        Vector3Int currentIndex = new Vector3Int(currentX, currentY, 0);
+        int currentX = Mathf.FloorToInt(transform.position.x);
+        int currentY = Mathf.FloorToInt(transform.position.y);
+        Vector3 currentPos = new Vector3(currentX + 0.5f, currentY + 0.5f, 0);
 
         int scan = Mathf.CeilToInt(scanRange);
 
@@ -189,8 +197,8 @@ public class Scanner : MonoBehaviour
                 Vector3Int targetIndex = new Vector3Int(currentX + x, currentY + y, 0);
                 Vector3 targetPos = new Vector3(currentX + x + 0.5f, currentY + y + 0.5f, 0);
 
-                if (Vector3.Distance(transform.position, targetPos) > scanRange || Explored.Contains(targetIndex) ||
-                    !IsTargetVisible(targetPos, transform.position)) continue;
+                if (Vector3.Distance(currentPos, targetPos) > scanRange || Explored.Contains(targetIndex) ||
+                    !IsTargetVisible(targetPos, currentPos)) continue;
 
                 Explored.Add(targetIndex);
             }

@@ -20,6 +20,7 @@ MonoBehaviour:
   moveSpeedMultiplier: 0.9
   baseAttackSpeed: 5
   baseAttackRange: 5
+  bulletData: {fileID: 11400000, guid: 30ca7548993eb5846b84993cf8547f70, type: 2}
   collisionSpeed: 3
   collisionSpecial: 
   specialGimmick: 

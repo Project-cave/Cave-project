@@ -12,6 +12,13 @@ public class UnitStatHandler : StatHandler
         CriticalRate = Mathf.RoundToInt(unitData.critRate * 100);
         CriticalMultiplier = unitData.critMultiplier;
 
+        /* if (unitData.attackType == UnitSo.UnitAttackType.Ranged)
+        {
+            if (unitData.bulletData != null) projectileRadius = unitData.bulletData.radius;
+            else projectileRadius = 0.2f;
+        }
+        else projectileRadius = 0f; */
+
         CurrentHP = MaxHP;
         LastAttackTime = -AttackMotionDelay;
         isDead = false;
