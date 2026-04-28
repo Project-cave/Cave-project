@@ -8,8 +8,7 @@ public class FacilityData : ScriptableObject
     public FacilityType facilityType;  // 종류
     public Sprite facilitySprite;  // 스프라이트
     public GameObject facilityPrefab;  // 프리팹 (있으면)
-    public int baseHP;
-
+    
     [Header("건설 조건")]
     public int woodCost;   // 목재 비용
     public int scrapCost;  // 고철 비용

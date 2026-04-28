@@ -20,7 +20,7 @@ public class GameUIManager : MonoBehaviour
             int index = 0;
             MonsterPanel.SetActive(true);
 
-            foreach (var monsterSpawner in FacilityPlacementManager.Instance.placedFacilities)
+            foreach (var monsterSpawner in SpawnFacilityManager.Instance.placedFacilities)
             {
                 if(monsterSpawner.Value == monsterData)
                 {
