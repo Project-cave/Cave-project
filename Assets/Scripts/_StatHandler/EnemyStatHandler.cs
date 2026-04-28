@@ -15,12 +15,18 @@ public class EnemyStatHandler : StatHandler
         MaxHP = Mathf.RoundToInt(raceData.baseHP * (classData.hpMultiplier + rankData.hpMultiplier - 1));
         AttackPower = Mathf.RoundToInt(raceData.baseAtk * (classData.atkMultiplier + rankData.atkMultiplier - 1));
         Defence = Mathf.RoundToInt(raceData.baseDef * (classData.defMultiplier + rankData.defMultiplier - 1));
-        MoveSpeed = raceData.baseMoveSpeed * (classData.moveSpeedMultiplier + rankData.moveSpeedMultiplier - 1);
+        BaseMoveSpeed = raceData.baseMoveSpeed * (classData.moveSpeedMultiplier + rankData.moveSpeedMultiplier - 1);
         Sanity = Mathf.RoundToInt(raceData.baseSanity * rankData.sanMultiplier);
         BaseAttackSpeed = classData.baseAttackSpeed * rankData.attackSpeedMultiplier;
         if (classData.attackType == EnemyAttackType.Melee) AttackRange = classData.baseAttackRange * rankData.meleeRangeMultiplier;
         else AttackRange = classData.baseAttackRange * rankData.rangedRangeMultiplier;
         DamageMultiplier = 1.0f;
+        if (classData.attackType == EnemyAttackType.Ranged)
+        {
+            if (classData.bulletData != null) projectileRadius = classData.bulletData.radius;
+            else projectileRadius = 0.2f;
+        }
+        else projectileRadius = 0f;
 
         if (classData.raceInfo != null)
         {

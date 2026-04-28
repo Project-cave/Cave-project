@@ -49,6 +49,8 @@ public class EnemyRangedClass : Enemy
 
     public override void OnCombatBehaviour()
     {
+        anim.SetBool("RunBool", false);
+
         Vector2 targetPos = scanner.attackTarget.position;
         Vector2 bestPos = GetBestShootingPos(targetPos);
 
@@ -72,7 +74,7 @@ public class EnemyRangedClass : Enemy
 
         Vector2 goal = currentPath.Last.Value;
         bool targetMoved = Vector2.Distance(bestPos, goal) > 1.5f;
-        bool canAttack = scanner.IsTargetVisible(goal, targetPos) &&
+        bool canAttack = scanner.CanAttack(goal, targetPos, stat.projectileRadius) &&
             (Vector2.Distance(goal, targetPos) <= scanner.attackRange);
         
         if (targetMoved || !canAttack)
@@ -83,6 +85,8 @@ public class EnemyRangedClass : Enemy
                 pathFinder.getShortestPath(transform.position, targetPos);
             }
         }
+
+        if (!HasPath) return;
 
         anim.SetBool("RunBool", true);
         MoveToDestination();
@@ -111,7 +115,7 @@ public class EnemyRangedClass : Enemy
                 float dist = Vector2.Distance(checkPos, targetPos);
                 float moveDist = Vector2.Distance(transform.position, checkPos);
 
-                if (dist > scanner.attackRange || !scanner.IsTargetVisible(checkPos, targetPos) ||
+                if (dist > scanner.attackRange || !scanner.CanAttack(checkPos, targetPos, stat.projectileRadius) ||
                     !scanner.IsTargetVisible(checkPos, transform.position)) continue;
 
                 float targetDist = Vector2.Distance(transform.position, targetPos);

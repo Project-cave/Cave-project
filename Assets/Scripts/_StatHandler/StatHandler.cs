@@ -9,7 +9,7 @@ public abstract class StatHandler : MonoBehaviour
     [field: SerializeField] public int MaxHP { get; protected set; }
     [field: SerializeField] public int AttackPower { get; protected set; }
     [field: SerializeField] public int Defence { get; protected set; }
-    [field: SerializeField] public float MoveSpeed { get; protected set; }
+    [field: SerializeField] public float BaseMoveSpeed { get; protected set; }
     [field: SerializeField] public float BaseAttackSpeed { get; protected set; }
     [field: SerializeField] public float AttackRange { get; protected set; }
     [field: SerializeField] public float DamageMultiplier { get; protected set; }
@@ -29,6 +29,8 @@ public abstract class StatHandler : MonoBehaviour
     private int currentHP;
     public float LastAttackTime { get; protected set; }
     private float attackSpeedPercentage = 1.0f;
+    private float moveSpeedPercentage = 1.0f;
+    public float projectileRadius { get; protected set; }
 
     #endregion
 
@@ -40,6 +42,15 @@ public abstract class StatHandler : MonoBehaviour
         {
             if (attackSpeedPercentage <= 0) return BaseAttackSpeed;
             return BaseAttackSpeed / attackSpeedPercentage;
+        }
+    }
+
+    public float CurrentMoveSpeed
+    {
+        get
+        {
+            if (moveSpeedPercentage <= 0) return BaseMoveSpeed;
+            return BaseMoveSpeed * moveSpeedPercentage;
         }
     }
 
@@ -90,6 +101,11 @@ public abstract class StatHandler : MonoBehaviour
     public void AddAttackSpeedPercentage(float percentage)
     {
         attackSpeedPercentage += percentage;
+    }
+
+    public void AddMoveSpeedPercentage(float percentage)
+    {
+        moveSpeedPercentage += percentage;
     }
 
     #endregion

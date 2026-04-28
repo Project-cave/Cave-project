@@ -84,6 +84,7 @@ public class UnitCombat : MonoBehaviour
         if (AudioManager.instance != null)
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Magic);
 
+        weapon.Fire();
         owner.OnAnimAttackHit();
     }
 

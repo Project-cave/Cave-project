@@ -27,6 +27,7 @@ public class ClassData : ScriptableObject
     public float baseAttackRange;
 
     [Header("콜리전 및 특수 기믹")]
+    public BullletSo bulletData;
     public float collisionSpeed;
     public string collisionSpecial; // TODO: 상태이상 enum 만들기
     public string specialGimmick;   // TODO: 현재 없음
