@@ -26,6 +26,10 @@ public class FacilityPlacementManager : MonoBehaviour
     private Dictionary<Vector3Int, GameObject> placedFacilities = new Dictionary<Vector3Int, GameObject>();
     private Dictionary<Vector3Int, FacilityData> facilityDataMap = new Dictionary<Vector3Int, FacilityData>();
     private Dictionary<Vector3Int, UnitSo> spawnFacilityUnits = new Dictionary<Vector3Int, UnitSo>();  // 소환진 → 유닛 매핑
+    public Dictionary<Vector3Int, FacilityData> GetPlacedFacilityData()
+    {
+        return facilityDataMap;
+    }
     
     void Awake()
     {
