@@ -16,6 +16,7 @@ MonoBehaviour:
   facilityType: 1
   facilitySprite: {fileID: 21300000, guid: b6c411d2a9a577a48a2175ad3c06fbeb, type: 3}
   facilityPrefab: {fileID: 0}
+  baseHP: 800
   woodCost: 5
   scrapCost: 0
   stoneCost: 0

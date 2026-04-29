@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 655709798738885468, guid: 6f50af07851bbdb4f858f4680b7917eb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: be91d3dfa65aa7242954bdd1125ce302, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -134,7 +134,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.53, y: 0.27}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -155,7 +155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 2
-  isIndestructible: 0
   requiredRank: 1
 --- !u!114 &-6892750988076448141
 MonoBehaviour:
@@ -182,7 +181,7 @@ MonoBehaviour:
   <CriticalMultiplier>k__BackingField: 0
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0
-  facilityData: {fileID: 11400000, guid: dc20934080688bd41b2d7a049a7f4f2b, type: 2}
+  facilityData: {fileID: 11400000, guid: 002894de800579d48a77e31139cb79a5, type: 2}
 --- !u!114 &-4215785452862305971
 MonoBehaviour:
   m_ObjectHideFlags: 0
