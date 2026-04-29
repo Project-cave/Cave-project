@@ -86,6 +86,29 @@ public class PathFinder : MonoBehaviour
         if (nodes[x, y].isWall) return false;
         if (nodes[x, y].isNearWall && nodes[x, y] != goalNode) return false;
 
+        int clearance = 1;
+
+        for (int i = -clearance; i <= clearance; i++)
+        {
+            for (int j = -clearance; j <= clearance; j++)
+            {
+                int checkX = x + i;
+                int checkY = y + j;
+
+                if (checkX >= 0 && checkX < numCols && checkY >= 0 && checkY < numRows)
+                {
+                    if (nodes[checkX, checkY] != null && nodes[checkX, checkY].isWall)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
@@ -512,10 +535,22 @@ public class PathFinder : MonoBehaviour
         }
     }
 
+    private bool CanStepSafely(int startX, int startY, int dirX, int dirY, int step)
+    {
+        for (int i = 1; i <= step; i++)
+        {
+            if (!isWalkalbeAt(startX + (dirX * i), startY + (dirY * i)))
+                return false;
+        }
+        return true;
+    }
+
     // 가장 가까운 미탐색 타일 찾기 (BFS)
     public LinkedList<Vector2> FindNearestUnexplored(Vector2 startPos, HashSet<Vector3Int> exploredTile)
     {
-        Nodes startNode = findNodeOnPosition(startPos);
+        Vector2 snappedStart = new Vector2(Mathf.Floor(startPos.x) + 0.5f, Mathf.Floor(startPos.y) + 0.5f);
+
+        Nodes startNode = findNodeOnPosition(snappedStart);
         if (startNode == null) return null;
 
         Queue<Nodes> queue = new Queue<Nodes>();
@@ -528,6 +563,8 @@ public class PathFinder : MonoBehaviour
 
         int minDist = -1;
         List<Nodes> candidates = new List<Nodes>();
+
+        int step = Mathf.RoundToInt(1.0f / cellSize);
 
         while (queue.Count > 0)
         {
@@ -549,9 +586,9 @@ public class PathFinder : MonoBehaviour
 
             foreach (var d in directions)
             {
-                int nextX = current.XIndex + d.x, nextY = current.YIndex + d.y;
-                if (isWalkalbeAt(nextX, nextY))
+                if (CanStepSafely(current.XIndex, current.YIndex, d.x, d.y, step))
                 {
+                    int nextX = current.XIndex + d.x * step, nextY = current.YIndex + d.y * step;
                     Nodes nextNode = nodes[nextX, nextY];
 
                     if (!distMap.ContainsKey(nextNode))
@@ -566,7 +603,7 @@ public class PathFinder : MonoBehaviour
 
         if (candidates.Count > 0)
         {
-            Nodes targetNode = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+            Nodes targetNode = candidates[Random.Range(0, candidates.Count)];
             return ReconstructPath(parentMap, targetNode);
         }
         return null;
@@ -580,7 +617,10 @@ public class PathFinder : MonoBehaviour
 
         while (current != null)
         {
-            path.AddFirst(current.nodeCenter);
+            float snappedX = Mathf.Floor(current.nodeCenter.x) + 0.5f;
+            float snappedY = Mathf.Floor(current.nodeCenter.y) + 0.5f;
+
+            path.AddFirst(new Vector2(snappedX, snappedY));
 
             if (!parentMap.ContainsKey(current)) break;
             current = parentMap[current];

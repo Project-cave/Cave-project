@@ -35,7 +35,8 @@ public class AttackState : EnemyState
         }
 
         float dist = Vector2.Distance(owner.transform.position, owner.scanner.attackTarget.position);
-        bool isWallBlocked = !owner.scanner.IsTargetVisible(owner.scanner.attackTarget.position, owner.transform.position);
+        bool isWallBlocked = !owner.scanner.CanAttack(owner.scanner.attackTarget.position,
+            owner.transform.position, owner.stat.projectileRadius);
 
         if (dist > owner.scanner.attackRange || isWallBlocked)
         {

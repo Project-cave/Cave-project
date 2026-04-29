@@ -188,7 +188,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.32108736, y: 0.320181}
+  m_Size: {x: 0.325, y: 0.325}
   m_EdgeRadius: 0
 --- !u!114 &2962481301456282777
 MonoBehaviour:
@@ -206,4 +206,6 @@ MonoBehaviour:
   Damage: 1
   per: 1
   id: 0
+  radius: 0
+  bulletData: {fileID: 11400000, guid: 30ca7548993eb5846b84993cf8547f70, type: 2}
   BulletTime: 0

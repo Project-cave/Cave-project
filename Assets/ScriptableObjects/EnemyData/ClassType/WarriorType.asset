@@ -20,12 +20,13 @@ MonoBehaviour:
   moveSpeedMultiplier: 1
   baseAttackSpeed: 2
   baseAttackRange: 1
+  bulletData: {fileID: 0}
   collisionSpeed: 0
   collisionSpecial: 
   specialGimmick: 
   raceInfo:
   - race: 0
-    animController: {fileID: 9100000, guid: e5fa9ffc531f05541b5e2ec47a7b8b59, type: 2}
+    animController: {fileID: 22100000, guid: 182912279039df246b117dd318bf096e, type: 2}
     collisionMultiplier: 1
   - race: 1
     animController: {fileID: 22100000, guid: 182912279039df246b117dd318bf096e, type: 2}

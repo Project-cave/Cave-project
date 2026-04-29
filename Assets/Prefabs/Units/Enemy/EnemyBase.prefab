@@ -167,7 +167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3770774913149734133
 RectTransform:
   m_ObjectHideFlags: 0
@@ -305,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1378278199574826562
 RectTransform:
   m_ObjectHideFlags: 0
@@ -760,7 +760,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
-  isIndestructible: 0
   requiredRank: 0
 --- !u!114 &5189565831479959291
 MonoBehaviour:
@@ -777,7 +776,7 @@ MonoBehaviour:
   <MaxHP>k__BackingField: 0
   <AttackPower>k__BackingField: 0
   <Defence>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 0
+  <BaseMoveSpeed>k__BackingField: 0
   <BaseAttackSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <DamageMultiplier>k__BackingField: 0

@@ -33,7 +33,7 @@ public class InventorySlot : MonoBehaviour
         }
     }
     
-    public void Clear()
+    public void ClearSlot()
     {
         itemData = null;
         count = 0;
@@ -49,5 +49,11 @@ public class InventorySlot : MonoBehaviour
             itemCountText.text = "";
             itemCountText.enabled = false;
         }
+    }
+    
+    // 호환성을 위한 메서드
+    public void Clear()
+    {
+        ClearSlot();
     }
 }

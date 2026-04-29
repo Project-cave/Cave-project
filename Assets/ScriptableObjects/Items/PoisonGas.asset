@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17dbeb5664c08e34cb4009342c45b63a, type: 3}
+  m_Name: PoisonGas
+  m_EditorClassIdentifier: Assembly-CSharp::CraftItemData
+  itemName: "\uB3C5\uAC00\uC2A4"
+  itemSprite: {fileID: 1984309674715394379, guid: 430f1f161ee598f4981dab8d3b10f4d0, type: 3}
+  description: "\uB3C5\uAC70\uBD81\uC774 \uC0DD\uC0B0\uD55C \uB3C5\uAC00\uC2A4. \uB9F9\uB3C5
+    \uACB0\uC815\uC758 \uC7AC\uB8CC\uC785\uB2C8\uB2E4"
