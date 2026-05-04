@@ -19,7 +19,7 @@ public class UnitSpawner : MonoBehaviour
 
     public void SpawnWizard()
     {
-        GameObject select = GameManager.instance.pool.Get(0);
+        GameObject select = GameManager.instance.pool.Get(1);
         GameManager.instance.spawnUnit = select;
         select.transform.position = new Vector2(9.5f, -13.2f);
         select.GetComponent<Unit>().InitUnit(unitData[1]);

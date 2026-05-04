@@ -37,5 +37,5 @@ MonoBehaviour:
     material: 1
     materialDesc: 1
   unitPrefab: {fileID: 0}
-  animController: {fileID: 0}
+  animController: {fileID: 22100000, guid: 32a0f37b7104ac24fbca2d9a18d075b5, type: 2}
   debuffPrefab: {fileID: 0}
