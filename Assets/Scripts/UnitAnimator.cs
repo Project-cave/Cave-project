@@ -5,7 +5,16 @@ public class UnitAnimator : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    animator = GetComponent<Animator>();
+    //    spriteRenderer = GetComponent<SpriteRenderer>();
+
+    //    if (animator == null) Debug.Log("Animator 실종");
+    //    if (spriteRenderer == null) Debug.Log("SR 실종");
+    //}
+
+    private void OnEnable()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -24,6 +33,7 @@ public class UnitAnimator : MonoBehaviour
 
     public void PlayIdle()
     {
+        if (animator == null) { Debug.LogError("animator null! " + gameObject.name); return; }
         animator.SetBool("Run", false);
     }
 

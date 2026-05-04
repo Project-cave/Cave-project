@@ -4855,32 +4855,25 @@ MonoBehaviour:
   woodText: {fileID: 1638152648}
   scrapText: {fileID: 2050322538}
   stoneText: {fileID: 677222420}
-  unitButtons:
-  - {fileID: 1881786122}
-  - {fileID: 414295871}
-  - {fileID: 1653697366}
-  - {fileID: 621991058}
-  unitButtonImages:
-  - {fileID: 1381932792}
-  - {fileID: 559965873}
-  - {fileID: 1547601447}
-  - {fileID: 1199526322}
-  unitCostTexts:
-  - {fileID: 1970102017}
-  - {fileID: 977517311}
-  - {fileID: 32344985}
-  - {fileID: 1025857817}
-  spawnPortalUnitData: {fileID: 11400000, guid: 0f34c4e1d33934a4a829016c5f67ab6e, type: 2}
-  craftConfirmPanel: {fileID: 2072583560}
-  craftItemImage: {fileID: 1313046283}
-  craftItemNameText: {fileID: 1067550042}
-  craftTimeText: {fileID: 1297784186}
-  craftYesButton: {fileID: 27635071}
-  craftNoButton: {fileID: 504201365}
+  facilityButtons: []
+  facilityButtonImages: []
+  facilityCostTexts: []
+  facilityDataArray: []
   unitSelectionPanel: {fileID: 188315788}
   unitSelectionContent: {fileID: 102007449}
   unitSelectionButtonPrefab: {fileID: 5840979100573919871, guid: 34909ff1068564b4f8efaa8fabd56ef6, type: 3}
   unitSelectionCloseButton: {fileID: 1755634790}
+  recipeSelectionPanel: {fileID: 0}
+  recipeSelectionContent: {fileID: 0}
+  recipeSelectionButtonPrefab: {fileID: 0}
+  recipeSelectionCloseButton: {fileID: 0}
+  craftConfirmPanel: {fileID: 2072583560}
+  craftItemImage: {fileID: 1313046283}
+  craftItemNameText: {fileID: 1067550042}
+  craftMaterialsText: {fileID: 0}
+  craftTimeText: {fileID: 1297784186}
+  craftYesButton: {fileID: 27635071}
+  craftNoButton: {fileID: 504201365}
   raidVillagePanel: {fileID: 1147996614}
   village1Button: {fileID: 1292105528}
   village2Button: {fileID: 2119917490}
@@ -4901,11 +4894,6 @@ MonoBehaviour:
   raidResultText: {fileID: 734379216}
   raidResultCloseButton: {fileID: 861256357}
   inventoryPanel: {fileID: 71221453}
-  unitDataArray:
-  - {fileID: 11400000, guid: ee63163ce74e0e1488dd65a577bc25d7, type: 2}
-  - {fileID: 11400000, guid: fbe6330ece558464d8eaf01d639757bc, type: 2}
-  - {fileID: 11400000, guid: 69a81071eeb0f3640831f3ad96edf8bc, type: 2}
-  - {fileID: 11400000, guid: 0f34c4e1d33934a4a829016c5f67ab6e, type: 2}
 --- !u!114 &495226262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4918,10 +4906,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f212e60b87d36a04794cd95d72aefe54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPlacementManager
-  unitDataArray:
-  - {fileID: 11400000, guid: ee63163ce74e0e1488dd65a577bc25d7, type: 2}
-  - {fileID: 11400000, guid: fbe6330ece558464d8eaf01d639757bc, type: 2}
-  - {fileID: 11400000, guid: 69a81071eeb0f3640831f3ad96edf8bc, type: 2}
 --- !u!114 &495226263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5014,8 +4998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f6eaa4c5e4c484587f977d24e3315e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  inventoryContent: {fileID: 1191741781}
-  inventorySlotPrefab: {fileID: 1514041800020745227, guid: d210a02dca691d245acd7cd9960b195a, type: 3}
   maxSlots: 20
 --- !u!114 &495226270
 MonoBehaviour:
@@ -5030,13 +5012,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingManager
   poisonPotionData: {fileID: 11400000, guid: 1b9f28b21cdae6346b397a53beee55c3, type: 2}
-  monsterDataArray:
-  - {fileID: 11400000, guid: 47872539d3201d042a48b9a8de5971f4, type: 2}
-  - {fileID: 11400000, guid: 493c31bf2245d0646a81d93f874abd39, type: 2}
-  - {fileID: 11400000, guid: c00906920d2311042bc5839d9bbf5325, type: 2}
-  - {fileID: 11400000, guid: 6517066cde0d6474d954658f5f7f3448, type: 2}
+  meatData: {fileID: 0}
+  poisonGasData: {fileID: 0}
+  poisonCrystalData: {fileID: 0}
+  ashData: {fileID: 0}
+  fireScaleData: {fileID: 0}
+  ironIngotData: {fileID: 0}
+  steelData: {fileID: 0}
+  hellSteelData: {fileID: 0}
+  threadData: {fileID: 0}
+  ropeData: {fileID: 0}
+  clothData: {fileID: 0}
+  clothArmorData: {fileID: 0}
+  humanData: {fileID: 0}
+  soulData: {fileID: 0}
+  soulAshData: {fileID: 0}
+  soulSteelData: {fileID: 0}
+  boneData: {fileID: 0}
+  steelSwordData: {fileID: 0}
+  steelArmorData: {fileID: 0}
+  hellArmorData: {fileID: 0}
+  hellSwordData: {fileID: 0}
   poisonCraftTime: 5
-  monsterCraftTime: 10
+  meatRequiredCount: 2
   mainCamera: {fileID: 519420031}
 --- !u!114 &495226271
 MonoBehaviour:
@@ -5084,23 +5082,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0a9fd6f89bd394a8a7c26888544ded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnFacilityManager
-  facilityTilemap: {fileID: 683354495}
-  floorTilemap: {fileID: 964319516}
-  availableUnits:
-  - {fileID: 11400000, guid: b9cccb1a3ff345c45a6af69e1a9b65fa, type: 2}
-  - {fileID: 11400000, guid: 8fc1210fcecc71743a2ac0c2fc4e34f2, type: 2}
-  - {fileID: 11400000, guid: f10e57cfc84db484fb8316a69076f2cd, type: 2}
-  - {fileID: 11400000, guid: 38a24385426a4f646965475c4b69cd19, type: 2}
-  - {fileID: 11400000, guid: 6834c5103b01c3d46bad9028e09c2eec, type: 2}
-  - {fileID: 11400000, guid: dae69be49aadfc74a8ebb8c51bff1e22, type: 2}
-  - {fileID: 11400000, guid: d9f5c1f23b160854d8ec9bd6022813e0, type: 2}
-  - {fileID: 11400000, guid: bde5cdf6fc468974b9586fc2cd3cebd2, type: 2}
-  - {fileID: 11400000, guid: d676bea4b70ab7c4ebd88d9244865f6f, type: 2}
-  - {fileID: 11400000, guid: 170bf738c6d61db4b93fa291be652227, type: 2}
-  - {fileID: 11400000, guid: c95127345c5c73e4fb2d878e39ce98e7, type: 2}
-  - {fileID: 11400000, guid: 396ad34b928443148a4ae9f18a6c236a, type: 2}
-  facilityPrefab: {fileID: 2480216408405676318, guid: a506451df6b6d594f995bbc11599658c, type: 3}
-  defaultFacilitySprite: {fileID: -5303361815869174231, guid: a6ae8d6577621e040973a750c2c7f0ea, type: 3}
 --- !u!1 &504201363
 GameObject:
   m_ObjectHideFlags: 0

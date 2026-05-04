@@ -317,7 +317,7 @@ public class UIManager : MonoBehaviour
         if (unitSelectionPanel != null)
             unitSelectionPanel.SetActive(false);
         
-        Debug.Log($"{unit.unitName} 소환진 배치 모드 시작!");
+        Debug.Log($"{unit.info.unitName} 소환진 배치 모드 시작!");
     }
     
     // 레시피 선택 패널 표시 (독거북용)
