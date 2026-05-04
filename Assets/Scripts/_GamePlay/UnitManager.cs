@@ -112,7 +112,7 @@ public class UnitManager : MonoBehaviour
             {
                 if (unit != null && unit.activeSelf)
                 {
-                    string prefabName = unit.GetComponent<Unit>().unitData.unitName;
+                    string prefabName = unit.GetComponent<Unit>().unitData.info.unitName;
                     unitNames.Add(prefabName);
                 }
             }

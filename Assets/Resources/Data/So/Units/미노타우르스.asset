@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000932c2ff815224f8769394081d1be6, type: 3}
+  m_Name: "\uBBF8\uB178\uD0C0\uC6B0\uB974\uC2A4"
+  m_EditorClassIdentifier: Assembly-CSharp::UnitSo
+  info:
+    unitName: "\uBBF8\uB178\uD0C0\uC6B0\uB974\uC2A4"
+    unitNum: 9
+    raceType: 0
+    rankType: 4
+    attackType: 2
+    unitDesc: "\uBBF8\uB178\uD0C0\uC6B0\uB974\uC2A4"
+  combatStats:
+    baseHP: 600
+    baseAtk: 60
+    baseDefence: 100
+    baseAttackSpeed: 4
+    baseAttackRange: 1
+    baseMoveSpeed: 0.4
+    damageMultiplier: 1
+    collisionSpeed: 1
+    critRate: 8
+    critMultiplier: 1.4
+  unlockData:
+    request: 1
+    requestDesc: 1
+  productionData:
+    material: 1
+    materialDesc: 1
+  unitPrefab: {fileID: 0}
+  animController: {fileID: 0}
+  debuffPrefab: {fileID: 0}

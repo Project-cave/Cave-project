@@ -12,8 +12,8 @@ public class InvenPopup : MonoBehaviour
     public void Open(InvenMonster node, Vector2 localPos)
     {
         currentNode = node;
-        unitDesc.text = node.unitData.unitDesc;
-        materialDesc.text = node.unitData.materialDesc;
+        unitDesc.text = node.unitData.info.unitDesc;
+        materialDesc.text = node.unitData.productionData.materialDesc;
         transform.localPosition = localPos + new Vector2(node.rectTransform.sizeDelta.x, 0);
         gameObject.SetActive(true);
     }

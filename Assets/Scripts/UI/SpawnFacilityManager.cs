@@ -106,7 +106,7 @@ public class SpawnFacilityManager : MonoBehaviour
         placedFacilities[cellPosition] = unitData;
         facilityObjects[cellPosition] = facilityObj;
         
-        Debug.Log($"{unitData.unitName} 생산 시설 배치 완료: {cellPosition}");
+        Debug.Log($"{unitData.info.unitName} 생산 시설 배치 완료: {cellPosition}");
     }
     
     public void RemoveFacility(Vector3Int cellPosition)

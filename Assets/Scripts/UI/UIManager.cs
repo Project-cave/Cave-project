@@ -264,7 +264,7 @@ public class UIManager : MonoBehaviour
                 TextMeshProUGUI btnText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
                 if (btnText != null)
                 {
-                    btnText.text = unit.unitName;
+                    btnText.text = unit.info.unitName;
                 }
             }
         }
@@ -284,7 +284,7 @@ public class UIManager : MonoBehaviour
         if (unitSelectionPanel != null)
             unitSelectionPanel.SetActive(false);
         
-        Debug.Log($"{unit.unitName} 선택! 맵에서 보라색 타일을 클릭하세요.");
+        Debug.Log($"{unit.info.unitName} 선택! 맵에서 보라색 타일을 클릭하세요.");
     }
     
     public void ShowCraftConfirm(CraftItemData item, float craftTime)

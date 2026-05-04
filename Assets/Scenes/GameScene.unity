@@ -1440,8 +1440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitSpawner
   unitData:
-  - {fileID: 11400000, guid: 8fc1210fcecc71743a2ac0c2fc4e34f2, type: 2}
-  - {fileID: 11400000, guid: 38a24385426a4f646965475c4b69cd19, type: 2}
+  - {fileID: 11400000, guid: 08edce10547ff9b45bde8c1f99f5215e, type: 2}
+  - {fileID: 11400000, guid: 23b973e53df932f4b8639c0e61d24624, type: 2}
 --- !u!4 &66833739
 Transform:
   m_ObjectHideFlags: 0

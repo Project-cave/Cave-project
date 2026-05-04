@@ -20,7 +20,7 @@ public class FacilityPlacementController : MonoBehaviour
         selectedUnit = unit;
         isInPlacementMode = true;
         
-        Debug.Log($"{unit.unitName} 생산 시설 배치 모드 시작");
+        Debug.Log($"{unit.info.unitName} 생산 시설 배치 모드 시작");
     }
     
     public void CancelPlacement()

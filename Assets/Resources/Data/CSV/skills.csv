@@ -1,4 +1,4 @@
 skillName,skillId,isUnlocked,damage,cooldown,icon,description
-ÆÄÀÌ¾îº¼,0,TRUE,150,5,AttackSkill,°­·ÂÇÑ ºÒµ¢ÀÌ¸¦ ¹ß»çÇÕ´Ï´Ù
-¾ÆÀÌ½º ½ºÇÇ¾î,1,TRUE,120,4,LaserSkill,¾óÀ½ Ã¢À» ´øÁ® ÀûÀ» ºù°á½ÃÅµ´Ï´Ù
-¹ø°³ ÀÏ°Ý,2,TRUE,200,8,LightningSkill,¹ø°³·Î ÀûÀ» °­Å¸ÇÕ´Ï´Ù
+íŒŒì´ì–´ë³¼,0,TRUE,150,5,AttackSkill,ê°•ë ¥í•œ ë¶ˆë©ì´ë¥¼ ë°œì‚¬í•©ë‹ˆë‹¤
+ì•„ì´ìŠ¤ ìŠ¤í”¼ì–´,1,TRUE,120,4,LaserSkill,ì–¼ìŒ ì°½ì„ ë˜ì ¸ ì ì„ ë¹™ê²°ì‹œí‚µë‹ˆë‹¤
+ë²ˆê°œ ì¼ê²©,2,TRUE,200,8,LightningSkill,ë²ˆê°œë¡œ ì ì„ ê°•íƒ€í•©ë‹ˆë‹¤

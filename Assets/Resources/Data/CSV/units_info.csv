@@ -1,0 +1,13 @@
+unitName,unitNum,raceType,rankType,attackType,unitDesc
+고블린,1,Variant,1,Normal_Melee,고블린
+박쥐,2,Beast,1,Speed_Melee,박쥐
+늑대,3,Beast,2,Speed_Melee,늑대
+오크,4,Variant,2,Power_Melee,오크
+스켈레톤,5,Undead,2,Range_Normal,스켈레톤
+하피,6,Flight,3,Speed_Melee,하피
+나가,7,Variant,3,Range_Magic,나가
+마녀,8,Variant,4,Range_Magic,마녀
+미노타우르스,9,Variant,4,Power_Melee,미노타우르스
+리빙아머,10,Undead,5,Normal_Melee,리빙아머
+데몬,11,Devil,5,Range_Magic,데몬
+드래곤,12,Dragon,6,Power_Melee,드래곤
