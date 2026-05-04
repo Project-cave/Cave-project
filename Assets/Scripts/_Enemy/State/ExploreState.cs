@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ExploreState : EnemyState
@@ -62,8 +63,12 @@ public class ExploreState : EnemyState
 
     public void FindNextDestination()
     {
-        owner.currentPath =
-            owner.pathFinder.FindNearestUnexplored(owner.transform.position, owner.scanner.Explored);
+        Vector2 snappedStart = GridConverter.SnapToLogicalGridCenter(owner.transform.position);
+
+        LinkedList<Vector2> rawPath =
+            owner.pathFinder.FindNearestUnexplored(snappedStart, owner.scanner.Explored);
+
+        owner.currentPath = GridConverter.CompressPathToLogicalGrid(rawPath);
 
         if (owner.HasPath)
         {

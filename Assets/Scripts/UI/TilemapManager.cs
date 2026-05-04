@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
 
 public class TilemapManager : MonoBehaviour
 {
@@ -13,8 +12,6 @@ public class TilemapManager : MonoBehaviour
     
     [Header("Placement")]
     [SerializeField] private Camera mainCamera;
-    
-    private Dictionary<Vector3Int, GameObject> placedUnits = new Dictionary<Vector3Int, GameObject>();
     
     void Awake()
     {
@@ -48,55 +45,15 @@ public class TilemapManager : MonoBehaviour
         
         Vector3Int cellPosition = floorTilemap.WorldToCell(mouseWorldPos);
         
-        // 유닛 배치 모드
-        if (UnitPlacementManager.Instance != null && UnitPlacementManager.Instance.IsPlacementMode())
+        // 시설 배치 모드
+        if (FacilityPlacementManager.Instance != null && FacilityPlacementManager.Instance.IsPlacementMode())
         {
-            UnitPlacementManager.Instance.TryPlaceUnit(cellPosition);
+            FacilityPlacementManager.Instance.TryPlaceFacility(cellPosition);
         }
         // 확장 모드
         else if (WallExpansionManager.Instance != null && WallExpansionManager.Instance.IsExpansionMode())
         {
             WallExpansionManager.Instance.TryExpand(cellPosition);
-        }
-        // 시설 배치 모드
-        else if (FacilityPlacementController.Instance != null && FacilityPlacementController.Instance.IsPlacementMode())
-        {
-            FacilityPlacementController.Instance.TryPlaceFacility(cellPosition);
-        }
-    }
-    
-    public bool CanPlaceUnit(Vector3Int cellPosition)
-    {
-        if (!floorTilemap.HasTile(cellPosition))
-            return false;
-        
-        Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPosition);
-        Vector3Int wallCell = wallTilemap.WorldToCell(worldPos);
-        if (wallTilemap.HasTile(wallCell))
-            return false;
-        
-        if (placedUnits.ContainsKey(cellPosition))
-            return false;
-        
-        return true;
-    }
-    
-    public void PlaceUnit(Vector3Int cellPosition, GameObject unitPrefab)
-    {
-        if (CanPlaceUnit(cellPosition))
-        {
-            Vector3 worldPosition = floorTilemap.GetCellCenterWorld(cellPosition);
-            GameObject unit = Instantiate(unitPrefab, worldPosition, Quaternion.identity);
-            placedUnits[cellPosition] = unit;
-        }
-    }
-    
-    public void RemoveUnit(Vector3Int cellPosition)
-    {
-        if (placedUnits.ContainsKey(cellPosition))
-        {
-            Destroy(placedUnits[cellPosition]);
-            placedUnits.Remove(cellPosition);
         }
     }
 }

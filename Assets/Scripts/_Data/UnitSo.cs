@@ -6,19 +6,19 @@ public class UnitSo : ScriptableObject
     public enum UnitRaceType { Variant, Beast, Undead, Flight, Devil, Dragon }
     public enum UnitAttackType { Normal_Melee, Speed_Melee, Power_Melee, Range_Normal, Range_Magic }
 
-    [Header("±âº» Á¤º¸")]
+    [Header("ï¿½âº» ï¿½ï¿½ï¿½ï¿½")]
     public UnitInfo info;
 
-    [Header("ÀüÅõ ½ºÅÈ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public UnitCombatStats combatStats;
 
-    [Header("ÇØ±Ý Á¶°Ç")]
+    [Header("ï¿½Ø±ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public UnitUnlockData unlockData;
 
-    [Header("»ý»ê Á¶°Ç")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public UnitProductionData productionData;
 
-    [Header("¸®¼Ò½º (ÀÎ½ºÆåÅÍ¿¡¼­ Á÷Á¢ µî·Ï)")]
+    [Header("ï¿½ï¿½ï¿½Ò½ï¿½ (ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)")]
     public GameObject unitPrefab;
     public RuntimeAnimatorController animController;
     public GameObject debuffPrefab;

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9508633bd18ebc4418610751d3e5a678, type: 3}
+  m_Name: "FacilityData_\uBD88\uB3C4\uB9C8\uBC40"
+  m_EditorClassIdentifier: Assembly-CSharp::FacilityData
+  facilityName: "\uBD88\uB3C4\uB9C8\uBC40"
+  facilityType: 1
+  facilitySprite: {fileID: 21300000, guid: b6c411d2a9a577a48a2175ad3c06fbeb, type: 3}
+  facilityPrefab: {fileID: 0}
+  woodCost: 5
+  scrapCost: 0
+  stoneCost: 0
+  description: 
+  isProductionFacility: 1
+  producibleItems: []
+  productionTime: 5
+  isSpawnFacility: 0
+  assignedUnit: {fileID: 0}
+  damagePerSecond: 0
+  effectRadius: 0
+  hasSpecialEffect: 0
+  specialEffectDesc: 

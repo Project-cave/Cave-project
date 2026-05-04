@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17dbeb5664c08e34cb4009342c45b63a, type: 3}
+  m_Name: Meat
+  m_EditorClassIdentifier: Assembly-CSharp::CraftItemData
+  itemName: "\uACE0\uAE30"
+  itemSprite: {fileID: 2935145269573368646, guid: 9d49b80ec66f3744996dd75153069f11, type: 3}
+  description: "\uAE30\uBCF8 \uC2DD\uC7AC\uB8CC. \uB2E4\uC591\uD55C \uC544\uC774\uD15C
+    \uC81C\uC791\uC5D0 \uC0AC\uC6A9\uB429\uB2C8\uB2E4"
