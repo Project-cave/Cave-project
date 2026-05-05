@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class UnitPanel : MonoBehaviour
 {
-    [SerializeField] private UnitPanelItem[] unitItems; // 전체 유닛 패널 아이템
+    [SerializeField] private UnitPanelItem[] unitItems;
 
-    private void Start()
+    private void OnEnable()
     {
         RefreshPanel();
     }
 
-    private void RefreshPanel()
+    public void RefreshPanel()
     {
         foreach (var item in unitItems)
-        {
             item.Refresh();
-        }
     }
 }
