@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
   info:
     unitName: "\uBC15\uC950"
-    unitNum: 2
+    unitNum: 1
     raceType: 1
     rankType: 1
     attackType: 1
@@ -33,6 +33,8 @@ MonoBehaviour:
   unlockData:
     request: 1
     requestDesc: 1
+    nextUnits: []
+    nodePosition: {x: 0, y: 0}
   productionData:
     material: 1
     materialDesc: 1
