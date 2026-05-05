@@ -1,4 +1,3 @@
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -91,7 +90,7 @@ public class RestoreMap : MonoBehaviour
                 string trimmedName = unitName.Trim();
 
                 // unitData에서 해당 유닛 찾기
-                UnitSo data = System.Array.Find(unitData, u => u.unitName == trimmedName);
+                UnitSo data = System.Array.Find(unitData, u => u.info.unitName == trimmedName);
 
                 if (data == null)
                 {

@@ -11,6 +11,8 @@ public class SkillData : ScriptableObject
     public float cooldown;
     public Sprite icon;
     public string description;
+
+    [Header("레퍼런스")]
     public GameObject SkillPrefab;
 
     [HideInInspector]

@@ -1,47 +1,68 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Unit", menuName = "Scriptable Object/unit")]
+[CreateAssetMenu(fileName = "Unit", menuName = "Scriptable Object/Unit")]
 public class UnitSo : ScriptableObject
 {
-    public enum UnitRaceType { Goblin, Undead }
-    public enum UnitRankType { Normal }
-    public enum UnitAttackType { Melee, Ranged }
+    public enum UnitRaceType { Variant, Beast, Undead, Flight, Devil, Dragon }
+    public enum UnitAttackType { Normal_Melee, Speed_Melee, Power_Melee, Range_Normal, Range_Magic }
 
-    [Header("유닛 데이터")]
+    [Header("Basic Info")]
+    public UnitInfo info;
+
+    [Header("Combat Stats")]
+    public UnitCombatStats combatStats;
+
+    [Header("Unlock Data")]
+    public UnitUnlockData unlockData;
+
+    [Header("Production Data")]
+    public UnitProductionData productionData;
+
+    [Header("Resources")]
+    public GameObject unitPrefab;
+    public RuntimeAnimatorController animController;
+    public GameObject debuffPrefab;
+}
+
+[System.Serializable]
+public class UnitInfo
+{
     public string unitName;
     public int unitNum;
-    public UnitRaceType raceType;
-    public UnitRankType rankType;
+    public UnitSo.UnitRaceType raceType;
+    public int rankType;
+    public UnitSo.UnitAttackType attackType;
+    [TextArea] public string unitDesc;
+}
+
+[System.Serializable]
+public struct UnitCombatStats
+{
     public int baseHP;
-    public UnitAttackType attackType;
     public int baseAtk;
+    public int baseDefence;
     public float baseAttackSpeed;
     public float baseAttackRange;
+    public float baseMoveSpeed;
     public float damageMultiplier;
     public float collisionSpeed;
-    public float baseMoveSpeed;
-    public int baseDefence;
     public float critRate;
     public float critMultiplier;
-    /* public BullletSo bulletData; */
-    // 특수 기믹 안넣음
+}
 
-    [TextArea]
-    public string unitDesc;
-
-    [Header("해금 조건")]
+[System.Serializable]
+public class UnitUnlockData
+{
     public int request;
+    [TextArea] public string requestDesc;
+    public List<UnitSo> nextUnits;
+    public Vector2 nodePosition;
+}
 
-    [TextArea]
-    public string requestDesc;
-
-    [Header("생산 조건")]
+[System.Serializable]
+public struct UnitProductionData
+{
     public int material;
-
-    [TextArea]
-    public string materialDesc;
-
-    public RuntimeAnimatorController animController;
-    public GameObject DebuffPrefab;
-
+    [TextArea] public string materialDesc;
 }
