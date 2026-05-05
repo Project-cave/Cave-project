@@ -567,8 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: 8fc1210fcecc71743a2ac0c2fc4e34f2, type: 2}
-  linkedInvenMonster: {fileID: 171806499}
+  unitData: {fileID: 11400000, guid: 08edce10547ff9b45bde8c1f99f5215e, type: 2}
   connectLines:
   - {fileID: 226611289}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -1496,8 +1495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: f10e57cfc84db484fb8316a69076f2cd, type: 2}
-  linkedInvenMonster: {fileID: 289684872}
+  unitData: {fileID: 11400000, guid: fa74543f097ee934bb6f7720a011660d, type: 2}
   connectLines:
   - {fileID: 71506266}
   - {fileID: 1208793849}
@@ -1654,7 +1652,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &211823306
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2290,7 +2288,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: 396ad34b928443148a4ae9f18a6c236a, type: 2}
-  linkedInvenMonster: {fileID: 948824906}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -3030,8 +3027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: bde5cdf6fc468974b9586fc2cd3cebd2, type: 2}
-  linkedInvenMonster: {fileID: 1567912980}
+  unitData: {fileID: 11400000, guid: 6f8e191f683a9c7438ab17666d80e549, type: 2}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -3183,8 +3179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: b9cccb1a3ff345c45a6af69e1a9b65fa, type: 2}
-  linkedInvenMonster: {fileID: 1496245979}
+  unitData: {fileID: 11400000, guid: 23b973e53df932f4b8639c0e61d24624, type: 2}
   connectLines:
   - {fileID: 1509950742}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -3754,6 +3749,7 @@ MonoBehaviour:
   unitDesc: {fileID: 1924508358}
   materialDesc: {fileID: 1729888722}
   MakeBtn: {fileID: 1563827881}
+  currentNode: {fileID: 0}
 --- !u!1 &413994771
 GameObject:
   m_ObjectHideFlags: 0
@@ -4934,7 +4930,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: 170bf738c6d61db4b93fa291be652227, type: 2}
-  linkedInvenMonster: {fileID: 1285867555}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -5220,7 +5215,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: 38a24385426a4f646965475c4b69cd19, type: 2}
-  linkedInvenMonster: {fileID: 360803699}
   connectLines:
   - {fileID: 1779786756}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -5649,7 +5643,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: d9f5c1f23b160854d8ec9bd6022813e0, type: 2}
-  linkedInvenMonster: {fileID: 1905099468}
   connectLines:
   - {fileID: 1752974579}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -5841,7 +5834,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: dae69be49aadfc74a8ebb8c51bff1e22, type: 2}
-  linkedInvenMonster: {fileID: 1944697090}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -5958,7 +5950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &809119162
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6515,7 +6507,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: c95127345c5c73e4fb2d878e39ce98e7, type: 2}
-  linkedInvenMonster: {fileID: 513762316}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -7367,7 +7358,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: 6834c5103b01c3d46bad9028e09c2eec, type: 2}
-  linkedInvenMonster: {fileID: 1157305364}
   connectLines:
   - {fileID: 430619425}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -12738,7 +12728,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RequestUIManager
   closePanel: {fileID: 196063937}
   requestPopup: {fileID: 258150131}
-  invenPopup: {fileID: 412008885}
   CloseBtn: {fileID: 666163252}
 --- !u!4 &2080756868
 Transform:
@@ -12809,7 +12798,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
   unitData: {fileID: 11400000, guid: d676bea4b70ab7c4ebd88d9244865f6f, type: 2}
-  linkedInvenMonster: {fileID: 1243265733}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -13080,6 +13068,63 @@ RectTransform:
   m_AnchoredPosition: {x: 300, y: -150}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &455091498798190328
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1057.6438
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 532.91595
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3912476550168374734, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204816873975544732, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
+      propertyPath: m_Name
+      value: UnitUnlockController
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 333a733e75ca8ef4aad65530e3f22572, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -13090,3 +13135,4 @@ SceneRoots:
   - {fileID: 2080756868}
   - {fileID: 1194318137}
   - {fileID: 1638872035}
+  - {fileID: 455091498798190328}

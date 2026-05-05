@@ -11,7 +11,7 @@ public class RequestPopup : MonoBehaviour
     public void Open(RequestMonster node, Vector2 localPos)
     {
         currentNode = node;
-        requestDesc.text = node.unitData.requestDesc;
+        requestDesc.text = node.unitData.unlockData.requestDesc;
         transform.localPosition = localPos + new Vector2(node.rectTransform.sizeDelta.x, 0);
         gameObject.SetActive(true);
     }

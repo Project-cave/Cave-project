@@ -169,19 +169,16 @@ public class PathFinder : MonoBehaviour
 
         if (startNode == null)
         {
-            Debug.LogError($"[PathFinder] 시작 노드를 찾을 수 없음: {start} (그리드 범위: {gridStartPoint} ~ {gridEndPoint})");
             return new LinkedList<Vector2>();
         }
 
         if (goalNode == null)
         {
-            Debug.LogError($"[PathFinder] 목표 노드를 찾을 수 없음: {goal} (그리드 범위: {gridStartPoint} ~ {gridEndPoint})");
             return new LinkedList<Vector2>();
         }
 
         if (goalNode.isWall)
         {
-            Debug.LogError($"[PathFinder] 목표 노드가 벽입니다! {goal}");
             return new LinkedList<Vector2>();
         }
 

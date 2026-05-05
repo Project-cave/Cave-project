@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Data/CSV/units_combat.csv.meta
+guid: 8fbcdedf7cf0d7e48bd0ca93d7880d22
+TextScriptImporter:
+========
 guid: 1c7196796b9e9914faf1d47321680ca9
 PrefabImporter:
+>>>>>>>> e0d9a7dc47a450dedb54c80e31d28556a5b1671b:Assets/Prefabs/UI/RecipeButtonPrefab.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

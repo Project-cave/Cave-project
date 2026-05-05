@@ -2,30 +2,31 @@ using UnityEngine;
 
 public class UnitSpawner : MonoBehaviour
 {
-    public UnitSo[] unitData;
+    public static UnitSpawner instance;
+    [SerializeField] private UnitPanel unitPanel;
+    public Vector2 spawnPosition;
 
-    public void SpawnSword()
+    private void Awake()
     {
-        GameObject select = GameManager.instance.pool.Get(0);
-        GameManager.instance.spawnUnit = select;
-        select.transform.position = new Vector2(21.5f, -13.2f);
-        select.GetComponent<Unit>().InitUnit(unitData[0]);
-        if (select != null && AudioManager.instance != null)
-        {
-            AudioManager.instance.PlaySfx(0);
-        }
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
     }
 
-
-    public void SpawnWizard()
+    public void OpenPanel(Vector2 pos)
     {
-        GameObject select = GameManager.instance.pool.Get(0);
+        spawnPosition = pos;
+        GameUIManager.instance.ToggleUnitSpawnPanel();
+    }
+
+    public void Spawn(UnitSo unitData)
+    {
+        int index = unitData.info.unitNum;
+        GameObject select = GameManager.instance.pool.Get(index);
         GameManager.instance.spawnUnit = select;
-        select.transform.position = new Vector2(9.5f, -13.2f);
-        select.GetComponent<Unit>().InitUnit(unitData[1]);
+        select.transform.position = new Vector2(21.5f, -13.2f);
+        select.GetComponent<Unit>().InitUnit(unitData);
+
         if (select != null && AudioManager.instance != null)
-        {
             AudioManager.instance.PlaySfx(0);
-        }
     }
 }

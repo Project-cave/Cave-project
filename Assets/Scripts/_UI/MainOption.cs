@@ -87,6 +87,8 @@ public class MainOption : MonoBehaviour
     {
         var sm = SettingsManager.instance;
 
+        if (sm == null) return;
+
         _screenModeIndex = sm.IsFullScreen ? 0 : 1;
         _resolutionIndex = sm.ResolutionIndex;
 
@@ -199,4 +201,3 @@ public class MainOption : MonoBehaviour
 
     }
 }
-

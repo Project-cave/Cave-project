@@ -99,9 +99,9 @@ public class Unit : MonoBehaviour
     {
         this.unitData = unitData;
         unitAnimator.SetAnimator(unitData.animController);
-        movement.SetSpeed(unitData.baseMoveSpeed);
-        combat.SetAttackRange(unitData.baseAttackRange);
-        combat.bulletSpeed = unitData.baseAttackSpeed;
+        movement.SetSpeed(unitData.combatStats.baseMoveSpeed);
+        combat.SetAttackRange(unitData.combatStats.baseAttackRange);
+        combat.bulletSpeed = unitData.combatStats.baseAttackSpeed;
 
         statHandler.InitializeStats(unitData);
     }
@@ -149,7 +149,7 @@ public class Unit : MonoBehaviour
 
     public void OnAnimAttackHit()
     {
-        if (unitData.attackType == UnitSo.UnitAttackType.Melee) {
+        if (unitData.info.attackType == UnitSo.UnitAttackType.Normal_Melee) {
             if (scanner.attackTarget != null)
             {
                 StatHandler targetStat = scanner.attackTarget.GetComponent<StatHandler>();

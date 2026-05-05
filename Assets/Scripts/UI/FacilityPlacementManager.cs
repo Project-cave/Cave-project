@@ -76,7 +76,7 @@ public class FacilityPlacementManager : MonoBehaviour
         selectedSpawnUnit = unit;
         isInPlacementMode = true;
         
-        Debug.Log($"{unit.unitName} 소환진 배치 모드 시작");
+        Debug.Log($"{unit.info.unitName} 소환진 배치 모드 시작");
     }
     
     // 배치 모드 취소
@@ -263,11 +263,11 @@ public class FacilityPlacementManager : MonoBehaviour
         {
             facilityObj = Instantiate(selectedFacility.facilityPrefab, worldPos, Quaternion.identity);
             // Prefab 생성 시 이름 설정
-            facilityObj.name = $"소환진_{selectedSpawnUnit?.unitName}";
+            facilityObj.name = $"소환진_{selectedSpawnUnit?.info.unitName}";
         }
         else
         {
-            facilityObj = new GameObject($"소환진_{selectedSpawnUnit?.unitName}");
+            facilityObj = new GameObject($"소환진_{selectedSpawnUnit?.info.unitName}");
             facilityObj.transform.position = worldPos;
             
             SpriteRenderer sr = facilityObj.AddComponent<SpriteRenderer>();
@@ -293,7 +293,7 @@ public class FacilityPlacementManager : MonoBehaviour
         // 자원 지불
         SpendResources(selectedFacility);
         
-        Debug.Log($"{selectedFacility.facilityName} ({selectedSpawnUnit?.unitName}) 배치 완료: {cellPosition}");
+        Debug.Log($"{selectedFacility.facilityName} ({selectedSpawnUnit?.info.unitName}) 배치 완료: {cellPosition}");
         
         // 배치 모드 종료
         CancelPlacement();

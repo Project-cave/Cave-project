@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (EditorApplication.isPlaying && m_fasterPath != null)
@@ -220,4 +220,5 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.color = originalColor;
         }
     }
+#endif
 }
