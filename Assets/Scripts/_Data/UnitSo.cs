@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Unit", menuName = "Scriptable Object/Unit")]
@@ -51,10 +52,12 @@ public struct UnitCombatStats
 }
 
 [System.Serializable]
-public struct UnitUnlockData
+public class UnitUnlockData
 {
     public int request;
     [TextArea] public string requestDesc;
+    public List<UnitSo> nextUnits;
+    public Vector2 nodePosition;
 }
 
 [System.Serializable]

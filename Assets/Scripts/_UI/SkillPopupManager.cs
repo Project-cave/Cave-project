@@ -7,7 +7,7 @@ public class SkillPopupManager : MonoBehaviour
     public static SkillPopupManager instance;
     public GameObject closePanel;
     public RequestPopup requestPopup;
-    public InvenPopup invenPopup;
+    //public InvenPopup invenPopup;
     public Button CloseBtn;
 
     private Canvas rootCanvas;
@@ -36,16 +36,16 @@ public class SkillPopupManager : MonoBehaviour
         closePanel.SetActive(true);
     }
 
-    public void OpenPopup(InvenMonster node)
-    {
-        invenPopup.Open(node, GetLocalPos(node.rectTransform));
-        closePanel.SetActive(true);
-    }
+    //public void OpenPopup(InvenMonster node)
+    //{
+    //    invenPopup.Open(node, GetLocalPos(node.rectTransform));
+    //    closePanel.SetActive(true);
+    //}
 
     public void ClosePopup()
     {
         requestPopup.gameObject.SetActive(false);
-        invenPopup.gameObject.SetActive(false);
+        //invenPopup.gameObject.SetActive(false);
         closePanel.SetActive(false);
     }
 
