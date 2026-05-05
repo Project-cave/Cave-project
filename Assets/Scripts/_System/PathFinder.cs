@@ -2,6 +2,20 @@
 using System.Collections.Generic;
 using Priority_Queue;
 
+public struct PathWeight
+{
+    public Vector2 currentDir;
+    public int turnPenalty;
+    public int uTurnPenalty;
+
+    public PathWeight(Vector2 dir, int turn, int uTurn)
+    {
+        currentDir = dir;
+        turnPenalty = turn;
+        uTurnPenalty = uTurn;
+    }
+}
+
 public class PathFinder : MonoBehaviour
 {
     public Vector2 gridStartPoint;
@@ -543,39 +557,53 @@ public class PathFinder : MonoBehaviour
     }
 
     // 가장 가까운 미탐색 타일 찾기 (BFS)
-    public LinkedList<Vector2> FindNearestUnexplored(Vector2 startPos, HashSet<Vector3Int> exploredTile)
+    public LinkedList<Vector2> FindNearestUnexplored(Vector2 startPos, HashSet<Vector3Int> exploredTile,
+        PathWeight weight)
     {
         Vector2 snappedStart = new Vector2(Mathf.Floor(startPos.x) + 0.5f, Mathf.Floor(startPos.y) + 0.5f);
 
         Nodes startNode = findNodeOnPosition(snappedStart);
-        if (startNode == null) return null;
+        if (startNode == null || startNode.isWall) return null;
 
-        Queue<Nodes> queue = new Queue<Nodes>();
+        // Queue<Nodes> queue = new Queue<Nodes>();
+        List<Nodes> openList = new List<Nodes>();
         Dictionary<Nodes, Nodes> parentMap = new Dictionary<Nodes, Nodes>();
-        Dictionary<Nodes, int> distMap = new Dictionary<Nodes, int>();
+        Dictionary<Nodes, int> costMap = new Dictionary<Nodes, int>();
+        Dictionary<Nodes, Vector2> dirMap = new Dictionary<Nodes, Vector2>();
 
-        queue.Enqueue(startNode);
+        openList.Add(startNode);
         parentMap[startNode] = null;
-        distMap[startNode] = 0;
+        costMap[startNode] = 0;
+        dirMap[startNode] = weight.currentDir.normalized;
 
-        int minDist = -1;
+        int minFinalCost = -1;
         List<Nodes> candidates = new List<Nodes>();
 
         int step = Mathf.RoundToInt(1.0f / cellSize);
 
-        while (queue.Count > 0)
+        while (openList.Count > 0)
         {
-            Nodes current = queue.Dequeue();
-            int curDist = distMap[current];
+            int minIndex = 0;
+            int minCost = costMap[openList[0]];
+            for (int i = 1; i < openList.Count; i++)
+            {
+                int cost = costMap[openList[i]];
+                if (cost < minCost) minIndex = i; minCost = cost;
+            }
+            Nodes current = openList[minIndex];
+            openList.RemoveAt(minIndex);
 
-            if (minDist != -1 && curDist > minDist) break;
+            int curCost = minCost;
+            Vector2 incomingDir = dirMap[current];
+
+            if (minFinalCost != -1 && curCost > minFinalCost) break;
 
             Vector3Int tilePos = Vector3Int.FloorToInt(current.nodeCenter);
 
             if (!exploredTile.Contains(tilePos) && !current.isWall)
             {
-                if (minDist == -1) minDist = curDist;
-                if (curDist == minDist) candidates.Add(current);
+                if (minFinalCost == -1) minFinalCost = curCost;
+                if (curCost == minFinalCost) candidates.Add(current);
                 continue;
             }
 
@@ -588,11 +616,28 @@ public class PathFinder : MonoBehaviour
                     int nextX = current.XIndex + d.x * step, nextY = current.YIndex + d.y * step;
                     Nodes nextNode = nodes[nextX, nextY];
 
-                    if (!distMap.ContainsKey(nextNode))
+                    Vector2 moveDir = new Vector2(d.x, d.y);
+                    
+                    // 기본 가중치
+                    int moveWeight = 10;
+
+                    if (incomingDir != Vector2.zero)
                     {
-                        distMap[nextNode] = curDist + 1;
+                        float dot = Vector2.Dot(incomingDir, moveDir);
+                        if (dot > 0.5f) moveWeight = 10;
+                        else if (dot < -0.5f) moveWeight = weight.uTurnPenalty;
+                        else moveWeight = weight.turnPenalty;
+                    }
+
+                    int newCost = curCost + moveWeight;
+
+                    if (!costMap.ContainsKey(nextNode) || newCost < costMap[nextNode])
+                    {
+                        costMap[nextNode] = newCost;
                         parentMap[nextNode] = current;
-                        queue.Enqueue(nextNode);
+                        dirMap[nextNode] = moveDir;
+
+                        if (!openList.Contains(nextNode)) openList.Add(nextNode);
                     }
                 }
             }
