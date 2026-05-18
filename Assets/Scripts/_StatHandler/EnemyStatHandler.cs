@@ -5,6 +5,12 @@ public class EnemyStatHandler : StatHandler
     [field: Header("Stat")]
     [field: SerializeField] public int Sanity { get; protected set; }
 
+    [field:Header("PathFinding")]
+    [field: SerializeField] public int TurnPenalty { get; protected set; }
+    [field: SerializeField] public int UTurnPenalty { get; protected set; }
+    [Range(0, 100)]
+    [field: SerializeField] public int CuriosityRate { get; protected set; }
+
     [Header("Data")]
     public RaceData raceData;
     public ClassData classData;
@@ -43,6 +49,11 @@ public class EnemyStatHandler : StatHandler
         CollisionSpeed = classData.collisionSpeed;
         CriticalRate = Mathf.RoundToInt(rankData.critChance * 100);
         CriticalMultiplier = rankData.critMultiplier;
+
+        // 추후 난이도에 따라 값이 바뀌도록 수정 예정
+        TurnPenalty = 20;
+        UTurnPenalty = 50;
+        CuriosityRate = 10;
 
         CurrentHP = MaxHP;
         LastAttackTime = -AttackMotionDelay;
