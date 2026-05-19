@@ -9,8 +9,7 @@ public class MapManager : MonoBehaviour
     private HashSet<Vector3Int> removedWalls = new HashSet<Vector3Int>();
     private Dictionary<Vector3Int, string> placedBuildings = new Dictionary<Vector3Int, string>();
     private Dictionary<Vector3Int, string> currentUnits = new Dictionary<Vector3Int, string>();
-
-    [SerializeField] private float autoSaveInterval = 30f;
+    private Dictionary<int, string> currentEnemies = new Dictionary<int, string>();
 
     private void Awake()
     {
@@ -82,6 +81,16 @@ public class MapManager : MonoBehaviour
         return currentUnits;
     }
 
+    public void UpdateCurrentEnemies(Dictionary<int, string> enemies)
+    {
+        currentEnemies = new Dictionary<int, string>(enemies);
+    }
+
+    public Dictionary<int, string> GetCurrentEnemies()
+    {
+        return currentEnemies;
+    }
+
     #endregion
 
 
@@ -118,6 +127,18 @@ public class MapManager : MonoBehaviour
                 x = kvp.Key.x,
                 y = kvp.Key.y,
                 z = kvp.Key.z,
+                unitPrefabName = kvp.Value
+            });
+        }
+
+        // 4. 적
+        foreach (var kvp in currentEnemies)
+        {
+            data.enemies.Add(new PlacedUnit
+            {
+                x = kvp.Key, // int ID로 재활용
+                y = 0,
+                z = 0,
                 unitPrefabName = kvp.Value
             });
         }
@@ -160,6 +181,13 @@ public class MapManager : MonoBehaviour
         {
             Vector3Int pos = new Vector3Int(unit.x, unit.y, unit.z);
             currentUnits[pos] = unit.unitPrefabName;
+        }
+
+        // 4. 적
+        currentEnemies.Clear();
+        foreach (var e in data.enemies)
+        {
+            currentEnemies[e.x] = e.unitPrefabName;
         }
     }
 

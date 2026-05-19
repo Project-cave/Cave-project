@@ -11,6 +11,9 @@ public class RestoreMap : MonoBehaviour
     [SerializeField] private UnitData[] buildingData;
     [SerializeField] private UnitSo[] unitData;
 
+    [Header("Enemy")]
+    [SerializeField] private EnemySpawner enemySpawner;
+
     [SerializeField] private PoolManager poolManager;
 
     private void Start()
@@ -23,6 +26,7 @@ public class RestoreMap : MonoBehaviour
         RestoreWalls();
         RestoreBuildings(); 
         RestoreUnits();
+        RestoreEnemies();
     }
 
     private void RestoreWalls()
@@ -125,6 +129,37 @@ public class RestoreMap : MonoBehaviour
 
                 Debug.Log($"유닛 복원: {trimmedName} at {cellPos} (index: {unitIndex})");
             }
+        }
+    }
+
+    private void RestoreEnemies()
+    {
+        var enemies = MapManager.instance.GetCurrentEnemies();
+
+        foreach (var kvp in enemies)
+        {
+            string[] parts = kvp.Value.Split('|');
+            if (parts.Length != 5) continue;
+
+            RaceData race = enemySpawner.raceList.Find(r => r.name == parts[0]);
+            RankData rank = enemySpawner.rankList.Find(r => r.name == parts[1]);
+            ClassData cls = enemySpawner.classList.Find(c => c.name == parts[2]);
+
+            if (race == null || rank == null || cls == null)
+            {
+                Debug.LogWarning($"적 복원 실패: {kvp.Value}");
+                continue;
+            }
+
+            if (!float.TryParse(parts[3], out float x) ||
+                !float.TryParse(parts[4], out float y))
+            {
+                Debug.LogWarning($"적 위치 파싱 실패: {kvp.Value}");
+                continue;
+            }
+
+            Vector3 worldPos = new Vector3(x, y, 0);
+            enemySpawner.SpawnAt(worldPos, race, rank, cls);
         }
     }
 }

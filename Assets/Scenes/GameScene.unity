@@ -5228,6 +5228,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 08edce10547ff9b45bde8c1f99f5215e, type: 2}
   - {fileID: 11400000, guid: 23b973e53df932f4b8639c0e61d24624, type: 2}
   - {fileID: 11400000, guid: 0cb90573fb8af9249a653798892c95f6, type: 2}
+  - {fileID: 11400000, guid: 0cb90573fb8af9249a653798892c95f6, type: 2}
+  enemySpawner: {fileID: 1187068555}
   poolManager: {fileID: 1258185662}
 --- !u!4 &546531600
 Transform:
@@ -5238,11 +5240,11 @@ Transform:
   m_GameObject: {fileID: 546531598}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 16.81767, y: -13.41273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 820277632}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &574008143
 GameObject:
@@ -7290,7 +7292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7462945d17ade24b887b02131f4fb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
-  autoSaveInterval: 30
 --- !u!4 &820277632
 Transform:
   m_ObjectHideFlags: 0
@@ -7303,8 +7304,7 @@ Transform:
   m_LocalPosition: {x: 16.81767, y: -13.41273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 546531600}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834524356
@@ -24616,6 +24616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1008740116}
   - component: {fileID: 1008740115}
+  - component: {fileID: 1008740117}
   m_Layer: 0
   m_Name: UnitManager
   m_TagString: Untagged
@@ -24651,6 +24652,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1008740117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008740114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d897ea165844404fa3e6523d0f5d441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
 --- !u!1 &1009652658
 GameObject:
   m_ObjectHideFlags: 0
@@ -46618,6 +46631,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelEnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7004606449446831636, guid: 4b11130232306cc4d865cded97b109f2, type: 3}
+      propertyPath: floorTilemap
+      value: 
+      objectReference: {fileID: 964319516}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -50362,6 +50379,7 @@ SceneRoots:
   - {fileID: 66833739}
   - {fileID: 1120449933}
   - {fileID: 1258185663}
+  - {fileID: 546531600}
   - {fileID: 820277632}
   - {fileID: 1943930248}
   - {fileID: 1305835374}
