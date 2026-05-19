@@ -65,12 +65,6 @@ public class RestoreMap : MonoBehaviour
 
             // 건물 생성
             GameObject instance = Instantiate(prefab, worldPos, Quaternion.identity);
-
-            //// TilemapManager에 등록
-            //if (TilemapManager.Instance != null)
-            //{
-            //    TilemapManager.Instance.RegisterBuilding(cellPos, instance);
-            //}
         }
     }
 

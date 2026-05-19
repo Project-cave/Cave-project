@@ -2484,6 +2484,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2301171689305908593, guid: a506451df6b6d594f995bbc11599658c, type: 3}
+      propertyPath: facilityData
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d7244b2d30f8b944a5cc3fc88a55514, type: 2}
     - target: {fileID: 2480216408405676318, guid: a506451df6b6d594f995bbc11599658c, type: 3}
       propertyPath: m_Name
       value: SpawnFacility

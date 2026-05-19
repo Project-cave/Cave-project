@@ -56,8 +56,7 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemiesCoroutine(int grade, int stage)
     {
-
-
+        GameUIManager.instance.DisableSceneButton();
         yield return new WaitForSeconds(spawnDelay);
 
         if (levelDatabase == null)
@@ -75,6 +74,7 @@ public class EnemySpawner : MonoBehaviour
         yield return StartCoroutine(SpawnEnemyCourutine(EnemyRankType.Platinum, data.platinumCount, data));
 
         currentSpawnCoroutine = null;
+        GameUIManager.instance.AbleSceneButton();
     }
 
     private IEnumerator SpawnEnemyCourutine(EnemyRankType rankType, int count, LevelData data)

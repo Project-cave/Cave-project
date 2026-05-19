@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class MapManager : MonoBehaviour
 {
@@ -10,6 +9,9 @@ public class MapManager : MonoBehaviour
     private Dictionary<Vector3Int, string> placedBuildings = new Dictionary<Vector3Int, string>();
     private Dictionary<Vector3Int, string> currentUnits = new Dictionary<Vector3Int, string>();
     private Dictionary<int, string> currentEnemies = new Dictionary<int, string>();
+    private SpawnProgress spawnProgress = new SpawnProgress();
+
+    public SpawnProgress GetSpawnProgress() => spawnProgress;
 
     private void Awake()
     {
@@ -81,6 +83,11 @@ public class MapManager : MonoBehaviour
         return currentUnits;
     }
 
+    public bool HasSavedEnemies()
+    {
+        return currentEnemies != null && currentEnemies.Count > 0;
+    }
+
     public void UpdateCurrentEnemies(Dictionary<int, string> enemies)
     {
         currentEnemies = new Dictionary<int, string>(enemies);
@@ -89,6 +96,18 @@ public class MapManager : MonoBehaviour
     public Dictionary<int, string> GetCurrentEnemies()
     {
         return currentEnemies;
+    }
+
+    public void SaveSpawnProgress(SpawnProgress progress)
+    {
+        spawnProgress = progress;
+        Save();
+    }
+
+    public void ClearSpawnProgress()
+    {
+        spawnProgress = new SpawnProgress();
+        Save();
     }
 
     #endregion
@@ -143,6 +162,8 @@ public class MapManager : MonoBehaviour
             });
         }
 
+        data.spawnProgress = spawnProgress;
+
         string json = JsonUtility.ToJson(data, true);
         System.IO.File.WriteAllText(SavePath(), json);
     }
@@ -189,6 +210,9 @@ public class MapManager : MonoBehaviour
         {
             currentEnemies[e.x] = e.unitPrefabName;
         }
+
+        spawnProgress = data.spawnProgress ?? new SpawnProgress();
+
     }
 
     private string SavePath()
