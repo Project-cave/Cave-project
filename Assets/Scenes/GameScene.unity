@@ -1119,7 +1119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a45b1e8309599124f9024e472a6931fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitSpawner
-  unitPanel: {fileID: 0}
   spawnPosition: {x: 0, y: 0}
 --- !u!4 &66833739
 Transform:
@@ -2485,6 +2484,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2301171689305908593, guid: a506451df6b6d594f995bbc11599658c, type: 3}
+      propertyPath: facilityData
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d7244b2d30f8b944a5cc3fc88a55514, type: 2}
     - target: {fileID: 2480216408405676318, guid: a506451df6b6d594f995bbc11599658c, type: 3}
       propertyPath: m_Name
       value: SpawnFacility
@@ -3826,7 +3829,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 11a5894abe8ab5e4baa8f634daccd087, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &379224431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5230,6 +5232,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 08edce10547ff9b45bde8c1f99f5215e, type: 2}
   - {fileID: 11400000, guid: 23b973e53df932f4b8639c0e61d24624, type: 2}
   - {fileID: 11400000, guid: 0cb90573fb8af9249a653798892c95f6, type: 2}
+  - {fileID: 11400000, guid: 0cb90573fb8af9249a653798892c95f6, type: 2}
+  enemySpawner: {fileID: 1187068555}
   poolManager: {fileID: 1258185662}
 --- !u!4 &546531600
 Transform:
@@ -5240,11 +5244,11 @@ Transform:
   m_GameObject: {fileID: 546531598}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 16.81767, y: -13.41273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 820277632}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &574008143
 GameObject:
@@ -7292,7 +7296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7462945d17ade24b887b02131f4fb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
-  autoSaveInterval: 30
 --- !u!4 &820277632
 Transform:
   m_ObjectHideFlags: 0
@@ -7305,8 +7308,7 @@ Transform:
   m_LocalPosition: {x: 16.81767, y: -13.41273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 546531600}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834524356
@@ -8271,7 +8273,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: b2341b2894076b3409a8fe4e514e74e0, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &931897004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24619,6 +24620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1008740116}
   - component: {fileID: 1008740115}
+  - component: {fileID: 1008740117}
   m_Layer: 0
   m_Name: UnitManager
   m_TagString: Untagged
@@ -24654,6 +24656,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1008740117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008740114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d897ea165844404fa3e6523d0f5d441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
 --- !u!1 &1009652658
 GameObject:
   m_ObjectHideFlags: 0
@@ -25695,7 +25709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameUIManager
   MonsterBtn: {fileID: 36703191}
   SkillBtn: {fileID: 577078898}
-  UnitSpawnPanel: {fileID: 0}
+  UnitSpawnPanel: {fileID: 1363180214}
 --- !u!4 &1120449933
 Transform:
   m_ObjectHideFlags: 0
@@ -26003,7 +26017,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 08edce10547ff9b45bde8c1f99f5215e, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &1144083501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44833,7 +44846,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 740c79ff4a3d76047ab2fb70b0d5cf82, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &1672823645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44969,7 +44981,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 747a4c9138aa22c41a8d215f60c8dd97, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &1698020103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45276,7 +45287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 23b973e53df932f4b8639c0e61d24624, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &1706354122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46625,6 +46635,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelEnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7004606449446831636, guid: 4b11130232306cc4d865cded97b109f2, type: 3}
+      propertyPath: floorTilemap
+      value: 
+      objectReference: {fileID: 964319516}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -47207,7 +47221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 6f8e191f683a9c7438ab17666d80e549, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &1920981902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49756,7 +49769,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: ddbd470b273d8b443be24e5cc2b9868b, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &2106547133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50196,7 +50208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitPanelItem
   unitData: {fileID: 11400000, guid: 18e930792bab5f54896f8d05c28665e6, type: 2}
-  spawner: {fileID: 66833738}
 --- !u!114 &2144140747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50372,6 +50383,7 @@ SceneRoots:
   - {fileID: 66833739}
   - {fileID: 1120449933}
   - {fileID: 1258185663}
+  - {fileID: 546531600}
   - {fileID: 820277632}
   - {fileID: 1943930248}
   - {fileID: 1305835374}
