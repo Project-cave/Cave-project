@@ -8,6 +8,7 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
 
+    private const string SceneMain = "MainScene";
     private const string SceneSkill = "Skill";
     private const string SceneBattle = "GameScene";
     private const string SceneMonster = "Monster";
@@ -44,6 +45,8 @@ public class SceneController : MonoBehaviour
             Debug.LogWarning("loadingPanel이 비어있습니다.");
     }
 
+
+    public void LoadMainScene() => LoadAsync(SceneMain).Forget();
     public void LoadGameScene() => LoadAsync(SceneBattle).Forget(); 
     public void LoadMonsterScene() => LoadAsync(SceneMonster).Forget();
     public void LoadSkillScene() => LoadAsync(SceneSkill).Forget();
