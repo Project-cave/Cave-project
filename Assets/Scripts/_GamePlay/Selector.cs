@@ -45,7 +45,7 @@ public class Selector : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             StartDrag();
         }
@@ -55,7 +55,7 @@ public class Selector : MonoBehaviour
             UpdateDrag();
         }
 
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             EndDrag();
         }

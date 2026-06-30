@@ -18,23 +18,34 @@ MonoBehaviour:
     backgroundImage: {fileID: 0}
     speakerName: 
     speakerPortrait: {fileID: 0}
+    speakerGetDark: 0
   - lineType: 1
     context: "\uBC30\uACBD \uC5C6\uC74C"
     backgroundImage: {fileID: 0}
     speakerName: "\uB9C8\uC655"
     speakerPortrait: {fileID: -8998850188656869406, guid: b0dd5bebd2ca58845bae88e51e594b8e, type: 3}
+    speakerGetDark: 0
   - lineType: 1
     context: "\uBC30\uACBD \uC788\uC74C"
     backgroundImage: {fileID: -9200845145288167509, guid: 44ee587a36d89c641a9530dd0319823f, type: 3}
     speakerName: "\uB9C8\uC655"
     speakerPortrait: {fileID: -8998850188656869406, guid: b0dd5bebd2ca58845bae88e51e594b8e, type: 3}
+    speakerGetDark: 0
   - lineType: 1
     context: "\uADF8\uB9AC\uACE0 \uC544\uBB34\uB3C4 \uC5C6\uC5C8\uB2E4."
     backgroundImage: {fileID: 0}
     speakerName: 
     speakerPortrait: {fileID: 0}
+    speakerGetDark: 0
   - lineType: 1
     context: "\uBD80\uD65C"
     backgroundImage: {fileID: 0}
     speakerName: "\uB9C8\uC655(\uBD80\uD65C)"
     speakerPortrait: {fileID: -8998850188656869406, guid: b0dd5bebd2ca58845bae88e51e594b8e, type: 3}
+    speakerGetDark: 0
+  - lineType: 1
+    context: "\uC0DD\uAC01\uC911"
+    backgroundImage: {fileID: 0}
+    speakerName: "\uB9C8\uC655"
+    speakerPortrait: {fileID: -8998850188656869406, guid: b0dd5bebd2ca58845bae88e51e594b8e, type: 3}
+    speakerGetDark: 1

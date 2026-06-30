@@ -99,6 +99,15 @@ public class CutsceneManager : MonoBehaviour
             {
                 imgPortrait.gameObject.SetActive(line.speakerPortrait != null);
                 imgPortrait.sprite = line.speakerPortrait;
+
+                if (line.speakerGetDark)
+                {
+                    imgPortrait.color = Color.gray;
+                }
+                else
+                {
+                    imgPortrait.color = Color.white;
+                }
             }
         }
     }

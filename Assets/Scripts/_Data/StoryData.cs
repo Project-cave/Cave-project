@@ -21,6 +21,7 @@ public class StoryData : ScriptableObject
         public Sprite backgroundImage;
         public string speakerName;
         public Sprite speakerPortrait;
+        public bool speakerGetDark;
     }
 
     [Header("Story")]
