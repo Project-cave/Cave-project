@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private Tilemap floorTilemap;
-
     [Header("데이터베이스 및 풀")]
     [SerializeField] private LevelDatabase levelDatabase;
     [SerializeField] private Transform spawnPoint;
@@ -56,7 +53,6 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemiesCoroutine(int grade, int stage)
     {
-        GameUIManager.instance.DisableSceneButton();
         yield return new WaitForSeconds(spawnDelay);
 
         if (levelDatabase == null)
@@ -74,7 +70,6 @@ public class EnemySpawner : MonoBehaviour
         yield return StartCoroutine(SpawnEnemyCourutine(EnemyRankType.Platinum, data.platinumCount, data));
 
         currentSpawnCoroutine = null;
-        GameUIManager.instance.AbleSceneButton();
     }
 
     private IEnumerator SpawnEnemyCourutine(EnemyRankType rankType, int count, LevelData data)
@@ -139,15 +134,10 @@ public class EnemySpawner : MonoBehaviour
         return EnemyClassType.Paladin;
     }
 
-    public void SpawnAt(Vector3 worldPos, RaceData race, RankData rank, ClassData cls)
-    {
-        InitializeEnemy(rank, race, cls, worldPos);
-    }
-
     private void InitializeEnemy(RankData rankData, RaceData raceData, ClassData classData, Vector3? pos = null)
     {
         GameObject spawnedEnemy = GameManager.instance.pool.Get(2);
-        spawnedEnemy.transform.position = pos ?? spawnPoint.position;
+        spawnedEnemy.transform.position = spawnPoint.position;
 
         EnemyStatHandler statHandler = spawnedEnemy.GetComponent<EnemyStatHandler>();
         if (statHandler != null)
@@ -188,7 +178,5 @@ public class EnemySpawner : MonoBehaviour
         {
             newEnemyScript.InitEnemy();
         }
-
-        EnemyManager.instance.RegisterEnemy(spawnedEnemy);
     }
 }

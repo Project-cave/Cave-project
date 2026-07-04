@@ -21,18 +21,6 @@ public class GameUIManager : MonoBehaviour
         SkillBtn.onClick.AddListener(() => SceneController.instance.LoadSkillScene());
     }
 
-    public void DisableSceneButton()
-    {
-        SkillBtn.interactable = false;
-        MonsterBtn.interactable = false;
-    }
-
-    public void AbleSceneButton()
-    {
-        SkillBtn.interactable = true;
-        MonsterBtn.interactable = true;
-    }
-
     public void ToggleUnitSpawnPanel()
     {
         UnitSpawnPanel.SetActive(!UnitSpawnPanel.activeSelf);

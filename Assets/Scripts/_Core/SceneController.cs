@@ -48,18 +48,8 @@ public class SceneController : MonoBehaviour
 
     public void LoadMainScene() => LoadAsync(SceneMain).Forget();
     public void LoadGameScene() => LoadAsync(SceneBattle).Forget();
-    public void LoadMonsterScene()
-    {
-        EnemyManager.instance.SaveSnapshot();
-        MapManager.instance.Save();
-        LoadAsync(SceneMonster).Forget();
-    }
-    public void LoadSkillScene()
-    {
-        EnemyManager.instance.SaveSnapshot();
-        MapManager.instance.Save();
-        LoadAsync(SceneSkill).Forget();
-    }
+    public void LoadMonsterScene() => LoadAsync(SceneMonster).Forget();
+    public void LoadSkillScene() => LoadAsync(SceneSkill).Forget();
 
     private async UniTask LoadAsync(string sceneName)
     {

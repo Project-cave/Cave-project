@@ -1,5 +1,4 @@
-﻿using UnityEditor.SceneManagement;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
@@ -44,10 +43,7 @@ public class StageManager : MonoBehaviour
         }
 
         Debug.Log($"[StageManager] {currentGrade}등급 {currentStage}스테이지.");
-        if (!MapManager.instance.HasSavedEnemies())
-        {
-            enemySpawner.StartLevelSpawning(currentGrade, currentStage);
-        }
+        enemySpawner.StartLevelSpawning(currentGrade, currentStage);
     }
 
     public void StageClear()

@@ -8,10 +8,7 @@ public class MapManager : MonoBehaviour
     private HashSet<Vector3Int> removedWalls = new HashSet<Vector3Int>();
     private Dictionary<Vector3Int, string> placedBuildings = new Dictionary<Vector3Int, string>();
     private Dictionary<Vector3Int, string> currentUnits = new Dictionary<Vector3Int, string>();
-    private Dictionary<int, string> currentEnemies = new Dictionary<int, string>();
-    private SpawnProgress spawnProgress = new SpawnProgress();
-
-    public SpawnProgress GetSpawnProgress() => spawnProgress;
+    [SerializeField] private float autoSaveInterval = 30f;
 
     private void Awake()
     {
@@ -83,33 +80,6 @@ public class MapManager : MonoBehaviour
         return currentUnits;
     }
 
-    public bool HasSavedEnemies()
-    {
-        return currentEnemies != null && currentEnemies.Count > 0;
-    }
-
-    public void UpdateCurrentEnemies(Dictionary<int, string> enemies)
-    {
-        currentEnemies = new Dictionary<int, string>(enemies);
-    }
-
-    public Dictionary<int, string> GetCurrentEnemies()
-    {
-        return currentEnemies;
-    }
-
-    public void SaveSpawnProgress(SpawnProgress progress)
-    {
-        spawnProgress = progress;
-        Save();
-    }
-
-    public void ClearSpawnProgress()
-    {
-        spawnProgress = new SpawnProgress();
-        Save();
-    }
-
     #endregion
 
 
@@ -150,20 +120,6 @@ public class MapManager : MonoBehaviour
             });
         }
 
-        // 4. 적
-        foreach (var kvp in currentEnemies)
-        {
-            data.enemies.Add(new PlacedUnit
-            {
-                x = kvp.Key, // int ID로 재활용
-                y = 0,
-                z = 0,
-                unitPrefabName = kvp.Value
-            });
-        }
-
-        data.spawnProgress = spawnProgress;
-
         string json = JsonUtility.ToJson(data, true);
         System.IO.File.WriteAllText(SavePath(), json);
     }
@@ -203,15 +159,6 @@ public class MapManager : MonoBehaviour
             Vector3Int pos = new Vector3Int(unit.x, unit.y, unit.z);
             currentUnits[pos] = unit.unitPrefabName;
         }
-
-        // 4. 적
-        currentEnemies.Clear();
-        foreach (var e in data.enemies)
-        {
-            currentEnemies[e.x] = e.unitPrefabName;
-        }
-
-        spawnProgress = data.spawnProgress ?? new SpawnProgress();
 
     }
 
