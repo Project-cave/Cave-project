@@ -191,11 +191,11 @@ public class FacilityPlacementManager : MonoBehaviour
     {
         int wood = ResourceManager.Instance.GetResource(ResourceType.Wood);
         int scrap = ResourceManager.Instance.GetResource(ResourceType.Scrap);
-        int stone = ResourceManager.Instance.GetResource(ResourceType.Stone);
+        int meat = ResourceManager.Instance.GetResource(ResourceType.Meat);
         
         return wood >= facility.woodCost &&
                scrap >= facility.scrapCost &&
-               stone >= facility.stoneCost;
+               meat >= facility.meatCost;
     }
     
     // 자원 지불
@@ -207,8 +207,8 @@ public class FacilityPlacementManager : MonoBehaviour
         if (facility.scrapCost > 0)
             ResourceManager.Instance.SpendResource(ResourceType.Scrap, facility.scrapCost);
         
-        if (facility.stoneCost > 0)
-            ResourceManager.Instance.SpendResource(ResourceType.Stone, facility.stoneCost);
+        if (facility.meatCost > 0)
+            ResourceManager.Instance.SpendResource(ResourceType.Meat, facility.meatCost);
     }
     
     // 일반 시설 배치

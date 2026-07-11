@@ -5,7 +5,7 @@ public enum ResourceType
 {
     Wood,   // 나무
     Scrap,  // 고철
-    Stone   // 돌
+    Meat   // 고기
 }
 
 public class ResourceManager : MonoBehaviour
@@ -15,11 +15,11 @@ public class ResourceManager : MonoBehaviour
     [Header("Starting Resources")]
     [SerializeField] private int startingWood = 50;
     [SerializeField] private int startingScrap = 30;
-    [SerializeField] private int startingStone = 20;
+    [SerializeField] private int startingMeat = 20;
     
     private int currentWood;
     private int currentScrap;
-    private int currentStone;
+    private int currentMeat;
     
     public event Action OnResourceChanged;
     
@@ -39,7 +39,7 @@ public class ResourceManager : MonoBehaviour
     {
         currentWood = startingWood;
         currentScrap = startingScrap;
-        currentStone = startingStone;
+        currentMeat = startingMeat;
         OnResourceChanged?.Invoke();
     }
     
@@ -49,7 +49,7 @@ public class ResourceManager : MonoBehaviour
         {
             case ResourceType.Wood: return currentWood;
             case ResourceType.Scrap: return currentScrap;
-            case ResourceType.Stone: return currentStone;
+            case ResourceType.Meat: return currentMeat;
             default: return 0;
         }
     }
@@ -72,8 +72,8 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Scrap:
                 currentScrap -= amount;
                 break;
-            case ResourceType.Stone:
-                currentStone -= amount;
+            case ResourceType.Meat:
+                currentMeat -= amount;
                 break;
         }
         
@@ -91,8 +91,8 @@ public class ResourceManager : MonoBehaviour
             case ResourceType.Scrap:
                 currentScrap += amount;
                 break;
-            case ResourceType.Stone:
-                currentStone += amount; 
+            case ResourceType.Meat:
+                currentMeat += amount; 
                 break;
         }
         
@@ -102,7 +102,7 @@ public class ResourceManager : MonoBehaviour
     // 이전 버전 호환성 유지 (ScoutManager용)
     public int GetCurrentResources()
     {
-        return currentWood + currentScrap + currentStone;
+        return currentWood + currentScrap + currentMeat;
     }
     
     public void AddResources(int amount)

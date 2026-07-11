@@ -6,10 +6,10 @@ public class MainOption : MonoBehaviour
 {
     public static MainOption instance = null;
 
-    [Header("ÆÐ³Î")]
+    [Header("ï¿½Ð³ï¿½")]
     public GameObject UIWindow = null;
 
-    [Header("ÅÇ ÆÐ³Î")]
+    [Header("ï¿½ï¿½ ï¿½Ð³ï¿½")]
     public GameObject gamePanel;
     public GameObject videoPanel;
     public GameObject audioPanel;
@@ -18,16 +18,16 @@ public class MainOption : MonoBehaviour
     public Button videoPanelBtn;
     public Button audioPanelBtn;
 
-    [Header("ºñµð¿À")]
+    [Header("ï¿½ï¿½ï¿½ï¿½")]
     public TextMeshProUGUI screenModeLabel;
     private int _screenModeIndex = 0;
-    private readonly string[] _screenModeNames = { "ÀüÃ¼È­¸é", "Ã¢¸ðµå" };
+    private readonly string[] _screenModeNames = { "ì „ì²´í™”ë©´", "ì°½ëª¨ë“œ" };
 
     public TextMeshProUGUI resolutionLabel;
     private int _resolutionIndex = 0;
     private readonly string[] _resolutionNames = { "1920 x 1080", "1600 x 900", "1280 x 720" };
 
-    [Header("»ç¿îµå")]
+    [Header("ï¿½ï¿½ï¿½ï¿½")]
     public Slider masterSlider;
     public Slider bgmSlider;
     public Slider sfxSlider;
@@ -47,7 +47,11 @@ public class MainOption : MonoBehaviour
     {
         InitSliderListeners();
 
-        if (SettingsManager.instance != null) PullFromSettings();
+        if (SettingsManager.instance != null) 
+        {
+            PullFromSettings(); 
+            ApplyResolution();
+        }
 
         RefreshLabel();
         ShowTab(0);
