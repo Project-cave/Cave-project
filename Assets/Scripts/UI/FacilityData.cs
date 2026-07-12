@@ -14,6 +14,7 @@ public class FacilityData : ScriptableObject
     public int woodCost;   // 목재 비용
     public int scrapCost;  // 고철 비용
     public int meatCost;  // 고기 비용
+    public bool allowDragPlacement;  // 드래그로 연속 배치 허용 여부 (벽/함정 등)
     
     [Header("기능")]
     [TextArea(3, 5)]

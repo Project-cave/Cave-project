@@ -90,7 +90,7 @@ public class RaidManager : MonoBehaviour
         {
             case ResourceType.Wood:  return "나무";
             case ResourceType.Scrap: return "고철";
-            case ResourceType.Meat: return "고기기";
+            case ResourceType.Meat: return "고기";
             default: return "";
         }
     }

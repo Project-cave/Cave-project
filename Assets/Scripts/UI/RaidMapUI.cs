@@ -171,8 +171,8 @@ public class RaidMapUI : MonoBehaviour
         }
 
         if (locationNameText) locationNameText.text = selectedRaid.GetLocationName();
-        if (timeText)         timeText.text         = $"{selectedRaid.raidDuration}초";
-        if (successRateText)  successRateText.text  = $"{selectedRaid.baseSuccessRate}%";
+        if (timeText)         timeText.text         = $"소요시간: {selectedRaid.raidDuration}초";
+        if (successRateText)  successRateText.text  = $"성공확률: {selectedRaid.baseSuccessRate}%";
 
         // 보상 텍스트 조합
         if (rewardText)
@@ -180,8 +180,8 @@ public class RaidMapUI : MonoBehaviour
             string reward = "";
             foreach (var r in selectedRaid.possibleRewards)
             {
-                string resName = r.resourceType == ResourceType.Wood  ? "나무" :
-                                 r.resourceType == ResourceType.Scrap ? "고철" : "고기";
+                string resName = r.resourceType == ResourceType.Wood  ? "획득 자원: 나무" :
+                                 r.resourceType == ResourceType.Scrap ? "획득 자원: 고철" : "획득 자원: 고기";
                 reward += $"{resName} {r.minAmount}~{r.maxAmount}\n";
             }
             rewardText.text = reward.TrimEnd('\n');
