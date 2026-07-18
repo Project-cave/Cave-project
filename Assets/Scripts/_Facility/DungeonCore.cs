@@ -1,10 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using UnityEngine;
 
-namespace Assets.Scripts._Facility
+[RequireComponent(typeof(FacilityStatHandler))]
+public class DungeonCore : MonoBehaviour
 {
-    internal class DungeonCore
+    private FacilityStatHandler statHandler;
+
+    private void Awake()
     {
+        statHandler = GetComponent<FacilityStatHandler>();
+    }
+
+    private void Start()
+    {
+        statHandler.OnDeath += TriggerGameOver;
+    }
+
+    private void OnDestroy()
+    {
+        if (statHandler != null) statHandler.OnDeath -= TriggerGameOver;
+    }
+
+    private void TriggerGameOver()
+    {
+        Debug.Log("[DungeonCore] 던전 코어 파괴");
+        if (StageManager.instance != null)
+        {
+            StageManager.instance.OnWaveFailed();
+        }
     }
 }

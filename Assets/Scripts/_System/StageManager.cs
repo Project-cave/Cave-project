@@ -80,5 +80,7 @@ public class StageManager : MonoBehaviour
     {
 
         currentWaveCount = 1;
+
+        Invoke(nameof(StartNextWave), 3.0f);
     }
 }
