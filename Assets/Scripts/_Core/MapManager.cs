@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class MapManager : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class MapManager : MonoBehaviour
     private HashSet<Vector3Int> removedWalls = new HashSet<Vector3Int>();
     private Dictionary<Vector3Int, string> placedBuildings = new Dictionary<Vector3Int, string>();
     private Dictionary<Vector3Int, string> currentUnits = new Dictionary<Vector3Int, string>();
-
     [SerializeField] private float autoSaveInterval = 30f;
 
     private void Awake()
@@ -161,6 +159,7 @@ public class MapManager : MonoBehaviour
             Vector3Int pos = new Vector3Int(unit.x, unit.y, unit.z);
             currentUnits[pos] = unit.unitPrefabName;
         }
+
     }
 
     private string SavePath()

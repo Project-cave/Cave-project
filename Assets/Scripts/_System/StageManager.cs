@@ -6,10 +6,15 @@ public class StageManager : MonoBehaviour
 
     [Header("참조")]
     [SerializeField] private EnemySpawner enemySpawner;
+    [SerializeField] private LevelDatabase levelDatabase;
+
+    [Header("웨이브 상태")]
+    public bool isWaveActive = false;
+    public bool isCurrentWaveBoss = false;
 
     [Header("진행 상태")]
-    public int currentGrade = 1;
-    public int currentStage = 1;
+    public int currentDungeonRank = 1;
+    public int currentWaveCount = 1;
 
     private void Awake()
     {
@@ -26,28 +31,56 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
-        StartStage();
+        StartNextWave();
     }
 
-    public void StartStage()
+    public void StartNextWave()
     {
-        if (enemySpawner == null)
+        if (enemySpawner == null || levelDatabase == null) return;
+        if (!enemySpawner.gameObject.activeInHierarchy) enemySpawner.gameObject.SetActive(true);
+
+        LevelData currentLevelData = levelDatabase.GetLevelData(currentDungeonRank, currentWaveCount);
+        if (currentLevelData == null)
         {
-            Debug.LogError("[StageManager] EnemySpawner 참조가 누락");
+            Debug.LogError($"[StageManager] 현재 LevelData가 존재하지 않습니다.");
             return;
         }
 
-        if (!enemySpawner.gameObject.activeInHierarchy)
-        {
-            enemySpawner.gameObject.SetActive(true);
-        }
+        isCurrentWaveBoss = (currentWaveCount >= currentLevelData.targetWaveCount);
+        isWaveActive = false;
 
-        Debug.Log($"[StageManager] {currentGrade}등급 {currentStage}스테이지.");
-        enemySpawner.StartLevelSpawning(currentGrade, currentStage);
+        if (isCurrentWaveBoss)
+        {
+            Debug.Log($"[StageManager] {currentDungeonRank}등급 보스 웨이브.");
+            enemySpawner.StartWaveSpawning(currentDungeonRank, currentWaveCount, true);
+        }
+        else
+        {
+            Debug.Log($"[StageManager] {currentDungeonRank}등급 일반 웨이브 ({currentWaveCount}/{currentLevelData.targetWaveCount}).");
+            enemySpawner.StartWaveSpawning(currentDungeonRank, currentWaveCount, false);
+        }
     }
 
-    public void StageClear()
-    {  
-        // 스테이지 클리어 시
+    public void OnWaveCleared(bool wasBoss)
+    {
+        if (wasBoss)
+        {
+            currentDungeonRank++;
+            currentWaveCount = 1;
+        }
+        else
+        {
+            currentWaveCount++;
+        }
+
+        Invoke(nameof(StartNextWave), 3.0f);
+    }
+
+    public void OnWaveFailed()
+    {
+
+        currentWaveCount = 1;
+
+        Invoke(nameof(StartNextWave), 3.0f);
     }
 }
