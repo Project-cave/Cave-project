@@ -26,7 +26,7 @@ public class SettingsManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             LoadSettings();
-            Debug.Log("ÃÊ±âÈ­ ¿Ï·á");
+            Debug.Log("ï¿½Ê±ï¿½È­ ï¿½Ï·ï¿½");
         }
         else
         {
@@ -70,10 +70,16 @@ public class SettingsManager : MonoBehaviour
 
     public void ApplySettings()
     {
+
         if (AudioManager.instance == null) return;
 
         AudioManager.instance.SetMasterVolume(MasterVolume);
         AudioManager.instance.SetBgmVolume(MusicVolume);
         AudioManager.instance.SetSfxVolume(SfxVolume);
+    }
+
+    public void GameExit()
+    {
+        Application.Quit();
     }
 }

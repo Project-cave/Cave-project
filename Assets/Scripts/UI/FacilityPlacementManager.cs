@@ -8,8 +8,17 @@ public class FacilityPlacementManager : MonoBehaviour
     
     [Header("Tilemaps")]
     [SerializeField] private Tilemap floorTilemap;
-    [SerializeField] private Tilemap wallTilemap;
+    [SerializeField] private Tilemap backWallTilemap;
+    [SerializeField] private Tilemap frontWallTilemap;
     [SerializeField] private Tilemap facilityTilemap;  // 소환진 전용 타일맵
+
+    [Header("Placement Preview")]
+    [SerializeField] private Color validColor = new Color(0f, 1f, 0f, 0.4f);
+    [SerializeField] private Color invalidColor = new Color(1f, 0f, 0f, 0.4f);
+
+    private GameObject placementIndicator;
+    private SpriteRenderer indicatorRenderer;
+
     
     [Header("Available Facilities")]
     [SerializeField] private FacilityData[] availableFacilities;  // 건설 가능한 시설들
@@ -51,6 +60,93 @@ public class FacilityPlacementManager : MonoBehaviour
         
         Debug.Log($"{selectedFacility.facilityName} 배치 모드 시작");
     }
+
+    void EnsureIndicator()
+    {
+        if (placementIndicator != null) return;
+
+        placementIndicator = new GameObject("PlacementIndicator");
+        indicatorRenderer = placementIndicator.AddComponent<SpriteRenderer>();
+        indicatorRenderer.sprite = CreateSquareSprite();
+        indicatorRenderer.sortingOrder = 10;
+        placementIndicator.SetActive(false);
+    }
+
+    Sprite CreateSquareSprite()
+    {
+        Texture2D tex = new Texture2D(1, 1);
+        tex.SetPixel(0, 0, Color.white);
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f), 1f);
+    }
+
+    // 마우스가 가리키는 셀에 프리뷰 표시 (TilemapManager에서 매 프레임 호출)
+    public void ShowPreview(Vector3Int cellPosition)
+    {
+        if (!IsPlacementMode())
+        {
+            ClearPreview();
+            return;
+        }
+
+        EnsureIndicator();
+
+        bool valid = IsValidPlacement(cellPosition);
+
+        Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPosition);
+        placementIndicator.transform.position = worldPos;
+
+        Vector3 cellSize = floorTilemap.cellSize;
+        placementIndicator.transform.localScale = new Vector3(cellSize.x, cellSize.y, 1f);
+
+        indicatorRenderer.color = valid ? validColor : invalidColor;
+        placementIndicator.SetActive(true);
+    }
+
+    public void ClearPreview()
+    {
+        if (placementIndicator != null)
+            placementIndicator.SetActive(false);
+    }
+
+    // 로그 없이 배치 가능 여부만 확인 (프리뷰용)
+    public bool IsValidPlacement(Vector3Int cellPosition)
+    {
+        if (!isInPlacementMode || selectedFacility == null)
+            return false;
+
+        if (selectedFacility.isSpawnFacility)
+            return CanPlaceOnFacilityTile(cellPosition, false);
+        else
+            return CanPlaceOnFloor(cellPosition, false);
+    }
+
+    public bool IsDragPlacementAllowed()
+    {
+        return selectedFacility != null && selectedFacility.allowDragPlacement;
+    }
+
+    // 시설 배치 시도
+    public void TryPlaceFacility(Vector3Int cellPosition)
+    {
+        if (!isInPlacementMode || selectedFacility == null)
+            return;
+
+        if (selectedFacility.isSpawnFacility)
+        {
+            if (!CanPlaceOnFacilityTile(cellPosition, true))
+                return;
+
+            PlaceSpawnFacility(cellPosition);
+        }
+        else
+        {
+            if (!CanPlaceOnFloor(cellPosition, true))
+                return;
+
+            PlaceNormalFacility(cellPosition);
+        }
+    }
     
     // 소환진에 배치할 유닛 선택
     public void SelectSpawnUnit(UnitSo unit)
@@ -86,6 +182,7 @@ public class FacilityPlacementManager : MonoBehaviour
         selectedSpawnUnit = null;
         isInPlacementMode = false;
         
+        ClearPreview();
         Debug.Log("시설 배치 모드 취소");
     }
     
@@ -99,90 +196,57 @@ public class FacilityPlacementManager : MonoBehaviour
         return selectedFacility;
     }
     
-    // 시설 배치 시도
-    public void TryPlaceFacility(Vector3Int cellPosition)
-    {
-        if (!isInPlacementMode || selectedFacility == null)
-            return;
-        
-        // 소환진인 경우
-        if (selectedFacility.isSpawnFacility)
-        {
-            if (!CanPlaceOnFacilityTile(cellPosition))
-                return;
-            
-            PlaceSpawnFacility(cellPosition);
-        }
-        // 일반 시설인 경우
-        else
-        {
-            if (!CanPlaceOnFloor(cellPosition))
-                return;
-            
-            PlaceNormalFacility(cellPosition);
-        }
-    }
-    
     // 바닥 타일에 배치 가능한지 확인
-    bool CanPlaceOnFloor(Vector3Int cellPosition)
+    bool CanPlaceOnFloor(Vector3Int cellPosition, bool logMessages)
     {
-        // 바닥 타일이 있는가?
         if (!floorTilemap.HasTile(cellPosition))
         {
-            Debug.Log("바닥 타일이 아닙니다.");
+            if (logMessages) Debug.Log("바닥 타일이 아닙니다.");
             return false;
         }
-        
-        // 벽이 있는가?
-        Vector3 worldPos = floorTilemap.GetCellCenterWorld(cellPosition);
-        Vector3Int wallCell = wallTilemap.WorldToCell(worldPos);
-        if (wallTilemap.HasTile(wallCell))
+
+        if (backWallTilemap.HasTile(cellPosition) || frontWallTilemap.HasTile(cellPosition))
         {
-            Debug.Log("벽이 있습니다.");
+            if (logMessages) Debug.Log("벽이 있습니다.");
             return false;
         }
-        
-        // 이미 시설이 있는가?
+
         if (placedFacilities.ContainsKey(cellPosition))
         {
-            Debug.Log("이미 시설이 배치되어 있습니다.");
+            if (logMessages) Debug.Log("이미 시설이 배치되어 있습니다.");
             return false;
         }
-        
-        // 자원 확인
+
         if (!CanAfford(selectedFacility))
         {
-            Debug.Log("자원이 부족합니다.");
+            if (logMessages) Debug.Log("자원이 부족합니다.");
             return false;
         }
-        
+
         return true;
     }
     
     // 소환진 타일에 배치 가능한지 확인
-    bool CanPlaceOnFacilityTile(Vector3Int cellPosition)
+    bool CanPlaceOnFacilityTile(Vector3Int cellPosition, bool logMessages)
     {
-        // 소환진 타일이 있는가?
         if (facilityTilemap == null || !facilityTilemap.HasTile(cellPosition))
         {
-            Debug.Log("소환진 배치 가능 지역이 아닙니다.");
+            if (logMessages) Debug.Log("소환진 배치 가능 지역이 아닙니다.");
             return false;
         }
-        
-        // 이미 시설이 있는가?
+
         if (placedFacilities.ContainsKey(cellPosition))
         {
-            Debug.Log("이미 시설이 배치되어 있습니다.");
+            if (logMessages) Debug.Log("이미 시설이 배치되어 있습니다.");
             return false;
         }
-        
-        // 자원 확인
+
         if (!CanAfford(selectedFacility))
         {
-            Debug.Log("자원이 부족합니다.");
+            if (logMessages) Debug.Log("자원이 부족합니다.");
             return false;
         }
-        
+
         return true;
     }
     
@@ -191,11 +255,11 @@ public class FacilityPlacementManager : MonoBehaviour
     {
         int wood = ResourceManager.Instance.GetResource(ResourceType.Wood);
         int scrap = ResourceManager.Instance.GetResource(ResourceType.Scrap);
-        int stone = ResourceManager.Instance.GetResource(ResourceType.Stone);
+        int meat = ResourceManager.Instance.GetResource(ResourceType.Meat);
         
         return wood >= facility.woodCost &&
                scrap >= facility.scrapCost &&
-               stone >= facility.stoneCost;
+               meat >= facility.meatCost;
     }
     
     // 자원 지불
@@ -207,8 +271,8 @@ public class FacilityPlacementManager : MonoBehaviour
         if (facility.scrapCost > 0)
             ResourceManager.Instance.SpendResource(ResourceType.Scrap, facility.scrapCost);
         
-        if (facility.stoneCost > 0)
-            ResourceManager.Instance.SpendResource(ResourceType.Stone, facility.stoneCost);
+        if (facility.meatCost > 0)
+            ResourceManager.Instance.SpendResource(ResourceType.Meat, facility.meatCost);
     }
     
     // 일반 시설 배치
@@ -251,6 +315,7 @@ public class FacilityPlacementManager : MonoBehaviour
         
         // 배치 모드 종료
         CancelPlacement();
+        ClearPreview();
     }
     
     // 소환진 배치
@@ -297,6 +362,7 @@ public class FacilityPlacementManager : MonoBehaviour
         
         // 배치 모드 종료
         CancelPlacement();
+        ClearPreview();
     }
     
     // 시설 제거

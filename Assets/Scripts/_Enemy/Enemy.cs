@@ -27,6 +27,7 @@ public abstract class Enemy : MonoBehaviour
     // 이동 관련
     public LinkedList<Vector2> currentPath = new LinkedList<Vector2>();
     private float lastExploreTime = 0f;
+    [HideInInspector] public bool isMoveable = true;
 
     // 상태 머신
     EnemyState state;
@@ -84,6 +85,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Update()
     {
         if (stat.isDead) return;
+        if (!isMoveable) return;
 
         if (Time.time - stat.LastAttackTime < stat.AttackMotionDelay)
         {
@@ -268,6 +270,10 @@ public abstract class Enemy : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+        if (EnemyManager.instance != null)
+        {
+            EnemyManager.instance.UnregisterEnemy(this.gameObject);
+        }
     }
 
     // 애니메이션
@@ -310,6 +316,17 @@ public abstract class Enemy : MonoBehaviour
     {
         if (scanner.nearestTarget == null || !scanner.nearestTarget.gameObject.activeSelf) return false;
         return true;
+    }
+
+    public void SetMoveable(bool canMove)
+    {
+        isMoveable = canMove;
+
+        if (!canMove)
+        {
+            if (rigid != null) rigid.linearVelocity = Vector2.zero;
+            // if (anim != null) anim.SetBool("isMoving", false); 
+        }
     }
 
     // 경로 로직

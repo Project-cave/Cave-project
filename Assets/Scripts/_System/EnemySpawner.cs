@@ -6,10 +6,10 @@ public class EnemySpawner : MonoBehaviour
 {
     [Header("데이터베이스 및 풀")]
     [SerializeField] private LevelDatabase levelDatabase;
-    [SerializeField] private Transform spawnPoint;
 
     [Header("소환 설정")]
-    [SerializeField] private float spawnDelay = 5.0f;
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private float gatherWaitTime = 2.0f;
 
     [Header("랜덤 풀(Pool) 데이터")]
     public List<RaceData> raceList;
@@ -20,9 +20,6 @@ public class EnemySpawner : MonoBehaviour
     private Dictionary<EnemyRaceType, RaceData> raceCache;
     private Dictionary<EnemyClassType, ClassData> classCache;
     private Dictionary<EnemyRankType, RankData> rankCache;
-
-    // 소환 간격 관리용
-    private Coroutine currentSpawnCoroutine;
 
     private void Awake()
     {
@@ -41,69 +38,124 @@ public class EnemySpawner : MonoBehaviour
         foreach (var rank in rankList) rankCache[rank.rankType] = rank;
     }
 
-    public void StartLevelSpawning(int grade, int stage)
+    public void StartWaveSpawning(int dungeonRank, int dungeonWave, bool isBoss)
     {
-        if (currentSpawnCoroutine != null)
-        {
-            StopCoroutine(currentSpawnCoroutine);
-        }
-
-        currentSpawnCoroutine = StartCoroutine(SpawnEnemiesCoroutine(grade, stage));
+        StartCoroutine(SpawnAndGatherCoroutine(dungeonRank, dungeonWave, isBoss));
     }
 
-    private IEnumerator SpawnEnemiesCoroutine(int grade, int stage)
+    private IEnumerator SpawnAndGatherCoroutine(int dungeonRank, int dungeonWave, bool isBoss)
     {
+        if (GameUIManager.instance != null) GameUIManager.instance.DisableSceneButton();
 
-
-        yield return new WaitForSeconds(spawnDelay);
-
-        if (levelDatabase == null)
+        if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogError("[StageEnemySpawner] LevelDatabase가 할당되지 않음.");
+            Debug.LogError("[EnemySpawner] spawnPoints가 설정되지 있지 않습니다.");
             yield break;
         }
 
-        LevelData data = levelDatabase.GetLevelData(grade, stage);
-        if (data == null) yield break;
+        LevelData data = levelDatabase != null ? levelDatabase.GetLevelData(dungeonRank, dungeonWave) : null;
+        int spawnCount = GetRandomSpawnCount(data);
 
-        yield return StartCoroutine(SpawnEnemyCourutine(EnemyRankType.Bronze, data.bronzeCount, data));
-        yield return StartCoroutine(SpawnEnemyCourutine(EnemyRankType.Silver, data.silverCount, data));
-        yield return StartCoroutine(SpawnEnemyCourutine(EnemyRankType.Gold, data.goldCount, data));
-        yield return StartCoroutine(SpawnEnemyCourutine(EnemyRankType.Platinum, data.platinumCount, data));
+        List<Enemy> currentWaveEnemies = new List<Enemy>();
 
-        currentSpawnCoroutine = null;
+        for (int i = 0; i < spawnCount; i++)
+        {
+            Transform selectedPoint = spawnPoints[i];
+
+            Enemy newEnemy = SpawnSingleEnemy(isBoss, selectedPoint.position, data);
+
+            if (newEnemy != null)
+            {
+                newEnemy.SetMoveable(false);
+                currentWaveEnemies.Add(newEnemy);
+            }
+        }
+
+        Debug.Log($"[EnemySpawner] {spawnCount}명의 모험가가 대기 중입니다.");
+        yield return new WaitForSeconds(gatherWaitTime);
+
+        Debug.Log("[EnemySpawner] 모험가가 이동을 시작했습니다.");
+        foreach (var enemy in currentWaveEnemies)
+        {
+            if (enemy != null)
+            {
+                enemy.SetMoveable(true);
+                if (EnemyManager.instance != null)
+                {
+                    EnemyManager.instance.RegisterEnemy(enemy.gameObject);
+                }
+            }
+        }
+
+        StageManager.instance.isWaveActive = true;
+
+        if (GameUIManager.instance != null) GameUIManager.instance.AbleSceneButton();
     }
 
-    private IEnumerator SpawnEnemyCourutine(EnemyRankType rankType, int count, LevelData data)
+    private int GetRandomSpawnCount(LevelData level)
     {
-        if (count <= 0) yield break;
+        return Random.Range(level.minSpawn, level.maxSpawn + 1);
+    }
 
-        if (!rankCache.TryGetValue(rankType, out RankData targetRankData))
+    private Enemy SpawnSingleEnemy(bool isBoss, Vector3 spawnPos, LevelData data)
+    {
+        EnemyRankType targetRankType = GetRandomRank(data);
+        if (!rankCache.TryGetValue(targetRankType, out RankData rankData)) return null;
+
+        EnemyRaceType targetRaceType = GetRandomRace(data);
+        if (!raceCache.TryGetValue(targetRaceType, out RaceData raceData)) return null;
+
+        EnemyClassType targetClassType = GetRandomClass(data);
+        if (!classCache.TryGetValue(targetClassType, out ClassData classData)) return null;
+
+        GameObject spawnedEnemy = GameManager.instance.pool.Get(2);
+        spawnedEnemy.transform.position = spawnPos;
+
+        EnemyStatHandler statHandler = spawnedEnemy.GetComponent<EnemyStatHandler>();
+        if (statHandler != null)
         {
-            Debug.LogError($"[StageEnemySpawner] {rankType} 랭크 데이터 누락.");
-            yield break;
+            statHandler.raceData = raceData;
+            statHandler.rankData = rankData;
+            statHandler.classData = classData;
         }
 
-        for (int i = 0; i < count; i++)
+        Enemy existingScript = spawnedEnemy.GetComponent<Enemy>();
+        if (existingScript != null) DestroyImmediate(existingScript);
+
+        Enemy newEnemyScript = null;
+        if (classData.attackType == EnemyAttackType.Melee) newEnemyScript = spawnedEnemy.AddComponent<EnemyMeleeClass>();
+        else if (classData.attackType == EnemyAttackType.Ranged) newEnemyScript = spawnedEnemy.AddComponent<EnemyRangedClass>();
+
+        SpriteRenderer sr = spawnedEnemy.GetComponent<SpriteRenderer>();
+        if (sr != null && rankData != null)
         {
-            EnemyRaceType race = GetRandomRace(data);
-            EnemyClassType enemyClass = GetRandomClass(data);
-
-            if (!raceCache.TryGetValue(race, out RaceData targetRaceData))
+            switch (rankData.rankType)
             {
-                Debug.LogError($"[StageEnemySpawner] {race} 종족 데이터 누락.");
-                continue;
+                case EnemyRankType.Bronze: sr.color = Color.white; break;
+                case EnemyRankType.Silver: sr.color = new Color(0.8f, 0.8f, 0.9f); break;
+                case EnemyRankType.Gold: sr.color = new Color(1.0f, 0.9f, 0.4f); break;
+                case EnemyRankType.Platinum: sr.color = new Color(0.8f, 1.0f, 1.0f); break;
             }
-            if (!classCache.TryGetValue(enemyClass, out ClassData targetClassData))
-            {
-                Debug.LogError($"[StageEnemySpawner] {enemyClass} 직업 데이터 누락.");
-                continue;
-            }
-
-            InitializeEnemy(targetRankData, targetRaceData, targetClassData);
-
-            yield return new WaitForSeconds(spawnDelay);
         }
+
+        if (newEnemyScript != null)
+        {
+            newEnemyScript.InitEnemy();
+        }
+
+        return newEnemyScript;
+    }
+
+    private EnemyRankType GetRandomRank(LevelData data)
+    {
+        float total = data.bronzeProb + data.silverProb + data.goldProb + data.platinumProb;
+        float rand = Random.Range(0f, total);
+
+        if ((rand -= data.bronzeProb) < 0) return EnemyRankType.Bronze;
+        if ((rand -= data.silverProb) < 0) return EnemyRankType.Silver;
+        if ((rand -= data.goldProb) < 0) return EnemyRankType.Gold;
+
+        return EnemyRankType.Platinum;
     }
 
     private EnemyRaceType GetRandomRace(LevelData data)
@@ -134,51 +186,5 @@ public class EnemySpawner : MonoBehaviour
         if ((rand -= data.magicianProb) < 0) return EnemyClassType.Magician;
 
         return EnemyClassType.Paladin;
-    }
-
-    private void InitializeEnemy(RankData rankData, RaceData raceData, ClassData classData)
-    {
-        GameObject spawnedEnemy = GameManager.instance.pool.Get(2);
-        spawnedEnemy.transform.position = spawnPoint.position;
-
-        EnemyStatHandler statHandler = spawnedEnemy.GetComponent<EnemyStatHandler>();
-        if (statHandler != null)
-        {
-            statHandler.raceData = raceData;
-            statHandler.rankData = rankData;
-            statHandler.classData = classData;
-        }
-
-        Enemy existingScript = spawnedEnemy.GetComponent<Enemy>();
-        if (existingScript != null) DestroyImmediate(existingScript);
-
-        Enemy newEnemyScript = null;
-        if (classData.attackType == EnemyAttackType.Melee) newEnemyScript = spawnedEnemy.AddComponent<EnemyMeleeClass>();
-        else if (classData.attackType == EnemyAttackType.Ranged) newEnemyScript = spawnedEnemy.AddComponent<EnemyRangedClass>();
-
-        SpriteRenderer sr = spawnedEnemy.GetComponent<SpriteRenderer>();
-        if (sr != null && rankData != null)
-        {
-            switch (rankData.rankType)
-            {
-                case EnemyRankType.Bronze:
-                    sr.color = Color.white;
-                    break;
-                case EnemyRankType.Silver:
-                    sr.color = new Color(0.8f, 0.8f, 0.9f); // 은빛
-                    break;
-                case EnemyRankType.Gold:
-                    sr.color = new Color(1.0f, 0.9f, 0.4f); // 금빛
-                    break;
-                case EnemyRankType.Platinum:
-                    sr.color = new Color(0.8f, 1.0f, 1.0f); // 빛나는 하늘색
-                    break;
-            }
-        }
-
-        if (newEnemyScript != null)
-        {
-            newEnemyScript.InitEnemy();
-        }
     }
 }
