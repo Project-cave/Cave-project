@@ -6,10 +6,10 @@ public class MainOption : MonoBehaviour
 {
     public static MainOption instance = null;
 
-    [Header("�г�")]
+    [Header("패널")]
     public GameObject UIWindow = null;
 
-    [Header("�� �г�")]
+    [Header("탭 패널")]
     public GameObject gamePanel;
     public GameObject videoPanel;
     public GameObject audioPanel;
@@ -18,7 +18,7 @@ public class MainOption : MonoBehaviour
     public Button videoPanelBtn;
     public Button audioPanelBtn;
 
-    [Header("����")]
+    [Header("비디오")]
     public TextMeshProUGUI screenModeLabel;
     private int _screenModeIndex = 0;
     private readonly string[] _screenModeNames = { "전체화면", "창모드" };
@@ -27,7 +27,7 @@ public class MainOption : MonoBehaviour
     private int _resolutionIndex = 0;
     private readonly string[] _resolutionNames = { "1920 x 1080", "1600 x 900", "1280 x 720" };
 
-    [Header("����")]
+    [Header("사운드")]
     public Slider masterSlider;
     public Slider bgmSlider;
     public Slider sfxSlider;

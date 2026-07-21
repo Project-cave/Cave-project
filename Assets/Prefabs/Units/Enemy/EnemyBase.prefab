@@ -347,7 +347,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &701181941639587497
 MonoBehaviour:
@@ -614,7 +614,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -787,6 +787,9 @@ MonoBehaviour:
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0.5
   <Sanity>k__BackingField: 0
+  <TurnPenalty>k__BackingField: 0
+  <UTurnPenalty>k__BackingField: 0
+  <CuriosityRate>k__BackingField: 0
   raceData: {fileID: 0}
   classData: {fileID: 0}
   rankData: {fileID: 0}

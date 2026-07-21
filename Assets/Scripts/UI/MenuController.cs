@@ -82,7 +82,7 @@ public class MenuController : MonoBehaviour
     
     void OnRaidClicked()
     {
-        UIManager uiManager = FindObjectOfType<UIManager>();
+        UIManager uiManager = FindFirstObjectByType<UIManager>();
         if (uiManager != null)
         {
             uiManager.OpenRaidMenu();

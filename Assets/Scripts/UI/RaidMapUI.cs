@@ -117,6 +117,8 @@ public class RaidMapUI : MonoBehaviour
     /// <summary>지도 패널 열기 (MenuController 또는 UIManager에서 호출)</summary>
     public void OpenMapPanel()
     {
+        Debug.Log($"RaidMapPanel: {raidMapPanel}, destroyed: {raidMapPanel == null}");
+
         raidMapPanel?.SetActive(true);
         infoPanel?.SetActive(false);
         selectedVillageId = -1;

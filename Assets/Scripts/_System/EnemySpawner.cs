@@ -45,8 +45,6 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnAndGatherCoroutine(int dungeonRank, int dungeonWave, bool isBoss)
     {
-        if (GameUIManager.instance != null) GameUIManager.instance.DisableSceneButton();
-
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
             Debug.LogError("[EnemySpawner] spawnPoints가 설정되지 있지 않습니다.");
@@ -88,8 +86,6 @@ public class EnemySpawner : MonoBehaviour
         }
 
         StageManager.instance.isWaveActive = true;
-
-        if (GameUIManager.instance != null) GameUIManager.instance.AbleSceneButton();
     }
 
     private int GetRandomSpawnCount(LevelData level)

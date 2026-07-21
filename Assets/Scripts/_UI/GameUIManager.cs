@@ -25,16 +25,4 @@ public class GameUIManager : MonoBehaviour
     {
         UnitSpawnPanel.SetActive(!UnitSpawnPanel.activeSelf);
     }
-
-    public void DisableSceneButton()
-    {
-        SkillBtn.interactable = false;
-        MonsterBtn.interactable = false;
-    }
-
-    public void AbleSceneButton()
-    {
-        SkillBtn.interactable = true;
-        MonsterBtn.interactable = true;
-    }
 }
