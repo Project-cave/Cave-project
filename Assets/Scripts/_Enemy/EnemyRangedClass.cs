@@ -5,14 +5,15 @@ using UnityEngine;
 public class EnemyRangedClass : Enemy
 {
     [Header("Bullet Settings")]
-    public int bulletPoolIndex = 4;
-    public int criticalPoolIndex = 3;
+    public int bulletPoolIndex = 13;
+    public int criticalPoolIndex = 14;
+    public Vector2 bulletSpawnPos;
 
     public override void AttackAction()
     {
         if (scanner.attackTarget != null && GameManager.instance.pool != null)
         {
-            Vector2 spawnPos = transform.position;
+            Vector2 spawnPos = GetFirePosition(transform.position);
 
             GameObject bulletObj;
             if (isCriticalContext)
@@ -39,6 +40,9 @@ public class EnemyRangedClass : Enemy
                 }
 
                 Vector2 dir = ((Vector2)scanner.attackTarget.position - spawnPos).normalized;
+
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                bulletObj.transform.rotation = Quaternion.Euler(0, 0, angle);
 
                 string dynamicTargetTag = scanner.attackTarget.tag;
 
@@ -74,6 +78,8 @@ public class EnemyRangedClass : Enemy
 
         Vector2 goal = currentPath.Last.Value;
         bool targetMoved = Vector2.Distance(bestPos, goal) > 1.5f;
+        goal = GetFirePosition(goal);
+
         bool canAttack = scanner.CanAttack(goal, targetPos, stat.projectileRadius) &&
             (Vector2.Distance(goal, targetPos) <= scanner.attackRange);
         
@@ -112,10 +118,10 @@ public class EnemyRangedClass : Enemy
             {
                 Vector2 checkPos = targetPos + new Vector2(x, y);
 
-                float dist = Vector2.Distance(checkPos, targetPos);
+                float dist = Vector2.Distance(GetFirePosition(checkPos), targetPos);
                 float moveDist = Vector2.Distance(transform.position, checkPos);
 
-                if (dist > scanner.attackRange || !scanner.CanAttack(checkPos, targetPos, stat.projectileRadius) ||
+                if (dist > scanner.attackRange || !scanner.CanAttack(GetFirePosition(checkPos), targetPos, stat.projectileRadius) ||
                     !scanner.IsTargetVisible(checkPos, transform.position)) continue;
 
                 float targetDist = Vector2.Distance(transform.position, targetPos);
@@ -199,5 +205,15 @@ public class EnemyRangedClass : Enemy
         }
 
         return bestPos;
+    }
+
+    private Vector2 GetFirePosition(Vector2 basePos)
+    {
+        Vector2 offset = bulletSpawnPos;
+
+        if (basePos.x <= transform.position.x)
+            offset.x *= -1;
+
+        return basePos + offset;
     }
 }

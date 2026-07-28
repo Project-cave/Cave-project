@@ -10,8 +10,8 @@ public class UnitAnimator : MonoBehaviour
     //    animator = GetComponent<Animator>();
     //    spriteRenderer = GetComponent<SpriteRenderer>();
 
-    //    if (animator == null) Debug.Log("Animator ½ÇÁ¾");
-    //    if (spriteRenderer == null) Debug.Log("SR ½ÇÁ¾");
+    //    if (animator == null) Debug.Log("Animator ï¿½ï¿½ï¿½ï¿½");
+    //    if (spriteRenderer == null) Debug.Log("SR ï¿½ï¿½ï¿½ï¿½");
     //}
 
     private void OnEnable()
@@ -19,8 +19,8 @@ public class UnitAnimator : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if (animator == null) Debug.Log("Animator ½ÇÁ¾");
-        if (spriteRenderer == null) Debug.Log("SR ½ÇÁ¾");
+        if (animator == null) Debug.Log("Animator ï¿½ï¿½ï¿½ï¿½");
+        if (spriteRenderer == null) Debug.Log("SR ï¿½ï¿½ï¿½ï¿½");
     }
 
     public void SetAnimator(RuntimeAnimatorController controller)
@@ -52,23 +52,23 @@ public class UnitAnimator : MonoBehaviour
         animator.SetTrigger("AttackTrigger");
     }
 
-    // === ½ºÇÁ¶óÀÌÆ® ¹ÝÀü (ÀÌµ¿) ===
+    // === ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ (ï¿½Ìµï¿½) ===
     public void FaceDirection(Vector2 direction)
     {
         if (direction.x > 0)
-            spriteRenderer.flipX = false;
-        else if (direction.x < 0)
             spriteRenderer.flipX = true;
+        else if (direction.x < 0)
+            spriteRenderer.flipX = false;
     }
 
-    // === ½ºÇÁ¶óÀÌÆ® ¹ÝÀü (°ø°Ý) ===
+    // === ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½) ===
     public void FaceTarget(Transform target)
     {
         if (target == null) return;
 
         if (target.position.x >= transform.position.x)
-            spriteRenderer.flipX = false;
-        else
             spriteRenderer.flipX = true;
+        else
+            spriteRenderer.flipX = false;
     }
 }

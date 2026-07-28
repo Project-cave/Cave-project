@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1001
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2208703988740019828, guid: 01be0deff4fb5d24aa92c54157298f60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -184,8 +184,6 @@ MonoBehaviour:
   Damage: 1
   per: 1
   id: 0
-  radius: 0
-  bulletData: {fileID: 11400000, guid: b0fe3dd4a6af12142964128c4f18cb02, type: 2}
   BulletTime: 0
 --- !u!95 &3660789291807035228
 Animator:

@@ -259,6 +259,7 @@ GameObject:
   - component: {fileID: 1077544256089167948}
   - component: {fileID: 6601757776808852143}
   - component: {fileID: 8237297032840664808}
+  - component: {fileID: 5768188799062704348}
   m_Layer: 6
   m_Name: Player 1 1 (2)
   m_TagString: selectable
@@ -330,7 +331,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 1000
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4795363162621231457, guid: 732d15530263d784c897561c494b627a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -476,7 +477,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
-  isIndestructible: 0
   requiredRank: 0
 --- !u!114 &5971381057891969201
 MonoBehaviour:
@@ -550,7 +550,7 @@ MonoBehaviour:
   <MaxHP>k__BackingField: 0
   <AttackPower>k__BackingField: 0
   <Defence>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 0
+  <BaseMoveSpeed>k__BackingField: 0
   <BaseAttackSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <DamageMultiplier>k__BackingField: 0
@@ -560,6 +560,18 @@ MonoBehaviour:
   <CriticalMultiplier>k__BackingField: 0
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0
+--- !u!114 &5768188799062704348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777609182724018126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering
 --- !u!1 &3526008076669862908
 GameObject:
   m_ObjectHideFlags: 0

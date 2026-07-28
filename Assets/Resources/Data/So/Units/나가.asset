@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
   info:
     unitName: "\uB098\uAC00"
-    unitNum: 7
+    unitNum: 6
     raceType: 0
     rankType: 3
     attackType: 4
@@ -25,7 +25,7 @@ MonoBehaviour:
     baseDefence: 0
     baseAttackSpeed: 4
     baseAttackRange: 1
-    baseMoveSpeed: 0.8
+    baseMoveSpeed: 1.6
     damageMultiplier: 1
     collisionSpeed: 2
     critRate: 5
@@ -33,6 +33,8 @@ MonoBehaviour:
   unlockData:
     request: 1
     requestDesc: 1
+    nextUnits: []
+    nodePosition: {x: 0, y: 0}
   productionData:
     material: 1
     materialDesc: 1

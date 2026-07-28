@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 1085151388084710335}
   - component: {fileID: 4995465410470617279}
   - component: {fileID: -1209088801597861942}
+  - component: {fileID: -3378289381029422585}
   m_Layer: 6
   m_Name: Player 1 1 (1)
   m_TagString: selectable
@@ -427,7 +428,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 1000
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4723107735738678597, guid: cbc402b7788b6cf49b26fbd7141d36db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -573,7 +574,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
-  isIndestructible: 0
   requiredRank: 0
 --- !u!114 &-268761023666642841
 MonoBehaviour:
@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
   rigid: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 8fc1210fcecc71743a2ac0c2fc4e34f2, type: 2}
+  unitData: {fileID: 11400000, guid: 08edce10547ff9b45bde8c1f99f5215e, type: 2}
   moveable: 0
   hasPlayerCommand: 0
   isCriticalContext: 0
@@ -647,7 +647,7 @@ MonoBehaviour:
   <MaxHP>k__BackingField: 0
   <AttackPower>k__BackingField: 0
   <Defence>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 0
+  <BaseMoveSpeed>k__BackingField: 0
   <BaseAttackSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <DamageMultiplier>k__BackingField: 0
@@ -657,6 +657,18 @@ MonoBehaviour:
   <CriticalMultiplier>k__BackingField: 0
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0
+--- !u!114 &-3378289381029422585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836709381487180731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering
 --- !u!1 &6576453237478646392
 GameObject:
   m_ObjectHideFlags: 0

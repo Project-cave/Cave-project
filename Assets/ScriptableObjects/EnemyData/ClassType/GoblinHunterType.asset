@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da2ec76443bb9664e811e8102e7ef399, type: 3}
+  m_Name: GoblinHunterType
+  m_EditorClassIdentifier: Assembly-CSharp::ClassData
+  classType: 8
+  attackType: 0
+  hpMultiplier: 1.8
+  atkMultiplier: 2.1
+  defMultiplier: 1.8
+  moveSpeedMultiplier: 1
+  baseAttackSpeed: 1.8
+  baseAttackRange: 1.5
+  bulletData: {fileID: 0}
+  collisionSpeed: 0
+  collisionSpecial: 
+  specialGimmick: 
+  raceInfo:
+  - race: 4
+    animController: {fileID: 9100000, guid: d255fe1cae3dcdf4181b6798fb05185c, type: 2}
+    collisionMultiplier: 2
+  classShape: {fileID: -4175929722948129517, guid: 5604e6cda1deeeb41a329d760164aed9, type: 3}

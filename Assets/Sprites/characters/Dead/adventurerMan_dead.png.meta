@@ -1,0 +1,356 @@
+fileFormatVersion: 2
+guid: 16dad0dbe99297a45bae14b9fceec54b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1622738238512186143
+    second: adventurerMan_dead_0
+  - first:
+      213: -8411437793740055425
+    second: adventurerMan_dead_1
+  - first:
+      213: -7282431972470460937
+    second: adventurerMan_dead_2
+  - first:
+      213: -1455492036690803154
+    second: adventurerMan_dead_3
+  - first:
+      213: -5763634836337286025
+    second: adventurerMan_dead_4
+  - first:
+      213: -6802118362813824362
+    second: adventurerMan_dead_5
+  - first:
+      213: 804342337649086605
+    second: adventurerMan_dead_6
+  - first:
+      213: 5773526066862293394
+    second: adventurerMan_dead_7
+  - first:
+      213: 9052901544108988006
+    second: adventurerMan_dead_8
+  - first:
+      213: 5820386296565443807
+    second: adventurerMan_dead_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: adventurerMan_dead_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ecb9027b20ea79e0800000000000000
+      internalID: -1622738238512186143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_1
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7c14dd64e1944b80800000000000000
+      internalID: -8411437793740055425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_2
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fd63fb74ba9fea90800000000000000
+      internalID: -7282431972470460937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_3
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2682a344bd0dcbe0800000000000000
+      internalID: -1455492036690803154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_4
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 774ac0547a47300b0800000000000000
+      internalID: -5763634836337286025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_5
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 692025063650a91a0800000000000000
+      internalID: -6802118362813824362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_6
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8091613819992b00800000000000000
+      internalID: 804342337649086605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_7
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29109cc4e5faf1050800000000000000
+      internalID: 5773526066862293394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: adventurerMan_dead_8
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 0
+        width: 58
+        height: 62
+      alignment: 9
+      pivot: {x: 0.59, y: 0.185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66693337dfd52ad70800000000000000
+      internalID: 9052901544108988006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: d3e0d98b61ea003408fc8a5c59a72e58
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":58.0,"y":62.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5899999737739563,"y":0.1850000023841858},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":9,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      adventurerMan_dead_0: -1622738238512186143
+      adventurerMan_dead_1: -8411437793740055425
+      adventurerMan_dead_2: -7282431972470460937
+      adventurerMan_dead_3: -1455492036690803154
+      adventurerMan_dead_4: -5763634836337286025
+      adventurerMan_dead_5: -6802118362813824362
+      adventurerMan_dead_6: 804342337649086605
+      adventurerMan_dead_7: 5773526066862293394
+      adventurerMan_dead_8: 9052901544108988006
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -104,7 +104,7 @@ public class EnemySpawner : MonoBehaviour
         EnemyClassType targetClassType = GetRandomClass(data);
         if (!classCache.TryGetValue(targetClassType, out ClassData classData)) return null;
 
-        GameObject spawnedEnemy = GameManager.instance.pool.Get(2);
+        GameObject spawnedEnemy = GameManager.instance.pool.Get(12);
         spawnedEnemy.transform.position = spawnPos;
 
         EnemyStatHandler statHandler = spawnedEnemy.GetComponent<EnemyStatHandler>();
@@ -114,9 +114,6 @@ public class EnemySpawner : MonoBehaviour
             statHandler.rankData = rankData;
             statHandler.classData = classData;
         }
-
-        Enemy existingScript = spawnedEnemy.GetComponent<Enemy>();
-        if (existingScript != null) DestroyImmediate(existingScript);
 
         Enemy newEnemyScript = null;
         if (classData.attackType == EnemyAttackType.Melee) newEnemyScript = spawnedEnemy.AddComponent<EnemyMeleeClass>();

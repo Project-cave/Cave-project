@@ -7,7 +7,7 @@ public abstract class Enemy : MonoBehaviour
 {
     #region 1. 설정값
     [Header("Reference")]
-    SpriteRenderer sr;
+    protected SpriteRenderer sr;
     BoxCollider2D col;
     Transform healthBarTransform;
     public Animator anim;
@@ -128,11 +128,6 @@ public abstract class Enemy : MonoBehaviour
     // 초기화
     public void InitEnemy()
     {
-        if (raceText == null)
-        {
-            raceText = GetComponentInChildren<TMP_Text>();
-        }
-
         GetComponent<Collider2D>().enabled = true;
         rigid.bodyType = RigidbodyType2D.Dynamic;
 
@@ -195,7 +190,7 @@ public abstract class Enemy : MonoBehaviour
         if (sr != null && healthBarTransform != null)
         {
             float topOfHead = sr.bounds.extents.y;
-            healthBarTransform.localPosition = new Vector3(0, topOfHead + 0.2f, 0);
+            healthBarTransform.localPosition = new Vector3(0, topOfHead + 0.7f, 0);
         }
 
         Transform emoTransform = transform.Find("Emoticon");
@@ -286,11 +281,11 @@ public abstract class Enemy : MonoBehaviour
     {
         if (goal.x > transform.position.x)
         {
-            sr.flipX = false;
+            sr.flipX = true;
         }
         else if (goal.x < transform.position.x)
         {
-            sr.flipX = true;
+            sr.flipX = false;
         }
     }
 
@@ -325,7 +320,7 @@ public abstract class Enemy : MonoBehaviour
         if (!canMove)
         {
             if (rigid != null) rigid.linearVelocity = Vector2.zero;
-            // if (anim != null) anim.SetBool("isMoving", false); 
+            if (anim != null) anim.SetBool("RunBool", false); 
         }
     }
 

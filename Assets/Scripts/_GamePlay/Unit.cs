@@ -6,6 +6,7 @@ public class Unit : MonoBehaviour
     // 컴포넌트 참조
     private UnitMovement movement;
     private UnitAnimator unitAnimator;
+    private Animator anim;
     private UnitCombat combat;
     private Scanner scanner;
     private UnitStatHandler statHandler;
@@ -43,6 +44,7 @@ public class Unit : MonoBehaviour
         statHandler = GetComponent<UnitStatHandler>();
         rigid = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
         if (statHandler != null)
         {
@@ -139,14 +141,6 @@ public class Unit : MonoBehaviour
         combat.SetWeapon(weapon);
     }
 
-    private void OnDisable()
-    {
-        if (UnitManager.instance != null)
-        {
-            UnitManager.instance.UnRegisterUnit(gameObject);
-        }
-    }
-
     public void OnAnimAttackHit()
     {
         if (unitData.info.attackType == UnitSo.UnitAttackType.Normal_Melee) {
@@ -218,6 +212,18 @@ public class Unit : MonoBehaviour
 
     private IEnumerator DeathRoutine()
     {
+        anim.SetTrigger("DeathTrigger");
+
+        yield return null;
+
+        float animLength = anim.GetCurrentAnimatorStateInfo(0).length;
+        float waitTime = 0f;
+        while (waitTime < animLength)
+        {
+            waitTime += Time.deltaTime;
+            yield return null;
+        }
+
         float fadeTime = 1.0f;
         float startAlpha = sr.color.a;
         float time = 0;
@@ -233,5 +239,10 @@ public class Unit : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+
+        if (UnitManager.instance != null)
+        {
+            UnitManager.instance.UnRegisterUnit(this.gameObject);
+        }
     }
 }

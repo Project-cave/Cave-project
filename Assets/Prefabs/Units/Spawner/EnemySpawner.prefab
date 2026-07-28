@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4427978365680565139}
   - component: {fileID: 4623692604684819325}
   - component: {fileID: 1419951704972411595}
+  - component: {fileID: 1063309302028608487}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -125,3 +126,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0864cab34411a2949ab2d49991a833c5, type: 2}
   - {fileID: 11400000, guid: a5c196e78f8caf245bf0d2486e011273, type: 2}
   - {fileID: 11400000, guid: 65cfdf1fa9579074fb549b5179a722e9, type: 2}
+--- !u!114 &1063309302028608487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6335471830562485353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering

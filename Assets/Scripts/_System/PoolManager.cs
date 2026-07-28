@@ -42,7 +42,7 @@ public class PoolManager : MonoBehaviour
     // 임시 코드
     public void EnemySpawn()
     {
-        GameObject spawned = Get(2);
+        GameObject spawned = Get(12);
         if (spawned != null && AudioManager.instance != null)
         {
             AudioManager.instance.PlaySfx(0);

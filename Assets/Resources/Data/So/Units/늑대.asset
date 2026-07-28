@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitSo
   info:
     unitName: "\uB291\uB300"
-    unitNum: 3
+    unitNum: 2
     raceType: 1
     rankType: 2
     attackType: 1
@@ -25,7 +25,7 @@ MonoBehaviour:
     baseDefence: 0
     baseAttackSpeed: 1.3
     baseAttackRange: 1
-    baseMoveSpeed: 1.5
+    baseMoveSpeed: 2.5
     damageMultiplier: 1
     collisionSpeed: 1
     critRate: 1
@@ -33,9 +33,11 @@ MonoBehaviour:
   unlockData:
     request: 1
     requestDesc: 1
+    nextUnits: []
+    nodePosition: {x: 0, y: 0}
   productionData:
     material: 1
     materialDesc: 1
   unitPrefab: {fileID: 0}
-  animController: {fileID: 0}
+  animController: {fileID: 9100000, guid: 0418a5f75b4153a4fafe7dd7829cab57, type: 2}
   debuffPrefab: {fileID: 0}
