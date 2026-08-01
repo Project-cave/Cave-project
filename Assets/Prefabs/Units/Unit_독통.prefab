@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: -3199677074396507853}
   - component: {fileID: -6826658822864785343}
   - component: {fileID: -2210699618600727020}
+  - component: {fileID: 6288409615014490246}
   m_Layer: 8
   m_Name: "Unit_\uB3C5\uD1B5"
   m_TagString: Facility
@@ -379,7 +380,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 12
+  m_SortingOrder: 1000
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 790fdeeef10ef344ea9e6131639f4b9d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -467,6 +468,18 @@ MonoBehaviour:
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0
   facilityData: {fileID: 11400000, guid: 1a44fb09502cf044f9cc2c3d5f9c241d, type: 2}
+--- !u!114 &6288409615014490246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026808848392073917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering
 --- !u!1 &7976910519519107665
 GameObject:
   m_ObjectHideFlags: 0

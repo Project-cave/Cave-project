@@ -7,6 +7,7 @@ public class UnitCombat : MonoBehaviour
     private UnitAnimator unitAnimator;
     private UnitStatHandler stat;
     private Unit owner;
+    private Animator anim;
 
     public float bulletSpeed;
 
@@ -17,6 +18,7 @@ public class UnitCombat : MonoBehaviour
         stat = GetComponent<UnitStatHandler>();
         owner = GetComponent<Unit>();
         weapon = GetComponent<Weapon>();
+        anim = GetComponent<Animator>();
     }
 
     public bool CanAttack()
@@ -67,6 +69,7 @@ public class UnitCombat : MonoBehaviour
 
         int skillIndex = isCrit ? 1 : 0;
 
+        anim.SetInteger("AttackIndex", skillIndex);
         if (unitAnimator != null) unitAnimator.PlayAttackMotion();
 
         stat.OnAttack();

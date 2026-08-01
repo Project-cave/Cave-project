@@ -15,7 +15,7 @@ public class HealthBar : MonoBehaviour
     {
         if (targetHP == null)
         {
-            targetHP = GetComponentInParent<StatHandler>();
+            targetHP = GetComponentInChildren<StatHandler>();
         }
     }
 

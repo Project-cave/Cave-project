@@ -91,7 +91,7 @@ public class GameSkillSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         Debug.Log($"{skillData.skillName} , {worldPosition}");
 
-        GameObject skill = GameManager.instance.pool.Get(5);
+        GameObject skill = GameManager.instance.pool.Get(15);
 
         skill.transform.position = worldPosition;
     }

@@ -2287,7 +2287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: 396ad34b928443148a4ae9f18a6c236a, type: 2}
+  unitData: {fileID: 11400000, guid: 740c79ff4a3d76047ab2fb70b0d5cf82, type: 2}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -4929,7 +4929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: 170bf738c6d61db4b93fa291be652227, type: 2}
+  unitData: {fileID: 11400000, guid: 11a5894abe8ab5e4baa8f634daccd087, type: 2}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -5214,7 +5214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: 38a24385426a4f646965475c4b69cd19, type: 2}
+  unitData: {fileID: 11400000, guid: 0cb90573fb8af9249a653798892c95f6, type: 2}
   connectLines:
   - {fileID: 1779786756}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -5642,7 +5642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: d9f5c1f23b160854d8ec9bd6022813e0, type: 2}
+  unitData: {fileID: 11400000, guid: 747a4c9138aa22c41a8d215f60c8dd97, type: 2}
   connectLines:
   - {fileID: 1752974579}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -5833,7 +5833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: dae69be49aadfc74a8ebb8c51bff1e22, type: 2}
+  unitData: {fileID: 11400000, guid: 16da8c673eb3a514c94797e59c562310, type: 2}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -6506,7 +6506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: c95127345c5c73e4fb2d878e39ce98e7, type: 2}
+  unitData: {fileID: 11400000, guid: 18e930792bab5f54896f8d05c28665e6, type: 2}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}
@@ -6923,6 +6923,7 @@ GameObject:
   - component: {fileID: 1011366711}
   - component: {fileID: 1011366710}
   - component: {fileID: 1011366709}
+  - component: {fileID: 1011366712}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7004,6 +7005,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1011366712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011366708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &1017363551
 GameObject:
   m_ObjectHideFlags: 0
@@ -7357,7 +7402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: 6834c5103b01c3d46bad9028e09c2eec, type: 2}
+  unitData: {fileID: 11400000, guid: ddbd470b273d8b443be24e5cc2b9868b, type: 2}
   connectLines:
   - {fileID: 430619425}
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
@@ -12797,7 +12842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40dd3230dc5a654e981cf2db60f01e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RequestMonster
-  unitData: {fileID: 11400000, guid: d676bea4b70ab7c4ebd88d9244865f6f, type: 2}
+  unitData: {fileID: 11400000, guid: b2341b2894076b3409a8fe4e514e74e0, type: 2}
   connectLines: []
   solidLine: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   rectTransform: {fileID: 0}

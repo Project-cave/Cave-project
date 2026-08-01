@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 160595029483875892}
   - component: {fileID: 4434517062908809430}
   - component: {fileID: 8462225806353567652}
+  - component: {fileID: -7212706086834324838}
   m_Layer: 7
   m_Name: Stand 1 1
   m_TagString: Enemy
@@ -219,7 +220,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4723107735738678597, guid: fc46633b0eb321e46838bcb9ff2d4150, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -367,7 +368,7 @@ MonoBehaviour:
   <MaxHP>k__BackingField: 0
   <AttackPower>k__BackingField: 0
   <Defence>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 0
+  <BaseMoveSpeed>k__BackingField: 0
   <BaseAttackSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <DamageMultiplier>k__BackingField: 0
@@ -378,6 +379,9 @@ MonoBehaviour:
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0.7
   <Sanity>k__BackingField: 0
+  <TurnPenalty>k__BackingField: 0
+  <UTurnPenalty>k__BackingField: 0
+  <CuriosityRate>k__BackingField: 0
   raceData: {fileID: 11400000, guid: 66ba8418b47e5ae46bbe644756213ac8, type: 2}
   classData: {fileID: 11400000, guid: 5269c03ed54ec7e4f9b287a2e0a5c706, type: 2}
   rankData: {fileID: 11400000, guid: 382a3e2c4d2c91c46b2dbd523735779b, type: 2}
@@ -400,6 +404,7 @@ MonoBehaviour:
   pathFinder: {fileID: 0}
   isCriticalContext: 0
   isFleeing: 0
+  isMoveable: 1
   raceText: {fileID: 0}
   lastDetectedTarget: {fileID: 0}
 --- !u!114 &8462225806353567652
@@ -415,8 +420,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
-  isIndestructible: 0
   requiredRank: 0
+--- !u!114 &-7212706086834324838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6115133992853605259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering
 --- !u!1 &7091806581842277606
 GameObject:
   m_ObjectHideFlags: 0

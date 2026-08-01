@@ -164,7 +164,7 @@ public class Scanner : MonoBehaviour
     }
 
     // 라인캐스팅
-    public bool IsTargetVisible(Vector3 to, Vector3 from)
+    public bool IsTargetVisible(Vector2 to, Vector2 from)
     {
         RaycastHit2D hitWall = Physics2D.Linecast(from, to, wallLayer);
 
@@ -186,7 +186,7 @@ public class Scanner : MonoBehaviour
     {
         int currentX = Mathf.FloorToInt(transform.position.x);
         int currentY = Mathf.FloorToInt(transform.position.y);
-        Vector3 currentPos = new Vector3(currentX + 0.5f, currentY + 0.5f, 0);
+        Vector2 currentPos = new Vector2(currentX + 0.5f, currentY + 0.5f);
 
         int scan = Mathf.CeilToInt(scanRange);
 
@@ -195,10 +195,13 @@ public class Scanner : MonoBehaviour
             for (int y = -scan; y <= scan; y++)
             {
                 Vector3Int targetIndex = new Vector3Int(currentX + x, currentY + y, 0);
-                Vector3 targetPos = new Vector3(currentX + x + 0.5f, currentY + y + 0.5f, 0);
+                if (Explored.Contains(targetIndex)) continue;
 
-                if (Vector3.Distance(currentPos, targetPos) > scanRange || Explored.Contains(targetIndex) ||
-                    !IsTargetVisible(targetPos, currentPos)) continue;
+                Vector2 targetPos = new Vector2(currentX + x + 0.5f, currentY + y + 0.5f);
+
+                if (Vector2.Distance(currentPos, targetPos) > scanRange) continue;
+
+                if (!IsTargetVisible(targetPos, currentPos)) continue;
 
                 Explored.Add(targetIndex);
             }

@@ -16,6 +16,6 @@ MonoBehaviour:
   baseHP: 110
   baseAtk: 15
   baseDef: 10
-  baseMoveSpeed: 1.2
+  baseMoveSpeed: 1.8
   baseSanity: 90
   specialGimmick: 

@@ -15,12 +15,14 @@ public class Bullet : MonoBehaviour
     public float BulletTime;
 
     Rigidbody2D rigid;
+    SpriteRenderer sr;
     private string targetTag;
     private Transform shooter;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -40,6 +42,11 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        sr.sortingOrder = Mathf.RoundToInt(1000 + (-27 - transform.position.y) * 100);
+    }
+
     public void Init(int id, float Damage, int per, Vector3 dir, float bulletVelocity, string targetTag, Transform shooter)
     {
         this.Damage = Damage;
@@ -51,7 +58,7 @@ public class Bullet : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        rigid.linearVelocity = dir * bulletVelocity;        
+        rigid.linearVelocity = dir * bulletVelocity;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

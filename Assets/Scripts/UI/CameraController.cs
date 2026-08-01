@@ -28,22 +28,42 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         CalculateMapBounds();
-        FitCameraToMap();
+
+        float mapWidth  = mapRight - mapLeft;
+        float mapHeight = mapTop - mapBottom;
+        float aspect    = (float)Screen.width / Screen.height;
+        maxZoom = Mathf.Max(mapWidth / (2f * aspect), mapHeight / 2f);
     }
     
     // FloorTilemap의 범위로 맵 경계 계산
     void CalculateMapBounds()
+{
+    bool first = true;
+    foreach (Vector3Int pos in floorTilemap.cellBounds.allPositionsWithin)
     {
-        BoundsInt bounds = floorTilemap.cellBounds;
-        
-        Vector3 minWorld = floorTilemap.GetCellCenterWorld(new Vector3Int(bounds.x, bounds.y, 0));
-        Vector3 maxWorld = floorTilemap.GetCellCenterWorld(new Vector3Int(bounds.x + bounds.size.x - 1, bounds.y + bounds.size.y - 1, 0));
-        
-        mapLeft   = minWorld.x - 0.5f;
-        mapRight  = maxWorld.x + 0.5f;
-        mapBottom = minWorld.y - 0.5f;
-        mapTop    = maxWorld.y + 0.5f;
+        if (!floorTilemap.HasTile(pos)) continue;
+
+        Vector3 world = floorTilemap.GetCellCenterWorld(pos);
+        if (first)
+        {
+            mapLeft = mapRight = world.x;
+            mapBottom = mapTop = world.y;
+            first = false;
+        }
+        else
+        {
+            mapLeft   = Mathf.Min(mapLeft,   world.x);
+            mapRight  = Mathf.Max(mapRight,  world.x);
+            mapBottom = Mathf.Min(mapBottom, world.y);
+            mapTop    = Mathf.Max(mapTop,    world.y);
+        }
     }
+
+    mapLeft   -= 0.5f;
+    mapRight  += 0.5f;
+    mapBottom -= 0.5f;
+    mapTop    += 0.5f;
+}
     
     // 카메라를 맵 중앙에 배치하고, 맵 전체가 보이도록 zoom 설정
     void FitCameraToMap()
@@ -114,8 +134,8 @@ public class CameraController : MonoBehaviour
         float y = mainCamera.transform.position.y;
         
         // 카메라 뷰가 맵보다 크면 중앙 고정, 작으면 범위 내로 제한
-        x = (minX <= maxX) ? Mathf.Clamp(x, minX, maxX) : (mapLeft + mapRight) / 2f;
-        y = (minY <= maxY) ? Mathf.Clamp(y, minY, maxY) : (mapBottom + mapTop) / 2f;
+        x = (minX < maxX) ? Mathf.Clamp(x, minX, maxX) : (mapLeft + mapRight) / 2f;
+        y = (minY < maxY) ? Mathf.Clamp(y, minY, maxY) : (mapBottom + mapTop) / 2f;
         
         mainCamera.transform.position = new Vector3(x, y, mainCamera.transform.position.z);
     }

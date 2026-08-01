@@ -8,16 +8,17 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
 
+    private const string SceneMain = "MainScene";
     private const string SceneSkill = "Skill";
     private const string SceneBattle = "GameScene";
     private const string SceneMonster = "Monster";
 
-    [Header("·Îµù ÆÐ³Î")]
+    [Header("ï¿½Îµï¿½ ï¿½Ð³ï¿½")]
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private Slider progressBar;
     [SerializeField] private TextMeshProUGUI progressText;
 
-    [Header("ÆäÀÌµå ÆÐ³Î")]
+    [Header("ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Ð³ï¿½")]
     [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeDuration = 0.4f;
 
@@ -39,12 +40,14 @@ public class SceneController : MonoBehaviour
     private void OnValidate()
     {
         if (fadeCanvasGroup == null)
-            Debug.LogWarning("fadeCanvasGroupÀÌ ºñ¾îÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("fadeCanvasGroupï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
         if (loadingPanel == null)
-            Debug.LogWarning("loadingPanelÀÌ ºñ¾îÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("loadingPanelï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
     }
 
-    public void LoadGameScene() => LoadAsync(SceneBattle).Forget(); 
+
+    public void LoadMainScene() => LoadAsync(SceneMain).Forget();
+    public void LoadGameScene() => LoadAsync(SceneBattle).Forget();
     public void LoadMonsterScene() => LoadAsync(SceneMonster).Forget();
     public void LoadSkillScene() => LoadAsync(SceneSkill).Forget();
 
@@ -60,7 +63,7 @@ public class SceneController : MonoBehaviour
 
             SetLoadingUI(true, 0f);
 
-            AsyncOperation op = SceneManager.LoadSceneAsync(sceneName); // ·Îµå¸¸
+            AsyncOperation op = SceneManager.LoadSceneAsync(sceneName); // ï¿½Îµå¸¸
             op.allowSceneActivation = false; // 100% -> 0.9f
 
             while (op.progress < 0.9f)
@@ -80,7 +83,7 @@ public class SceneController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"¾À ·Îµå ½ÇÆÐ ({sceneName}): {e.Message}");
+            Debug.LogError($"ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ ({sceneName}): {e.Message}");
             SetLoadingUI(false, 0f);
         }
         finally

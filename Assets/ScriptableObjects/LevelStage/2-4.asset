@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   dungeonGrade: 2
   stageNumber: 4
+  targetWaveCount: 7
   humanProb: 60
   elfProb: 10
   dwarfProb: 10
@@ -26,7 +27,9 @@ MonoBehaviour:
   wizardProb: 20
   magicianProb: 5
   paladinProb: 0
-  bronzeCount: 0
-  silverCount: 4
-  goldCount: 0
-  platinumCount: 0
+  bronzeProb: 60
+  silverProb: 40
+  goldProb: 0
+  platinumProb: 0
+  minSpawn: 1
+  maxSpawn: 5

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1196121832303503518}
   - component: {fileID: 1785837440484031458}
   - component: {fileID: 7004606449446831636}
+  - component: {fileID: 7334343910910182591}
   m_Layer: 0
   m_Name: LevelEnemySpawner
   m_TagString: Untagged
@@ -105,8 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   levelDatabase: {fileID: 11400000, guid: 1cadc7177cd1b8649ba8ffbd7c890761, type: 2}
-  spawnPoint: {fileID: 1196121832303503518}
-  spawnDelay: 3
+  spawnPoints: []
+  gatherWaitTime: 2
   raceList:
   - {fileID: 11400000, guid: df7a2b2b0a7f10b47aba3f367e8bc1a9, type: 2}
   - {fileID: 11400000, guid: 66ba8418b47e5ae46bbe644756213ac8, type: 2}
@@ -126,3 +127,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0864cab34411a2949ab2d49991a833c5, type: 2}
   - {fileID: 11400000, guid: a5c196e78f8caf245bf0d2486e011273, type: 2}
   - {fileID: 11400000, guid: 65cfdf1fa9579074fb549b5179a722e9, type: 2}
+--- !u!114 &7334343910910182591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2653977550156695468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering

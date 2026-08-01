@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     PathFinder m_pathFinder;
     SpriteRenderer sr;
+    Rigidbody2D rigid;
     Scanner scanner;
     Weapon weapon;
     BoxCollider2D boxCollider;
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         scanner = GetComponent<Scanner>();
         sr = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
+        rigid = GetComponent<Rigidbody2D>();
 
         // StatHandler 가져오기
         stat = GetComponent<StatHandler>();
@@ -189,7 +191,9 @@ public class PlayerMovement : MonoBehaviour
     // 사망 처리 함수
     public void Death()
     {
-        // 사망 로직
+        GetComponent<Collider2D>().enabled = false;
+        rigid.linearVelocity = Vector2.zero;
+        rigid.bodyType = RigidbodyType2D.Kinematic;
     }
 
 

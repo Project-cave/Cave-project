@@ -486,6 +486,7 @@ GameObject:
   - component: {fileID: 7672051797109798736}
   - component: {fileID: 2644446601106641826}
   - component: {fileID: 2941821464306371570}
+  - component: {fileID: 5694906173512337594}
   m_Layer: 7
   m_Name: Stand 1 2
   m_TagString: Enemy
@@ -556,7 +557,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_MaskInteraction: 0
   m_Sprite: {fileID: -803321122, guid: 836ba81373ddf664c8a192783efe0ecd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -704,7 +705,7 @@ MonoBehaviour:
   <MaxHP>k__BackingField: 50
   <AttackPower>k__BackingField: 1
   <Defence>k__BackingField: 1
-  <MoveSpeed>k__BackingField: 1
+  <BaseMoveSpeed>k__BackingField: 0
   <BaseAttackSpeed>k__BackingField: 1
   <AttackRange>k__BackingField: 1
   <DamageMultiplier>k__BackingField: 1
@@ -715,6 +716,9 @@ MonoBehaviour:
   <SpecialGimmick>k__BackingField: 
   <AttackMotionDelay>k__BackingField: 0.8
   <Sanity>k__BackingField: 1
+  <TurnPenalty>k__BackingField: 0
+  <UTurnPenalty>k__BackingField: 0
+  <CuriosityRate>k__BackingField: 0
   raceData: {fileID: 11400000, guid: df7a2b2b0a7f10b47aba3f367e8bc1a9, type: 2}
   classData: {fileID: 11400000, guid: a5c196e78f8caf245bf0d2486e011273, type: 2}
   rankData: {fileID: 11400000, guid: b3b152ec32bdc2741b19de414c381c1f, type: 2}
@@ -737,10 +741,12 @@ MonoBehaviour:
   pathFinder: {fileID: 0}
   isCriticalContext: 0
   isFleeing: 0
+  isMoveable: 1
   raceText: {fileID: 0}
   lastDetectedTarget: {fileID: 0}
   bulletPoolIndex: 5
   criticalPoolIndex: 4
+  bulletSpawnPos: {x: 0, y: 0}
 --- !u!114 &2941821464306371570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,8 +760,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   priority: 1
-  isIndestructible: 0
   requiredRank: 0
+--- !u!114 &5694906173512337594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295768222200447943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f305a6536e934687d28988be6c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteOrdering
 --- !u!1 &8754398556438825716
 GameObject:
   m_ObjectHideFlags: 0

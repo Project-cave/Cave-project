@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da2ec76443bb9664e811e8102e7ef399, type: 3}
+  m_Name: WizardWomanType
+  m_EditorClassIdentifier: Assembly-CSharp::ClassData
+  classType: 8
+  attackType: 1
+  hpMultiplier: 0.8
+  atkMultiplier: 2.5
+  defMultiplier: 0.75
+  moveSpeedMultiplier: 0.9
+  baseAttackSpeed: 5
+  baseAttackRange: 5
+  bulletData: {fileID: 11400000, guid: 30ca7548993eb5846b84993cf8547f70, type: 2}
+  collisionSpeed: 3
+  collisionSpecial: 
+  specialGimmick: 
+  raceInfo:
+  - race: 4
+    animController: {fileID: 9100000, guid: 5fccbd537461fd340be29fad6c3bffd8, type: 2}
+    collisionMultiplier: 1
+  classShape: {fileID: -8802784935400701191, guid: 172cf7ae90761db44837ef098fb09f11, type: 3}
